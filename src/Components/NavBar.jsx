@@ -105,13 +105,13 @@ export default function Navbar() {
           ) : (
             <>
               <Link
-                href="/auth/signin"
+                href="/login"
                 className="text-[#6366f1] hover:text-[#4f46e5] text-sm font-medium transition-colors duration-200"
               >
                 Sign In
               </Link>
               <Link
-                href="/auth/signup"
+                href="/signup"
                 className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-600/10 hover:opacity-90 active:scale-[0.98] transition-all duration-200"
               >
                 Get Started
