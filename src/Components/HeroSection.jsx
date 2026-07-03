@@ -56,7 +56,7 @@ export default function HeroSection() {
           animate="visible"
           className="text-zinc-400 text-base sm:text-lg font-light max-w-2xl leading-relaxed mb-12"
         >
-          HireLoop connects top talent with world-class companies. Browse thousands of
+          CareerBridge connects top talent with world-class companies. Browse thousands of
           curated opportunities and land your next role — faster.
         </motion.p>
 

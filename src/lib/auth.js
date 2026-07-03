@@ -1,3 +1,4 @@
+// auth.js
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import { MongoClient } from "mongodb";
@@ -18,16 +19,20 @@ export const auth = betterAuth({
     },
   },
 
+  accountLinking: {
+    enabled: true,                    
+    trustedProviders: ["google"],  
+    disableImplicitLinking: false,
+  },
+
+  advanced: {
+    useSecureCookies: false, 
+  },
+
   user: {
     additionalFields: {
-      role: {
-        type: "string",
-        defaultValue: "seeker",
-      },
-      plan: {
-        type: "string",
-        defaultValue: "seeker_free",
-      },
+      role: { type: "string", defaultValue: "seeker" },
+      plan: { type: "string", defaultValue: "seeker_free" },
     },
   },
 });

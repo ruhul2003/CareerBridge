@@ -62,9 +62,9 @@ export default function Navbar() {
         {/* Logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-0.5 font-bold text-2xl tracking-tight select-none">
-            <span className="text-[#38bdf8]">hire</span>
+            <span className="text-[#38bdf8]">Career</span>
             <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-orange-500 bg-clip-text text-transparent">
-              loop
+              Bridge
             </span>
           </Link>
         </div>

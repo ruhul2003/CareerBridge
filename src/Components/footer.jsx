@@ -12,9 +12,9 @@ export default function Footer() {
           {/* Brand Info (Takes 5 columns on desktop) */}
           <div className="md:col-span-5 flex flex-col gap-4">
             <Link href="/" className="flex items-center gap-0.5 font-bold text-2xl tracking-tight select-none">
-              <span className="text-[#38bdf8]">hire</span>
+              <span className="text-[#38bdf8]">Career</span>
               <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-orange-500 bg-clip-text text-transparent">
-                loop
+                Bridge
               </span>
             </Link>
             <p className="max-w-xs text-zinc-600 leading-relaxed font-normal">

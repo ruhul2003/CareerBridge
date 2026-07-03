@@ -41,7 +41,7 @@ export default function SignUpPage() {
     const formData = new FormData();
     formData.append("image", file);
     
-    const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+    const apiKey = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
     if (!apiKey) throw new Error("ImgBB API key is not configured");
 
     const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
@@ -91,24 +91,27 @@ export default function SignUpPage() {
     }
   };
 
- const handleGoogleSignUp = async () => {
+const handleGoogleSignUp = async () => {
   setGoogleLoading(true);
   setError(null);
 
   try {
     await authClient.signIn.social({
       provider: "google",
-      callbackURL: redirectTo || "/", 
-      newUserOptions: {
-        data: {
-          role: role,
-          plan: role === "seeker" ? "seeker_free" : "recruiter_free",
-        },
+      callbackURL: redirectTo || "/",
+      additionalData: {
+        role: role,
+        plan: role === "seeker" ? "seeker_free" : "recruiter_free",
       },
     });
   } catch (err) {
-    console.error(err);
-    setError(err.message || "Google sign up failed. Please try again.");
+    console.error("Google Sign In Error:", err);
+    
+    if (err.message?.includes("account_not_linked")) {
+      setError("এই ইমেইলটি দিয়ে আগে পাসওয়ার্ড দিয়ে অ্যাকাউন্ট খোলা হয়েছিল। দয়া করে প্রথমে ইমেইল-পাসওয়ার্ড দিয়ে লগইন করুন।");
+    } else {
+      setError(err.message || "Google authentication failed. Please try again.");
+    }
   } finally {
     setGoogleLoading(false);
   }
@@ -122,9 +125,9 @@ export default function SignUpPage() {
         <div className="text-center">
           <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/10">
             <div className="flex items-center gap-0.5 font-bold text-3xl tracking-tight">
-              <span className="text-[#38bdf8]">hire</span>
+              <span className="text-[#38bdf8]">Career</span>
               <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-orange-500 bg-clip-text text-transparent">
-                loop
+                Bridge
               </span>
             </div>
           </div>
@@ -310,7 +313,7 @@ export default function SignUpPage() {
         {/* Footer Link */}
         <p className="text-center text-zinc-500 text-sm">
           Already have an account?{" "}
-          <Link href={`/auth/signin?redirect=${redirectTo}`} className="text-indigo-400 hover:text-indigo-300 font-medium">
+          <Link href="/login" className="text-indigo-400 hover:text-indigo-300 font-medium">
             Sign in
           </Link>
         </p>
