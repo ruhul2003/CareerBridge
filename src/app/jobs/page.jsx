@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, Briefcase, Calendar, MapPin, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import { Search, Briefcase, Calendar,ArrowRight, MapPin, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import Link from 'next/link';
 
 const JOB_TYPES = ['full-time', 'part-time', 'contract', 'freelance'];
 
@@ -76,7 +77,7 @@ export default function JobsPage() {
       <div className="absolute top-40 right-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Filter / Search Navigation Header */}
-      
+
 
       {/* Dynamic Quantitative Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12">
@@ -94,7 +95,7 @@ export default function JobsPage() {
       <div className="border-b border-zinc-800/60 bg-transparent backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5">
           <div className="flex flex-col lg:flex-row gap-5 items-stretch lg:items-center">
-            
+
             {/* Search Input */}
             <div className="flex-1 relative">
               <Search className="absolute left-4 top-3.5 text-zinc-500 transition-colors group-focus-within:text-indigo-400" size={18} />
@@ -113,7 +114,7 @@ export default function JobsPage() {
                 <SlidersHorizontal size={14} className="text-zinc-500" />
                 <span>Type</span>
               </div>
-              
+
               <div className="flex flex-wrap gap-1.5">
                 {JOB_TYPES.map((type) => {
                   const isChecked = selectedTypes.includes(type);
@@ -122,11 +123,10 @@ export default function JobsPage() {
                       key={type}
                       type="button"
                       onClick={() => toggleType(type)}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-medium tracking-wide transition-all border ${
-                        isChecked
+                      className={`px-3.5 py-1.5 rounded-lg text-xs font-medium tracking-wide transition-all border ${isChecked
                           ? 'bg-indigo-600/10 border-indigo-500/40 text-indigo-300 shadow-[0_2px_10px_rgba(99,102,241,0.05)]'
                           : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
-                      }`}
+                        }`}
                     >
                       <span className="capitalize">{type.replace('-', ' ')}</span>
                     </button>
@@ -180,11 +180,10 @@ export default function JobsPage() {
                     <span className="inline-block px-2.5 py-1 text-[11px] font-semibold tracking-wide text-zinc-400 bg-zinc-800/40 rounded-md border border-zinc-800/60 uppercase">
                       {job.jobCategory}
                     </span>
-                    <span className={`text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md border uppercase ${
-                      job.status === 'active'
+                    <span className={`text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md border uppercase ${job.status === 'active'
                         ? 'bg-emerald-500/5 text-emerald-400 border-emerald-500/20'
                         : 'bg-zinc-800/40 text-zinc-500 border-zinc-800'
-                    }`}>
+                      }`}>
                       {job.status || 'Active'}
                     </span>
                   </div>
@@ -224,9 +223,13 @@ export default function JobsPage() {
                 </div>
 
                 {/* Primary Button */}
-                <button className="w-full mt-7 py-3 bg-zinc-100 text-zinc-950 text-xs font-semibold tracking-wider uppercase rounded-xl hover:bg-white active:scale-[0.99] transition-all shadow-md">
-                  Apply Position
-                </button>
+                <Link
+                  href={`/jobs/${job._id}`}
+                  className="w-full mt-7 py-3 bg-white/5 hover:bg-white/10 text-zinc-100 text-xs font-semibold tracking-wider uppercase rounded-xl border border-zinc-700 hover:border-zinc-500 backdrop-blur-md transition-all duration-300 active:scale-[0.985] shadow-lg flex items-center justify-center gap-2 group"
+                >
+                  View Details
+                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                </Link>
               </div>
             ))}
           </div>
