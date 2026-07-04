@@ -49,7 +49,6 @@ export default function JobDetailsPage() {
     return 'Salary confidential';
   };
 
-  // Helper to ensure lists parse nicely whether stored as arrays, comma-separated strings, or newline strings
   const parseListField = (fieldData) => {
     if (!fieldData) return [];
     if (Array.isArray(fieldData)) return fieldData;
@@ -70,7 +69,7 @@ export default function JobDetailsPage() {
       <div className="min-h-screen bg-[#0d0d0e] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-8 h-8 border-2 border-zinc-700 border-t-zinc-200 rounded-full animate-spin" />
-          <p className="text-xs text-zinc-500 font-medium tracking-widest uppercase">Loading Position</p>
+          <p className="text-xs text-zinc-500 font-medium tracking-widest uppercase">Loading Jobs</p>
         </div>
       </div>
     );
@@ -81,7 +80,7 @@ export default function JobDetailsPage() {
       <div className="min-h-screen bg-[#0d0d0e] flex items-center justify-center text-zinc-400">
         <div className="text-center">
           <h2 className="text-xl font-semibold mb-2">Job Not Found</h2>
-          <p>The position you're looking for doesn't exist or has been removed.</p>
+          <p>The position you are looking for does not exist or has been removed.</p>
           <button
             onClick={() => router.push('/jobs')}
             className="mt-6 px-6 py-2.5 bg-zinc-900 hover:bg-zinc-800 rounded-xl text-sm font-medium transition"
