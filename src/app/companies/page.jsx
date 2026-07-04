@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Search, ChevronLeft, ChevronRight, Briefcase, MapPin, CheckCircle2 } from 'lucide-react';
+import Image from 'next/image';
 
 const CompaniesPage = () => {
   const [companies, setCompanies] = useState([]);
@@ -15,7 +16,6 @@ const CompaniesPage = () => {
 
 const res = await fetch(`http://localhost:5000/api/companies?search=${searchTerm}`);
         const data = await res.json();
-        // Database data array check kora
         setCompanies(Array.isArray(data) ? data : [data]);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -24,7 +24,6 @@ const res = await fetch(`http://localhost:5000/api/companies?search=${searchTerm
       }
     };
 
-    // Debounce ba basic input delay use korle bhalo hoy, ekhane straight trigger kora holo
     fetchCompanies();
   }, [searchTerm]);
 
@@ -38,7 +37,7 @@ const res = await fetch(`http://localhost:5000/api/companies?search=${searchTerm
             Browse Companies
           </h1>
           <p className="text-gray-400 max-w-xl text-sm leading-relaxed">
-            Discover the world's leading technology and creative organizations. Filter by industry, size, and values to find your next professional home.
+            Discover the worlds leading technology and creative organizations. Filter by industry, size, and values to find your next professional home.
           </p>
         </div>
 
@@ -74,7 +73,7 @@ const res = await fetch(`http://localhost:5000/api/companies?search=${searchTerm
                   <div className="flex items-center justify-between mb-5">
                     <div className="w-12 h-12 bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl flex items-center justify-center overflow-hidden">
                       {company.logo ? (
-                        <img src={company.logo} alt={company.name} className="w-full h-full object-cover" />
+                        <Image src={company.logo} alt={company.name} width={48} height={48} className="w-full h-full object-cover" />
                       ) : (
                         <Briefcase className="w-5 h-5 text-gray-500" />
                       )}

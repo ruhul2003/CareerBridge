@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import SeekerSidebar from '../../../Components/SeekerSidebar';
 import OverviewTab from '../../../Components/seeker-dashboard-tabs/OverviewTab';
+import SavedJobsTab from '../../../Components/seeker-dashboard-tabs/SavedJobsTab';
+import ApplicationsTab from '../../../Components/seeker-dashboard-tabs/ApplicationsTab';
+import BillingTab from '../../../Components/seeker-dashboard-tabs/BillingTab';
+import SettingsTab from '../../../Components/seeker-dashboard-tabs/SettingsTab';
 
 
-// import SavedJobsTab from './tabs/SavedJobsTab';
-// import ApplicationsTab from './tabs/ApplicationsTab';
-// import BillingTab from './tabs/BillingTab';
-// import SettingsTab from './tabs/SettingsTab';
+
 
 const SeekerDashboard = () => {
   const [currentTab, setCurrentTab] = useState('dashboard');
@@ -15,10 +16,10 @@ const SeekerDashboard = () => {
   const renderTabContent = () => {
     switch (currentTab) {
       case 'dashboard': return <OverviewTab />;
-    //   case 'saved': return <SavedJobsTab />;
-    //   case 'applications': return <ApplicationsTab />;
-    //   case 'billing': return <BillingTab />;
-    //   case 'settings': return <SettingsTab />;
+      case 'saved': return <SavedJobsTab />;
+      case 'applications': return <ApplicationsTab />;
+      case 'billing': return <BillingTab />;
+      case 'settings': return <SettingsTab />;
       default: return <OverviewTab />;
     }
   };
