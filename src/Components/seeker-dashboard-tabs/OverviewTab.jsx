@@ -7,6 +7,7 @@ const OverviewTab = () => {
   const user = session?.user;
 
   const [applications, setApplications] = useState([]);
+  const [savedJobsCount, setSavedJobsCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
@@ -15,10 +16,17 @@ const OverviewTab = () => {
     const fetchOverviewData = async () => {
       if (!user?.id) return;
       try {
-        const res = await fetch(`${SERVER_URL}/api/applications?applicantId=${user.id}`);
-        if (res.ok) {
-          const data = await res.json();
+        const [appRes, savedRes] = await Promise.all([
+          fetch(`${SERVER_URL}/api/applications?applicantId=${user.id}`),
+          fetch(`${SERVER_URL}/api/saved-jobs?userId=${user.id}`)
+        ]);
+        if (appRes.ok) {
+          const data = await appRes.json();
           setApplications(data);
+        }
+        if (savedRes.ok) {
+          const savedData = await savedRes.json();
+          setSavedJobsCount(savedData.length);
         }
       } catch (err) {
         console.error("Error fetching dashboard overview details:", err);
@@ -42,7 +50,7 @@ const OverviewTab = () => {
   const offeredCount = applications.filter(a => a.status === 'Offered').length;
 
   const stats = [
-    { title: 'Saved Jobs', value: 0, icon: Bookmark, color: 'text-blue-400' },
+    { title: 'Saved Jobs', value: savedJobsCount, icon: Bookmark, color: 'text-blue-400' },
     { title: 'Applications Submitted', value: applications.length, icon: Send, color: 'text-amber-400' },
     { title: 'Interviews Scheduled', value: shortlistedCount, icon: Calendar, color: 'text-emerald-400' },
     { title: 'Offers Received', value: offeredCount, icon: ShieldCheck, color: 'text-purple-400' },
