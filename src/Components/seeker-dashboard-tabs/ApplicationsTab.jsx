@@ -1,53 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Download, FileText, CheckCircle2, Calendar, TrendingUp, MoreVertical } from 'lucide-react';
+import { authClient } from '@/lib/auth-client';
 
 const ApplicationsTab = () => {
-  // Navigation Tab State (Active vs Archived)
-  const [subTab, setSubTab] = useState('Active');
+  const { data: session, isPending: sessionLoading } = authClient.useSession();
+  const user = session?.user;
 
-  // Application Mock Dataset matching Screenshot matrix data rows
-  const [applications, setApplications] = useState([
-    {
-      id: "1",
-      title: "Senior Frontend Engineer",
-      type: "Full-time • Remote",
-      company: "Stark Industries",
-      appliedTime: "2 hours ago",
-      status: "Applied"
-    },
-    {
-      id: "2",
-      title: "Product Designer",
-      type: "Contract • Hybrid",
-      company: "Cyberdyne Systems",
-      appliedTime: "1 day ago",
-      status: "Review"
-    },
-    {
-      id: "3",
-      title: "Lead Data Scientist",
-      type: "Full-time • On-site",
-      company: "Wayne Enterprises",
-      appliedTime: "4 days ago",
-      status: "Shortlisted"
-    },
-    {
-      id: "4",
-      title: "Cloud Architect",
-      type: "Full-time • Remote",
-      company: "Oscorp Tech",
-      appliedTime: "1 week ago",
-      status: "Rejected"
-    },
-    {
-      id: "5",
-      title: "AI Research Engineer",
-      type: "Full-time • Hybrid",
-      company: "Hooli Corp",
-      appliedTime: "2 weeks ago",
-      status: "Offered"
+  const [subTab, setSubTab] = useState('Active');
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
+
+  useEffect(() => {
+    const fetchApplications = async () => {
+      if (!user?.id) return;
+      try {
+        const res = await fetch(`${SERVER_URL}/api/applications?applicantId=${user.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          // Sort by applied date descending
+          const sorted = data.sort((a, b) => new Date(b.appliedAt) - new Date(a.appliedAt));
+          setApplications(sorted);
+        }
+      } catch (err) {
+        console.error("Error fetching applications list:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user?.id) {
+      fetchApplications();
+    } else if (!sessionLoading && !user) {
+      setLoading(false);
     }
-  ]);
+  }, [user, sessionLoading, SERVER_URL]);
 
   // Helper function to return conditional style states for mapping badges
   const getStatusBadge = (status) => {
@@ -55,6 +44,7 @@ const ApplicationsTab = () => {
       case 'Applied':
         return 'text-white bg-neutral-800 border-neutral-700';
       case 'Review':
+      case 'Under Review':
         return 'text-amber-400 bg-amber-500/10 border-amber-500/20';
       case 'Shortlisted':
         return 'text-[#10b981] bg-[#10b981]/10 border-[#10b981]/20';
@@ -66,6 +56,49 @@ const ApplicationsTab = () => {
         return 'text-neutral-400 bg-neutral-800';
     }
   };
+
+  const formatTime = (dateStr) => {
+    if (!dateStr) return 'N/A';
+    try {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      });
+    } catch (e) {
+      return 'N/A';
+    }
+  };
+
+  // Filter based on search query and sub-tab selection (Active vs Archived)
+  // For now, let's treat "Rejected" and "Offered" as Archived, and others as Active
+  const filteredApplications = applications.filter(app => {
+    const matchesSearch = 
+      (app.jobTitle || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (app.companyName || '').toLowerCase().includes(searchQuery.toLowerCase());
+
+    const isArchivedStatus = app.status === 'Rejected' || app.status === 'Offered';
+    const matchesTab = subTab === 'Active' ? !isArchivedStatus : isArchivedStatus;
+
+    return matchesSearch && matchesTab;
+  });
+
+  // Analytics
+  const totalApplied = applications.length;
+  const shortlistedCount = applications.filter(a => a.status === 'Shortlisted').length;
+  const interviewCount = applications.filter(a => a.status === 'Review' || a.status === 'Under Review' || a.status === 'Interview').length;
+  const successRate = totalApplied > 0 
+    ? Math.round((applications.filter(a => a.status === 'Offered' || a.status === 'Shortlisted').length / totalApplied) * 100) 
+    : 0;
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="w-8 h-8 border-2 border-zinc-700 border-t-zinc-200 rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
@@ -94,7 +127,7 @@ const ApplicationsTab = () => {
               </button>
             ))}
           </div>
-          <button className="flex items-center gap-1.5 bg-white text-black font-semibold text-xs px-3.5 py-2 rounded-xl hover:bg-neutral-200 transition-colors">
+          <button className="flex items-center gap-1.5 bg-white text-black font-semibold text-xs px-3.5 py-2 rounded-xl hover:bg-neutral-200 transition-colors cursor-pointer">
             <Download className="w-3.5 h-3.5" /> Export PDF
           </button>
         </div>
@@ -104,20 +137,20 @@ const ApplicationsTab = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-[#09090b] border border-[#1e1e24] rounded-xl p-4">
           <p className="text-[11px] text-neutral-500 font-medium mb-1">Total Applied</p>
-          <h3 className="text-2xl font-semibold text-white">24</h3>
+          <h3 className="text-2xl font-semibold text-white">{totalApplied}</h3>
         </div>
         <div className="bg-[#09090b] border border-[#1e1e24] rounded-xl p-4">
           <p className="text-[11px] text-neutral-500 font-medium mb-1">Shortlisted</p>
-          <h3 className="text-2xl font-semibold text-white">8</h3>
+          <h3 className="text-2xl font-semibold text-white">{shortlistedCount}</h3>
         </div>
         <div className="bg-[#09090b] border border-[#1e1e24] rounded-xl p-4">
           <p className="text-[11px] text-neutral-500 font-medium mb-1">Interviews</p>
-          <h3 className="text-2xl font-semibold text-white text-amber-500">3</h3>
+          <h3 className="text-2xl font-semibold text-white text-amber-500">{interviewCount}</h3>
         </div>
         <div className="bg-[#09090b] border border-[#1e1e24] rounded-xl p-4">
           <p className="text-[11px] text-neutral-500 font-medium mb-1">Success Rate</p>
           <h3 className="text-2xl font-semibold text-[#10b981] flex items-center gap-1.5">
-            12% <TrendingUp className="w-4 h-4" />
+            {successRate}% <TrendingUp className="w-4 h-4" />
           </h3>
         </div>
       </div>
@@ -131,6 +164,8 @@ const ApplicationsTab = () => {
           <input 
             type="text" 
             placeholder="Search applications..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="bg-transparent text-xs outline-none w-full placeholder-neutral-600 text-neutral-200"
           />
         </div>
@@ -148,76 +183,82 @@ const ApplicationsTab = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1e1e24]">
-              {applications.map((app) => (
-                <tr key={app.id} className="hover:bg-[#141417]/20 transition-colors group">
-                  
-                  {/* Job Identity Cells */}
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-[#141417] border border-[#27272a] rounded-lg flex items-center justify-center font-semibold text-neutral-400">
-                        {app.company[0]}
+              {filteredApplications.length > 0 ? (
+                filteredApplications.map((app) => (
+                  <tr key={app._id} className="hover:bg-[#141417]/20 transition-colors group/row">
+                    
+                    {/* Job Identity Cells */}
+                    <td className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-[#141417] border border-[#27272a] rounded-lg flex items-center justify-center font-semibold text-neutral-400">
+                          {app.companyName ? app.companyName[0].toUpperCase() : '🏢'}
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-white group-hover/row:text-neutral-200 transition-colors">
+                            {app.jobTitle || 'Untitled Position'}
+                          </h4>
+                          <p className="text-[11px] text-neutral-500 mt-0.5">
+                            {app.jobType ? app.jobType.replace('-', ' ') : 'N/A'} {app.isRemote ? '• Remote' : (app.location ? `• ${app.location}` : '')}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="font-medium text-white group-hover:text-neutral-200 transition-colors">
-                          {app.title}
-                        </h4>
-                        <p className="text-[11px] text-neutral-500 mt-0.5">{app.type}</p>
-                      </div>
-                    </div>
-                  </td>
+                    </td>
 
-                  {/* Company Name Cell */}
-                  <td className="p-4 text-neutral-300 font-medium">
-                    {app.company}
-                  </td>
+                    {/* Company Name Cell */}
+                    <td className="p-4 text-neutral-300 font-medium">
+                      {app.companyName || 'N/A'}
+                    </td>
 
-                  {/* Time Logging Cell */}
-                  <td className="p-4 text-neutral-500">
-                    {app.appliedTime}
-                  </td>
+                    {/* Time Logging Cell */}
+                    <td className="p-4 text-neutral-500">
+                      {formatTime(app.appliedAt)}
+                    </td>
 
-                  {/* Badge Conditional Styling Cell */}
-                  <td className="p-4">
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border tracking-wide uppercase ${getStatusBadge(app.status)}`}>
-                      {app.status}
-                    </span>
-                  </td>
+                    {/* Badge Conditional Styling Cell */}
+                    <td className="p-4">
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border tracking-wide uppercase ${getStatusBadge(app.status)}`}>
+                        {app.status || 'Applied'}
+                      </span>
+                    </td>
 
-                  {/* Operational Action Anchor Cell */}
-                  <td className="p-4 text-right">
-                    <button className="text-neutral-400 hover:text-white font-medium text-xs bg-[#141417] border border-[#27272a] px-3 py-1.5 rounded-lg transition-colors">
-                      Details
-                    </button>
-                  </td>
+                    {/* Operational Action Anchor Cell */}
+                    <td className="p-4 text-right">
+                      <button className="text-neutral-400 hover:text-white font-medium text-xs bg-[#141417] border border-[#27272a] px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
+                        Details
+                      </button>
+                    </td>
 
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="p-8 text-center text-neutral-500">
+                    No applications found in this tab.
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
 
         {/* Table Bottom Navigation Footer Section */}
-        <div className="p-4 border-t border-[#1e1e24] flex items-center justify-between text-[11px] text-neutral-500 bg-[#020203]/20">
-          <span>Showing 1-5 of 24 applications</span>
-          
-          <div className="flex items-center gap-1.5">
-            <button className="w-6 h-6 border border-[#1e1e24] bg-[#141417] rounded flex items-center justify-center cursor-not-allowed opacity-50">
-              ‹
-            </button>
-            <button className="w-6 h-6 bg-white text-black font-semibold rounded flex items-center justify-center">
-              1
-            </button>
-            <button className="w-6 h-6 border border-[#1e1e24] bg-[#141417] rounded flex items-center justify-center hover:bg-[#18181b] hover:text-white transition-colors">
-              2
-            </button>
-            <button className="w-6 h-6 border border-[#1e1e24] bg-[#141417] rounded flex items-center justify-center hover:bg-[#18181b] hover:text-white transition-colors">
-              3
-            </button>
-            <button className="w-6 h-6 border border-[#1e1e24] bg-[#141417] rounded flex items-center justify-center hover:bg-[#18181b] hover:text-white transition-colors">
-              ›
-            </button>
+        {filteredApplications.length > 0 && (
+          <div className="p-4 border-t border-[#1e1e24] flex items-center justify-between text-[11px] text-neutral-500 bg-[#020203]/20">
+            <span>Showing 1-{filteredApplications.length} of {filteredApplications.length} applications</span>
+            
+            <div className="flex items-center gap-1.5">
+              <button className="w-6 h-6 border border-[#1e1e24] bg-[#141417] rounded flex items-center justify-center cursor-not-allowed opacity-50">
+                ‹
+              </button>
+              <button className="w-6 h-6 bg-white text-black font-semibold rounded flex items-center justify-center">
+                1
+              </button>
+              <button className="w-6 h-6 border border-[#1e1e24] bg-[#141417] rounded flex items-center justify-center cursor-not-allowed opacity-50">
+                ›
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
       </div>
 

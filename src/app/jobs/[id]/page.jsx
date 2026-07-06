@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Bookmark, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
+import { authClient } from '@/lib/auth-client';
 
 export default function JobDetailsPage() {
   const params = useParams();
@@ -14,7 +15,18 @@ export default function JobDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [applied, setApplied] = useState(false);
+  const [showApplyModal, setShowApplyModal] = useState(false);
+  const [resume, setResume] = useState('');
+  const [coverLetter, setCoverLetter] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
+
   const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
+
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
 
   useEffect(() => {
     const fetchJobDetails = async () => {
@@ -36,6 +48,125 @@ export default function JobDetailsPage() {
 
     fetchJobDetails();
   }, [jobId, SERVER_URL]);
+
+  useEffect(() => {
+    const checkIfApplied = async () => {
+      if (!user?.id || !jobId) return;
+      try {
+        const res = await fetch(`${SERVER_URL}/api/applications?applicantId=${user.id}&jobId=${jobId}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.length > 0) {
+            setApplied(true);
+          }
+        }
+      } catch (err) {
+        console.error("Error checking application status:", err);
+      }
+    };
+    checkIfApplied();
+  }, [user, jobId, SERVER_URL]);
+
+  const handleApplyClick = () => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+    setShowApplyModal(true);
+  };
+
+  const handleApplySubmit = async (e) => {
+    e.preventDefault();
+    if (!resume) {
+      setSubmitError('Resume URL is required');
+      return;
+    }
+    setSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const res = await fetch(`${SERVER_URL}/api/applications`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          jobId,
+          applicantId: user.id,
+          applicantEmail: user.email,
+          applicantName: user.name,
+          resume,
+          coverLetter,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'Failed to submit application');
+      }
+
+      setApplied(true);
+      setShowApplyModal(false);
+    } catch (err) {
+      console.error(err);
+      setSubmitError(err.message || 'Something went wrong');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  useEffect(() => {
+    const checkIfSaved = async () => {
+      if (!user?.id || !jobId) return;
+      try {
+        const res = await fetch(`${SERVER_URL}/api/saved-jobs?userId=${user.id}&jobId=${jobId}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.length > 0) {
+            setIsSaved(true);
+          }
+        }
+      } catch (err) {
+        console.error("Error checking saved job status:", err);
+      }
+    };
+    checkIfSaved();
+  }, [user, jobId, SERVER_URL]);
+
+  const handleSaveToggle = async () => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+    
+    try {
+      if (isSaved) {
+        const res = await fetch(`${SERVER_URL}/api/saved-jobs?userId=${user.id}&jobId=${jobId}`, {
+          method: 'DELETE',
+        });
+        if (res.ok) {
+          setIsSaved(false);
+        }
+      } else {
+        const res = await fetch(`${SERVER_URL}/api/saved-jobs`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            jobId,
+            userId: user.id,
+          }),
+        });
+        if (res.ok) {
+          setIsSaved(true);
+        }
+      }
+    } catch (err) {
+      console.error("Error toggling saved job status:", err);
+    }
+  };
+
 
   // Dynamic salary formatting helper matching your schema fields
   const formatSalary = (min, max, currency) => {
@@ -128,12 +259,29 @@ export default function JobDetailsPage() {
           </div>
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
-            <button className="p-3 bg-[#1d1d20] border border-zinc-800 text-zinc-400 hover:text-zinc-200 rounded-xl transition">
-              <Bookmark size={18} />
+            <button 
+              onClick={handleSaveToggle}
+              className={`p-3 border rounded-xl transition cursor-pointer ${
+                isSaved 
+                  ? 'bg-indigo-600/10 border-indigo-500/30 text-indigo-400 hover:text-indigo-300' 
+                  : 'bg-[#1d1d20] border-zinc-800 text-zinc-400 hover:text-zinc-200'
+              }`}
+              title={isSaved ? "Unsave Job" : "Save Job"}
+            >
+              <Bookmark size={18} className={isSaved ? 'fill-current' : ''} />
             </button>
-            <button className="flex-1 sm:flex-initial px-6 py-3 bg-white text-black font-semibold rounded-xl hover:bg-zinc-200 transition text-sm tracking-wide">
-              Apply Now
-            </button>
+            {applied ? (
+              <button disabled className="flex-1 sm:flex-initial px-6 py-3 bg-zinc-850 text-zinc-500 font-semibold rounded-xl cursor-not-allowed text-sm tracking-wide border border-zinc-800">
+                Applied
+              </button>
+            ) : (
+              <button 
+                onClick={handleApplyClick}
+                className="flex-1 sm:flex-initial px-6 py-3 bg-white text-black font-semibold rounded-xl hover:bg-zinc-200 transition text-sm tracking-wide cursor-pointer"
+              >
+                Apply Now
+              </button>
+            )}
           </div>
         </div>
 
@@ -262,6 +410,101 @@ export default function JobDetailsPage() {
 
         </div>
       </div>
+
+      {showApplyModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 transition-all duration-300">
+          <div className="bg-[#121214] border border-zinc-800/80 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="p-6 border-b border-zinc-800/60 flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-white tracking-tight">Apply for Position</h3>
+                <p className="text-xs text-zinc-400 mt-1">{job.jobTitle} • {job.companyName}</p>
+              </div>
+              <button 
+                onClick={() => setShowApplyModal(false)}
+                className="text-zinc-500 hover:text-zinc-300 transition text-lg font-medium cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Form */}
+            <form onSubmit={handleApplySubmit} className="p-6 space-y-4">
+              <div className="space-y-1">
+                <label className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Full Name</label>
+                <input
+                  type="text"
+                  value={user?.name || ""}
+                  disabled
+                  className="w-full bg-zinc-900/50 border border-zinc-800 text-zinc-400 rounded-xl px-4 py-2.5 text-sm outline-none cursor-not-allowed"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Email Address</label>
+                <input
+                  type="email"
+                  value={user?.email || ""}
+                  disabled
+                  className="w-full bg-zinc-900/50 border border-zinc-800 text-zinc-400 rounded-xl px-4 py-2.5 text-sm outline-none cursor-not-allowed"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Resume URL <span className="text-red-500">*</span></label>
+                <input
+                  type="url"
+                  placeholder="https://drive.google.com/..."
+                  required
+                  value={resume}
+                  onChange={(e) => setResume(e.target.value)}
+                  className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-xl px-4 py-2.5 text-sm focus:border-indigo-500 outline-none transition"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Cover Letter</label>
+                <textarea
+                  placeholder="Tell us why you are a great fit..."
+                  rows={4}
+                  value={coverLetter}
+                  onChange={(e) => setCoverLetter(e.target.value)}
+                  className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-xl px-4 py-2.5 text-sm focus:border-indigo-500 outline-none transition resize-none"
+                />
+              </div>
+
+              {submitError && (
+                <p className="text-xs text-red-400 font-medium">{submitError}</p>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowApplyModal(false)}
+                  className="flex-1 px-4 py-2.5 border border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 rounded-xl text-xs font-semibold transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                >
+                  {submitting ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    "Submit Application"
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

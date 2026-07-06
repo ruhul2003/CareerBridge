@@ -9,23 +9,44 @@ const CompaniesPage = () => {
   const [loading, setLoading] = useState(true);
 
   // API theke data fetch kora
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      setLoading(true);
-      try {
+useEffect(() => {
+  const fetchCompanies = async () => {
+    if (!searchTerm?.trim()) {
+      setCompanies([]);
+      setLoading(false);
+      return;
+    }
 
-const res = await fetch(`http://localhost:5000/api/companies?search=${searchTerm}`);
-        const data = await res.json();
-        setCompanies(Array.isArray(data) ? data : [data]);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
+    setLoading(true);
+
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
+
+      const res = await fetch(
+        `${baseUrl}/api/companies?search=${encodeURIComponent(searchTerm)}`
+      );
+
+      if (!res.ok) {
+        throw new Error(`Failed to fetch: ${res.status}`);
       }
-    };
 
-    fetchCompanies();
-  }, [searchTerm]);
+      const data = await res.json();
+      setCompanies(Array.isArray(data) ? data : []);
+      
+    } catch (error) {
+      console.error("Error fetching companies:", error);
+      setCompanies([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchCompanies();
+}, [searchTerm]);   // Re-fetch when searchTerm changes
+
+useEffect(() => {
+  fetchCompanies();
+}, [searchTerm]);
 
   return (
     <div className="min-h-screen bg-[#0d0d0d] text-gray-100 px-6 py-12 font-sans">
