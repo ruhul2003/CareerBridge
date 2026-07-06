@@ -1,75 +1,204 @@
-import React, { useState } from 'react';
-import { User, Mail, Briefcase, Code, Plus, X, ShieldAlert, Save } from 'lucide-react';
+// Components/seeker-dashboard-tabs/SettingsTab.jsx
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { User, Mail, Briefcase, Code, Plus, X, ShieldAlert, Save, Loader2, Upload } from 'lucide-react';
+import { authClient } from '@/lib/auth-client';
 
 const SettingsTab = () => {
-  // Profile Info Basic States
   const [profile, setProfile] = useState({
-    fullName: 'Alex Rivera',
-    email: 'alex.rivera@example.com',
-    title: 'Full-stack Developer',
+    fullName: '',
+    email: '',
+    title: '',
+    avatar: '',
   });
-
-  // Skills Engine Tags Management States
-  const [skills, setSkills] = useState(['React', 'Node.js', 'MongoDB', 'Express', 'Tailwind CSS', 'Next.js']);
+  const [skills, setSkills] = useState([]);
   const [skillInput, setSkillInput] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
 
-  // Handle adding raw skill string tag values
+  const session = authClient.useSession();
+  const userId = session.data?.user?.id;
+
+  // Fetch user profile
+  useEffect(() => {
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
+
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/users/${userId}`);
+        if (!res.ok) throw new Error('Failed to fetch');
+
+        const userData = await res.json();
+
+        setProfile({
+          fullName: userData.fullName || '',
+          email: userData.email || '',
+          title: userData.title || '',
+          avatar: userData.avatar || '',
+        });
+        setSkills(Array.isArray(userData.skills) ? userData.skills : []);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [userId]);
+
   const handleAddSkill = (e) => {
     e.preventDefault();
-    if (skillInput.trim() && !skills.includes(skillInput.trim())) {
-      setSkills([...skills, skillInput.trim()]);
+    const trimmed = skillInput.trim();
+    if (trimmed && !skills.includes(trimmed)) {
+      setSkills([...skills, trimmed]);
       setSkillInput('');
     }
   };
 
-  // Remove precise skill tag indices 
   const handleRemoveSkill = (skillToRemove) => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
   };
 
+  const handleAvatarUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file || !userId) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setMessage({ type: 'error', text: 'File size must be less than 5MB' });
+      return;
+    }
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('avatar', file);
+    formData.append('userId', userId);
+
+    try {
+      const res = await fetch('/api/upload-avatar', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+
+      setProfile((prev) => ({ ...prev, avatar: data.avatarUrl }));
+      setMessage({ type: 'success', text: 'Profile picture updated!' });
+    } catch (error) {
+      console.error(error);
+      setMessage({ type: 'error', text: 'Failed to upload image' });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!userId) {
+      setMessage({ type: 'error', text: 'Please log in to save changes' });
+      return;
+    }
+
+    setSaving(true);
+    setMessage({ type: '', text: '' });
+
+    try {
+      const res = await fetch(`/api/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: profile.fullName.trim(),
+          email: profile.email.trim(),
+          title: profile.title.trim(),
+          skills: skills,
+        }),
+      });
+
+      if (!res.ok) throw new Error();
+
+      setMessage({ type: 'success', text: 'Profile updated successfully!' });
+      setTimeout(() => setMessage({ type: '', text: '' }), 4000);
+    } catch (error) {
+      console.error(error);
+      setMessage({ type: 'error', text: 'Failed to save changes' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto flex items-center justify-center h-96">
+        <Loader2 className="w-8 h-8 animate-spin text-neutral-400" />
+      </div>
+    );
+  }
+
+  if (!userId) {
+    return (
+      <div className="max-w-4xl mx-auto text-center py-12">
+        <p className="text-neutral-400">Please log in to access settings.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      
-      {/* Title Header Section */}
-      <div>
-        <h2 className="text-2xl font-semibold text-white tracking-tight mb-1">Account Settings</h2>
-        <p className="text-xs text-neutral-500">Update your profile information, manage dynamic skill tags, and security choices.</p>
-      </div>
-
-      {/* Profile Info Form Section Card */}
-      <div className="bg-[#09090b] border border-[#1e1e24] rounded-2xl p-6 space-y-6">
-        <h3 className="text-sm font-semibold text-white border-b border-[#1e1e24] pb-3">Personal Profile Information</h3>
-        
-        {/* Avatar Uploader Grid Field Component */}
-        <div className="flex flex-col sm:flex-row items-center gap-5">
-          <div className="w-16 h-16 bg-neutral-800 rounded-full border border-neutral-700 flex items-center justify-center text-white text-xl font-bold font-mono">
-            AR
+      {/* Profile Picture */}
+      <div className="bg-[#09090b] border border-[#1e1e24] rounded-2xl p-6">
+        <h3 className="text-sm font-semibold text-white mb-4">Profile Picture</h3>
+        <div className="flex items-center gap-6">
+          <div className="relative w-24 h-24 flex-shrink-0">
+            {profile.avatar ? (
+              <Image
+                src={profile.avatar}
+                alt="Profile Avatar"
+                width={96}
+                height={96}
+                className="rounded-full object-cover border-2 border-neutral-700"
+              />
+            ) : (
+              <div className="w-24 h-24 bg-neutral-800 rounded-full flex items-center justify-center text-4xl font-bold text-white border-2 border-neutral-700">
+                {profile.fullName ? profile.fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : 'AR'}
+              </div>
+            )}
           </div>
-          <div className="space-y-1 text-center sm:text-left">
-            <h4 className="text-xs font-medium text-white">Profile Avatar Photo</h4>
-            <p className="text-[11px] text-neutral-500">PNG or JPG framework models up to 5MB.</p>
-            <div className="flex items-center gap-2 pt-1">
-              <button className="bg-[#141417] border border-[#27272a] text-neutral-300 hover:text-white font-medium text-xs px-3 py-1.5 rounded-lg transition-colors">
-                Change Photo
-              </button>
-              <button className="text-[11px] text-red-400/80 hover:text-red-400 transition-colors px-2 py-1">
-                Remove
-              </button>
-            </div>
+
+          <div>
+            <label className="cursor-pointer flex items-center gap-2 bg-[#141417] hover:bg-[#1f1f24] border border-[#27272a] text-white text-sm px-5 py-2.5 rounded-xl transition-colors">
+              <Upload className="w-4 h-4" />
+              {uploading ? 'Uploading...' : 'Change Photo'}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarUpload}
+              />
+            </label>
+            <p className="text-xs text-neutral-500 mt-2">PNG or JPG • Max 5MB</p>
           </div>
         </div>
+      </div>
 
-        {/* Info Grid Text Fields Forms */}
+      {/* Personal Information */}
+      <div className="bg-[#09090b] border border-[#1e1e24] rounded-2xl p-6 space-y-6">
+        <h3 className="text-sm font-semibold text-white border-b border-[#1e1e24] pb-3">Personal Profile Information</h3>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          
           <div className="space-y-1.5">
             <label className="text-[11px] text-neutral-400 font-medium flex items-center gap-1">
               <User className="w-3 h-3 text-neutral-500" /> Full Name
             </label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={profile.fullName}
-              onChange={(e) => setProfile({...profile, fullName: e.target.value})}
+              onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
               className="w-full bg-[#020203] border border-[#1e1e24] focus:border-neutral-700 rounded-xl px-3.5 py-2 text-xs text-white outline-none transition-colors"
             />
           </div>
@@ -78,10 +207,10 @@ const SettingsTab = () => {
             <label className="text-[11px] text-neutral-400 font-medium flex items-center gap-1">
               <Mail className="w-3 h-3 text-neutral-500" /> Email Address
             </label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               value={profile.email}
-              onChange={(e) => setProfile({...profile, email: e.target.value})}
+              onChange={(e) => setProfile({ ...profile, email: e.target.value })}
               className="w-full bg-[#020203] border border-[#1e1e24] focus:border-neutral-700 rounded-xl px-3.5 py-2 text-xs text-white outline-none transition-colors"
             />
           </div>
@@ -90,36 +219,34 @@ const SettingsTab = () => {
             <label className="text-[11px] text-neutral-400 font-medium flex items-center gap-1">
               <Briefcase className="w-3 h-3 text-neutral-500" /> Professional Headline
             </label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={profile.title}
-              onChange={(e) => setProfile({...profile, title: e.target.value})}
+              onChange={(e) => setProfile({ ...profile, title: e.target.value })}
               className="w-full bg-[#020203] border border-[#1e1e24] focus:border-neutral-700 rounded-xl px-3.5 py-2 text-xs text-white outline-none transition-colors"
             />
           </div>
-
         </div>
       </div>
 
-      {/* Technical Skills Tag Engine Section Card */}
+      {/* Skills Section */}
       <div className="bg-[#09090b] border border-[#1e1e24] rounded-2xl p-6 space-y-4">
         <div>
           <h3 className="text-sm font-semibold text-white flex items-center gap-1.5">
             <Code className="w-4 h-4 text-neutral-400" /> Core Technical Skills
           </h3>
-          <p className="text-[11px] text-neutral-500 mt-0.5">Add core tech expertise keywords keywords to match dynamic job listings requirements.</p>
+          <p className="text-[11px] text-neutral-500 mt-0.5">Add keywords to better match job opportunities.</p>
         </div>
 
-        {/* Input Text Form Engine Trigger */}
         <form onSubmit={handleAddSkill} className="flex gap-2 max-w-md">
-          <input 
-            type="text" 
-            placeholder="Type skill tag (e.g., C++, TypeScript) & press Enter..." 
+          <input
+            type="text"
+            placeholder="Type skill and press Enter..."
             value={skillInput}
             onChange={(e) => setSkillInput(e.target.value)}
             className="flex-1 bg-[#020203] border border-[#1e1e24] focus:border-neutral-700 rounded-xl px-3.5 py-2 text-xs text-white outline-none transition-colors"
           />
-          <button 
+          <button
             type="submit"
             className="p-2 border border-[#1e1e24] bg-[#141417] text-neutral-400 hover:text-white hover:bg-[#18181b] rounded-xl transition-colors"
           >
@@ -127,40 +254,51 @@ const SettingsTab = () => {
           </button>
         </form>
 
-        {/* Flexible Active Dynamic Tags Wrapper Grid Layout */}
         <div className="flex flex-wrap gap-1.5 pt-2">
           {skills.map((skill, index) => (
-            <div 
-              key={index} 
-              className="flex items-center gap-1 bg-[#141417] border border-[#27272a] text-neutral-200 text-xs pl-2.5 pr-1.5 py-1 rounded-lg font-medium group hover:border-neutral-600 transition-colors"
+            <div
+              key={index}
+              className="flex items-center gap-1 bg-[#141417] border border-[#27272a] text-neutral-200 text-xs pl-3 pr-2 py-1 rounded-lg font-medium"
             >
               <span>{skill}</span>
-              <button 
-                type="button"
+              <button
                 onClick={() => handleRemoveSkill(skill)}
-                className="p-0.5 rounded text-neutral-500 hover:text-red-400 hover:bg-neutral-800 transition-colors"
+                className="p-0.5 hover:text-red-400 transition-colors"
               >
-                <X className="w-3 h-3" />
+                <X className="w-3.5 h-3.5" />
               </button>
             </div>
           ))}
           {skills.length === 0 && (
-            <p className="text-xs text-neutral-600 italic">No skill tags added yet. Use the engine to inject core technical labels.</p>
+            <p className="text-xs text-neutral-600 italic">No skills added yet.</p>
           )}
         </div>
       </div>
 
-      {/* Bottom Global Changes Form Action Submission Controls Trigger */}
-      <div className="flex items-center justify-between border-t border-[#1e1e24] pt-5">
-        <div className="flex items-center gap-2 text-[11px] text-neutral-500">
-          <ShieldAlert className="w-4 h-4 text-neutral-600" />
-          <span>All operational profiles data variables are verified locally.</span>
+      {/* Message */}
+      {message.text && (
+        <div
+          className={`p-3 rounded-xl text-xs border ${
+            message.type === 'success'
+              ? 'bg-green-500/10 text-green-400 border-green-500/30'
+              : 'bg-red-500/10 text-red-400 border-red-500/30'
+          }`}
+        >
+          {message.text}
         </div>
-        <button className="flex items-center gap-1.5 bg-white text-black font-semibold text-xs px-4 py-2 rounded-xl hover:bg-neutral-200 transition-colors shadow-sm">
-          <Save className="w-3.5 h-3.5" /> Save Form Changes
+      )}
+
+      {/* Save Button */}
+      <div className="flex justify-end border-t border-[#1e1e24] pt-5">
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="flex items-center gap-2 bg-white text-black font-semibold px-6 py-2.5 rounded-xl hover:bg-neutral-200 disabled:opacity-70 transition-colors"
+        >
+          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+          {saving ? 'Saving...' : 'Save Changes'}
         </button>
       </div>
-
     </div>
   );
 };
