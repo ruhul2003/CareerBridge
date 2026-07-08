@@ -9,7 +9,6 @@ const CompaniesPage = () => {
     const [searchInput, setSearchInput] = useState('');
     const [loading, setLoading] = useState(true);
 
-    // Fetch companies whenever search input changes
     useEffect(() => {
         const fetchCompanies = async () => {
             setLoading(true);
@@ -47,7 +46,7 @@ const CompaniesPage = () => {
                         Browse Companies
                     </h1>
                     <p className="text-gray-400 max-w-xl text-sm leading-relaxed">
-                        Discover the world's leading technology and creative organizations.
+                        Discover the worlds leading technology and creative organizations.
                     </p>
                 </div>
 
