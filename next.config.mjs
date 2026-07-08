@@ -5,7 +5,14 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'picsum.photos',
-        pathname: '/**', // ** mane dynamic placeholder links allow kora holo
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc',   // ← Added this
+      },
+      {
+        protocol: 'https',
+        hostname: '**',              // Allow all domains (for development)
       },
     ],
   },
