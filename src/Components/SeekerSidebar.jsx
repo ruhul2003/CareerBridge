@@ -12,7 +12,7 @@ const SeekerSidebar = ({ currentTab, setCurrentTab }) => {
   ];
 
   return (
-    <aside className="w-64 min-h-screen bg-[#09090b] border-r border-[#1e1e24] p-5 flex flex-col justify-between text-gray-400 select-none">
+    <aside className="w-64 min-h-screen bg-[#09090b] border-r border-[#1e1e24] p-5 flex flex-col justify-around text-gray-400 select-none">
       <div>
         {/* Profile Branding Header */}
         <div className="flex items-center gap-3 mb-8 px-2">
