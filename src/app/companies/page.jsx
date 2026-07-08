@@ -1,174 +1,161 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Search, ChevronLeft, ChevronRight, Briefcase, MapPin, CheckCircle2 } from 'lucide-react';
+import { Search, X, Briefcase, MapPin, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 
 const CompaniesPage = () => {
-  const [companies, setCompanies] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
+    const [companies, setCompanies] = useState([]);
+    const [searchInput, setSearchInput] = useState('');
+    const [loading, setLoading] = useState(true);
 
-  // API theke data fetch kora
-useEffect(() => {
-  const fetchCompanies = async () => {
-    if (!searchTerm?.trim()) {
-      setCompanies([]);
-      setLoading(false);
-      return;
-    }
+    // Fetch companies whenever search input changes
+    useEffect(() => {
+        const fetchCompanies = async () => {
+            setLoading(true);
+            try {
+                const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
+                const queryParam = searchInput.trim() 
+                    ? `?search=${encodeURIComponent(searchInput.trim())}` 
+                    : '';
 
-    setLoading(true);
+                const res = await fetch(`${baseUrl}/api/companies${queryParam}`);
+                
+                if (!res.ok) throw new Error('Failed to fetch companies');
+                
+                const data = await res.json();
+                setCompanies(Array.isArray(data) ? data : []);
+            } catch (error) {
+                console.error("Error fetching companies:", error);
+                setCompanies([]);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    try {
-      const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
+        fetchCompanies();
+    }, [searchInput]);
 
-      const res = await fetch(
-        `${baseUrl}/api/companies?search=${encodeURIComponent(searchTerm)}`
-      );
+    const clearSearch = () => setSearchInput('');
 
-      if (!res.ok) {
-        throw new Error(`Failed to fetch: ${res.status}`);
-      }
+    return (
+        <div className="min-h-screen bg-[#0d0d0d] text-gray-100 px-6 py-12 font-sans">
+            <div className="max-w-6xl mx-auto">
+                {/* Header */}
+                <div className="mb-10">
+                    <h1 className="text-4xl font-semibold text-white tracking-tight mb-3">
+                        Browse Companies
+                    </h1>
+                    <p className="text-gray-400 max-w-xl text-sm leading-relaxed">
+                        Discover the world's leading technology and creative organizations.
+                    </p>
+                </div>
 
-      const data = await res.json();
-      setCompanies(Array.isArray(data) ? data : []);
-      
-    } catch (error) {
-      console.error("Error fetching companies:", error);
-      setCompanies([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchCompanies();
-}, [searchTerm]);   // Re-fetch when searchTerm changes
-
-useEffect(() => {
-  fetchCompanies();
-}, [searchTerm]);
-
-  return (
-    <div className="min-h-screen bg-[#0d0d0d] text-gray-100 px-6 py-12 font-sans">
-      <div className="max-w-6xl mx-auto">
-        
-        {/* Header Section */}
-        <div className="mb-10">
-          <h1 className="text-4xl font-semibold text-white tracking-tight mb-3">
-            Browse Companies
-          </h1>
-          <p className="text-gray-400 max-w-xl text-sm leading-relaxed">
-            Discover the worlds leading technology and creative organizations. Filter by industry, size, and values to find your next professional home.
-          </p>
-        </div>
-
-        {/* Search Bar Container */}
-        <div className="bg-[#141414] border border-[#222] p-4 rounded-xl flex items-center gap-3 mb-12 shadow-md">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search by name, industry, or location..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-transparent pl-11 pr-4 py-2 text-sm text-gray-200 placeholder-gray-600 border-none outline-none focus:ring-0"
-            />
-          </div>
-          <button className="bg-white text-black font-medium text-sm px-5 py-2.5 rounded-lg hover:bg-gray-200 transition-colors">
-            Find Companies
-          </button>
-        </div>
-
-        {/* Grid List Section */}
-        {loading ? (
-          <div className="text-center py-20 text-gray-500">Loading companies...</div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {companies.map((company) => (
-              <div 
-                key={company._id} 
-                className="bg-[#141414] border border-[#222] rounded-2xl p-6 flex flex-col justify-between hover:border-[#333] transition-all group"
-              >
-                <div>
-                  {/* Top Row: Logo & Verified Badge */}
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl flex items-center justify-center overflow-hidden">
-                      {company.logo ? (
-                        <Image src={company.logo} alt={company.name} width={48} height={48} className="w-full h-full object-cover" />
-                      ) : (
-                        <Briefcase className="w-5 h-5 text-gray-500" />
-                      )}
+                {/* Search Bar */}
+                <div className="bg-[#141414] border border-[#222] p-4 rounded-2xl flex items-center gap-3 mb-12 shadow-md">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
+                        <input
+                            type="text"
+                            placeholder="Search by name, industry, or location..."
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            className="w-full bg-transparent pl-12 pr-12 py-3.5 text-sm text-gray-200 placeholder-gray-500 border-none outline-none focus:ring-1 focus:ring-white/10 rounded-xl"
+                        />
+                        {searchInput && (
+                            <button
+                                onClick={clearSearch}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white p-1 transition-colors"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        )}
                     </div>
-                    {company.status === 'approved' || company.status === 'verified' ? (
-                      <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-[#10b981] bg-[#10b981]/10 px-2 py-1 rounded-full border border-[#10b981]/20">
-                        <CheckCircle2 className="w-3 h-3 fill-[#10b981] text-[#141414]" /> Verified
-                      </span>
-                    ) : null}
-                  </div>
-
-                  {/* Title & Desc */}
-                  <h3 className="text-xl font-medium text-white mb-2 group-hover:text-gray-200 transition-colors">
-                    {company.name}
-                  </h3>
-                  <p className="text-gray-400 text-xs line-clamp-2 mb-6 leading-relaxed">
-                    {company.description || "No description available at the moment."}
-                  </p>
-
-                  {/* Meta Tags */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {company.industry && (
-                      <span className="flex items-center gap-1.5 text-xs text-gray-400 bg-[#1c1c1c] border border-[#2a2a2a] px-3 py-1.5 rounded-full">
-                        <Briefcase className="w-3 h-3 text-gray-500" /> {company.industry}
-                      </span>
-                    )}
-                    {company.location && (
-                      <span className="flex items-center gap-1.5 text-xs text-gray-400 bg-[#1c1c1c] border border-[#2a2a2a] px-3 py-1.5 rounded-full">
-                        <MapPin className="w-3 h-3 text-gray-500" /> {company.location.split(',')[0]}
-                      </span>
-                    )}
-                  </div>
                 </div>
 
-                {/* Bottom Row: Active Jobs Count & Action Button */}
-                <div className="pt-4 border-t border-[#222] flex items-center justify-between text-xs">
-                  <span className="text-gray-400 font-medium">
-                    {company.activeJobs || Math.floor(Math.random() * 30) + 2} Active Jobs
-                  </span>
-                  <a href={`/companies/${company._id}`} className="text-white hover:text-gray-300 font-medium flex items-center gap-1 transition-all">
-                    View Openings <span className="text-sm font-light">→</span>
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+                {/* Loading State */}
+                {loading ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                            <div 
+                                key={i} 
+                                className="bg-[#141414] border border-[#222] h-80 rounded-3xl animate-pulse"
+                            />
+                        ))}
+                    </div>
+                ) : companies.length === 0 ? (
+                    <div className="text-center py-20 border border-dashed border-[#222] rounded-3xl">
+                        <p className="text-gray-400 text-lg">No companies found</p>
+                        {searchInput && (
+                            <p className="text-gray-500 mt-2">Try different keywords</p>
+                        )}
+                    </div>
+                ) : (
+                    /* Companies Grid */
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {companies.map((company) => (
+                            <div 
+                                key={company._id} 
+                                className="bg-[#141414] border border-[#222] rounded-3xl p-6 hover:border-white/10 transition-all group"
+                            >
+                                <div className="flex items-center justify-between mb-5">
+                                    <div className="w-14 h-14 bg-[#1f1f1f] rounded-2xl flex items-center justify-center overflow-hidden">
+                                        {company.logo ? (
+                                            <Image 
+                                                src={company.logo} 
+                                                alt={company.name} 
+                                                width={56} 
+                                                height={56} 
+                                                className="object-cover" 
+                                            />
+                                        ) : (
+                                            <Briefcase className="w-7 h-7 text-gray-500" />
+                                        )}
+                                    </div>
+                                    <span className="text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full font-medium">
+                                        Verified
+                                    </span>
+                                </div>
 
-        {/* Pagination Section */}
-        <div className="flex items-center justify-center gap-2 mt-16 text-xs text-gray-400">
-          <button className="w-8 h-8 rounded-lg border border-[#222] bg-[#141414] flex items-center justify-center hover:bg-[#1c1c1c] transition-colors">
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <button className="w-8 h-8 rounded-lg bg-white text-black font-semibold flex items-center justify-center">
-            1
-          </button>
-          <button className="w-8 h-8 rounded-lg border border-[#222] bg-[#141414] flex items-center justify-center hover:bg-[#1c1c1c]">
-            2
-          </button>
-          <button className="w-8 h-8 rounded-lg border border-[#222] bg-[#141414] flex items-center justify-center hover:bg-[#1c1c1c]">
-            3
-          </button>
-          <span className="px-1 text-gray-600">...</span>
-          <button className="w-8 h-8 rounded-lg border border-[#222] bg-[#141414] flex items-center justify-center hover:bg-[#1c1c1c]">
-            12
-          </button>
-          <button className="w-8 h-8 rounded-lg border border-[#222] bg-[#141414] flex items-center justify-center hover:bg-[#1c1c1c]">
-            <ChevronRight className="w-4 h-4" />
-          </button>
+                                <h3 className="text-xl font-semibold text-white mb-2 line-clamp-1">
+                                    {company.name}
+                                </h3>
+
+                                <p className="text-gray-400 text-sm line-clamp-3 mb-6 min-h-[60px]">
+                                    {company.description || company.tagline || "No description available."}
+                                </p>
+
+                                <div className="flex flex-wrap gap-2 mb-6">
+                                    {company.industry && (
+                                        <span className="text-xs px-4 py-2 bg-[#1f1f1f] rounded-full text-gray-400 flex items-center gap-1.5">
+                                            <Briefcase className="w-3.5 h-3.5" /> {company.industry}
+                                        </span>
+                                    )}
+                                    {company.location && (
+                                        <span className="text-xs px-4 py-2 bg-[#1f1f1f] rounded-full text-gray-400 flex items-center gap-1.5">
+                                            <MapPin className="w-3.5 h-3.5" /> {company.location}
+                                        </span>
+                                    )}
+                                </div>
+
+                                <div className="pt-4 border-t border-[#222] flex justify-between items-center text-sm">
+                                    <span className="text-gray-400">
+                                        {company.activeJobs || 12} Active Jobs
+                                    </span>
+                                    <a 
+                                        href={`/companies/${company._id}`} 
+                                        className="text-white hover:text-emerald-400 font-medium flex items-center gap-1 transition-colors"
+                                    >
+                                        View Openings →
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
-
-      </div>
-    </div>
-  );
+    );
 };
 
 export default CompaniesPage;
