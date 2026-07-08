@@ -242,21 +242,39 @@ const PricingPage = () => {
                             </div>
 
                             {/* Plan Action CTA Callout Anchor Point */}
-                            <div className="mt-8">
-                                <form action="/api/checkout_sessions" method="POST">
-                                    <input type="hidden" name="plan_id" value={plan.id} />
-                                     <section>
-                                        <button type="submit" role="link"
-                                            className={`block w-full text-center text-xs font-semibold px-4 py-3 rounded-xl transition duration-200 ${plan.popular
-                                                ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/20'
-                                                : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700/50'
-                                                }`}
-                                        >
-                                            Checkout
-                                        </button>
-                                    </section>
-                                </form>
-                            </div>
+                            {/* Replace the entire <div className="mt-8"> ... </div> inside the plan map with this: */}
+
+<div className="mt-8">
+    {plan.name === 'Free' ? (
+        <Link
+            href="/dashboard/seeker"
+            className="block w-full text-center text-sm font-semibold px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 transition text-white"
+        >
+            Get Started Free
+        </Link>
+    ) : plan.name === 'Enterprise' ? (
+        <a
+            href="mailto:sales@yourcompany.com?subject=Enterprise%20Plan%20Inquiry"
+            className="block w-full text-center text-sm font-semibold px-6 py-3.5 rounded-2xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition"
+        >
+            Contact Sales
+        </a>
+    ) : (
+        <form action="/api/checkout_sessions" method="POST">
+            <input type="hidden" name="plan_id" value={plan.id} />
+            <button
+                type="submit"
+                className={`block w-full text-center text-sm font-semibold px-6 py-3.5 rounded-2xl transition-all ${
+                    plan.popular
+                        ? 'bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-900/30'
+                        : 'bg-zinc-800 hover:bg-zinc-700 border border-zinc-700'
+                }`}
+            >
+                {plan.cta}
+            </button>
+        </form>
+    )}
+</div>
                         </div>
                     ))}
                 </div>
