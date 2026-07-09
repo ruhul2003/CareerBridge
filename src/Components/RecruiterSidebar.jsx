@@ -40,7 +40,7 @@ const RecruiterSidebar = ({ currentTab, setCurrentTab }) => {
     ];
 
     return (
-        <aside className="w-72 min-h-screen bg-[#0b0b0d] border-r border-neutral-800 flex flex-col justify-between">
+        <aside className="w-72  bg-[#0b0b0d] border-r border-neutral-800 flex flex-col justify-between">
 
             {/* Top */}
             <div>
@@ -104,35 +104,6 @@ const RecruiterSidebar = ({ currentTab, setCurrentTab }) => {
                             </button>
                         );
                     })}
-
-                </div>
-
-            </div>
-
-            {/* Bottom */}
-            <div className="border-t border-neutral-800 p-5">
-
-                <div className="flex items-center gap-3">
-
-                    <Image
-                        src="https://i.pravatar.cc/100?img=12"
-                        alt="Recruiter"
-                        width={40}
-                        height={40}
-                        className="rounded-full"
-                    />
-
-                    <div>
-
-                        <h3 className="text-sm font-medium">
-                            Alex Sterling
-                        </h3>
-
-                        <p className="text-xs text-gray-500">
-                            Premium Account
-                        </p>
-
-                    </div>
 
                 </div>
 
