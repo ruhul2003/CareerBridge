@@ -15,19 +15,17 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
+    let initialTheme = "dark";
     if (savedTheme === "light" || savedTheme === "dark") {
-      setThemeState(savedTheme);
-    } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
-      setThemeState("light");
+      initialTheme = savedTheme;
+    } else if (typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
+      initialTheme = "light";
     }
-    setMounted(true);
-  }, []);
 
-  useEffect(() => {
-    if (!mounted) return;
+    setThemeState(initialTheme);
 
     const root = document.documentElement;
-    if (theme === "dark") {
+    if (initialTheme === "dark") {
       root.classList.add("dark");
       root.classList.remove("light");
       root.setAttribute("data-theme", "dark");
@@ -37,15 +35,40 @@ export function ThemeProvider({ children }) {
       root.setAttribute("data-theme", "light");
     }
 
-    localStorage.setItem("theme", theme);
-  }, [theme, mounted]);
+    setMounted(true);
+  }, []);
 
   const toggleTheme = () => {
-    setThemeState((prev) => (prev === "dark" ? "light" : "dark"));
+    setThemeState((prevTheme) => {
+      const nextTheme = prevTheme === "dark" ? "light" : "dark";
+      const root = document.documentElement;
+      if (nextTheme === "dark") {
+        root.classList.add("dark");
+        root.classList.remove("light");
+        root.setAttribute("data-theme", "dark");
+      } else {
+        root.classList.remove("dark");
+        root.classList.add("light");
+        root.setAttribute("data-theme", "light");
+      }
+      localStorage.setItem("theme", nextTheme);
+      return nextTheme;
+    });
   };
 
   const setTheme = (newTheme) => {
     setThemeState(newTheme);
+    const root = document.documentElement;
+    if (newTheme === "dark") {
+      root.classList.add("dark");
+      root.classList.remove("light");
+      root.setAttribute("data-theme", "dark");
+    } else {
+      root.classList.remove("dark");
+      root.classList.add("light");
+      root.setAttribute("data-theme", "light");
+    }
+    localStorage.setItem("theme", newTheme);
   };
 
   return (

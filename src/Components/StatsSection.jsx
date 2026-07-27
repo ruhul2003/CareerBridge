@@ -68,12 +68,12 @@ export default function StatsSection() {
   };
 
   return (
-    <section className="relative w-full bg-black text-white py-28 px-6 overflow-hidden min-h-[700px] flex flex-col justify-end">
+    <section className="relative w-full bg-zinc-100 dark:bg-black text-zinc-900 dark:text-white py-28 px-6 overflow-hidden min-h-[700px] flex flex-col justify-end transition-colors duration-300">
       <div 
-        className="absolute inset-0 bg-center bg-no-repeat bg-cover opacity-80 pointer-events-none"
+        className="absolute inset-0 bg-center bg-no-repeat bg-cover opacity-30 dark:opacity-80 pointer-events-none"
         style={{ backgroundImage: "url('/globe.png')" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-100/50 dark:via-black/20 to-zinc-100 dark:to-black pointer-events-none" />
 
       <div className="relative max-w-6xl mx-auto w-full z-10 flex flex-col items-center">
         
@@ -82,9 +82,9 @@ export default function StatsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
-          className="text-center lg:text-5xl md:text-4xl text-3xl font-light tracking-tight max-w-3xl leading-[1.3] text-zinc-300 mb-20 select-none"
+          className="text-center lg:text-5xl md:text-4xl text-3xl font-light tracking-tight max-w-3xl leading-[1.3] text-zinc-700 dark:text-zinc-300 mb-20 select-none"
         >
-          Assisting over <span className="font-semibold text-white">15,000 job seekers</span> <br />
+          Assisting over <span className="font-semibold text-zinc-900 dark:text-white">15,000 job seekers</span> <br />
           find their dream positions.
         </motion.h2>
 
@@ -101,20 +101,18 @@ export default function StatsSection() {
               variants={itemVariants}
               whileHover={{ 
                 y: -6, 
-                borderColor: "rgba(63, 63, 70, 0.6)",
-                backgroundColor: "rgba(15, 15, 18, 0.95)"
               }}
-              className="bg-[#0c0c0e]/90 backdrop-blur-md border border-zinc-900 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-2xl transition-colors duration-300"
+              className="bg-white/90 dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-zinc-200 dark:border-zinc-900 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-lg dark:shadow-2xl transition-colors duration-300"
             >
-              <div className="flex items-center">
+              <div className="flex items-center text-zinc-600 dark:text-zinc-400">
                 {stat.icon}
               </div>
               
               <div className="mt-8">
-                <div className="text-5xl font-bold tracking-tight text-white mb-2.5">
+                <div className="text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-2.5">
                   {stat.number}
                 </div>
-                <div className="text-sm text-zinc-400 font-medium tracking-wide">
+                <div className="text-sm text-zinc-600 dark:text-zinc-400 font-medium tracking-wide">
                   {stat.label}
                 </div>
               </div>

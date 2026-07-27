@@ -70,7 +70,7 @@ const fadeInUp = (delay = 0) => ({
 
 export default function FeaturesSection() {
     return (
-        <section className="bg-transparent py-24 px-6 text-white overflow-hidden">
+        <section className="bg-transparent py-24 px-6 text-zinc-900 dark:text-white overflow-hidden transition-colors duration-300">
             <div className="max-w-7xl mx-auto">
                 
                 {/* Header */}
@@ -80,7 +80,7 @@ export default function FeaturesSection() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 text-blue-400 text-sm font-medium tracking-widest mb-3"
+                        className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-medium tracking-widest mb-3"
                     >
                         <div className="w-2 h-px bg-blue-500"></div>
                         FEATURES JOB
@@ -92,7 +92,7 @@ export default function FeaturesSection() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className="text-4xl md:text-5xl font-bold tracking-tight"
+                        className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white"
                     >
                         Everything you need <br /> to succeed
                     </motion.h2>
@@ -114,24 +114,24 @@ export default function FeaturesSection() {
                                 scale: 1.03,
                                 transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
                             }}
-                            className="group bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-3xl p-8 transition-all duration-300 shadow-xl"
+                            className="group bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-3xl p-8 transition-all duration-300 shadow-lg dark:shadow-xl"
                         >
                             <motion.div 
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 whileInView={{ scale: 1, opacity: 1 }}
                                 transition={{ delay: 0.2 + index * 0.05 }}
-                                className="w-12 h-12 rounded-2xl bg-zinc-800 flex items-center justify-center mb-6 group-hover:bg-blue-600/10 transition-colors"
+                                className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-6 group-hover:bg-blue-600/10 transition-colors"
                             >
-                                <div className="text-blue-400 group-hover:text-blue-500 transition-colors">
+                                <div className="text-blue-600 dark:text-blue-400 group-hover:text-blue-500 transition-colors">
                                     {feature.icon}
                                 </div>
                             </motion.div>
                             
-                            <h3 className="text-xl font-semibold mb-3 text-white">
+                            <h3 className="text-xl font-semibold mb-3 text-zinc-900 dark:text-white">
                                 {feature.title}
                             </h3>
                             
-                            <p className="text-zinc-400 leading-relaxed text-[15px]">
+                            <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-[15px]">
                                 {feature.desc}
                             </p>
                         </motion.div>
