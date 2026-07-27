@@ -212,7 +212,7 @@ function JobsContent() {
                 return (
                   <div
                     key={job._id}
-                    className="bg-white dark:bg-zinc-900/40 border border-slate-200/90 dark:border-zinc-800/50 hover:border-slate-300 dark:hover:border-zinc-700/80 rounded-3xl p-6 sm:p-7 transition-all duration-300 shadow-[0_15px_30px_rgba(0,0,0,0.06),0_4px_8px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.09)] dark:shadow-none hover:-translate-y-1.5 group flex flex-col justify-between"
+                    className="bg-white dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800/50 hover:border-slate-300 dark:hover:border-zinc-700/80 rounded-3xl p-6 sm:p-7 transition-all duration-300 shadow-[0_18px_40px_rgba(0,0,0,0.1),0_6px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_25px_50px_rgba(0,0,0,0.15)] dark:shadow-none hover:-translate-y-2 group flex flex-col justify-between"
                   >
                     <div>
                       {/* Company Logo, Position & Status Header */}
