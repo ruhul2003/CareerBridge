@@ -168,29 +168,29 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-3xl bg-zinc-950/85 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-2 flex flex-col sm:flex-row items-center gap-2 shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
+          className="w-full max-w-3xl bg-white/95 dark:bg-zinc-950/85 backdrop-blur-xl border border-slate-200 dark:border-zinc-800/80 rounded-2xl p-2 flex flex-col sm:flex-row items-center gap-2 shadow-2xl transition-colors duration-300"
         >
           <div className="flex items-center gap-3 px-3 w-full py-2.5 sm:py-0">
-            <Search className="w-5 h-5 text-zinc-400 shrink-0" />
+            <Search className="w-5 h-5 text-slate-400 dark:text-zinc-400 shrink-0" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Job title, skill or company"
-              className="bg-transparent text-white placeholder-zinc-500 text-sm w-full focus:outline-none"
+              className="bg-transparent text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-zinc-500 text-sm w-full focus:outline-none font-medium"
             />
           </div>
 
-          <div className="hidden sm:block h-6 w-[1px] bg-zinc-800" />
+          <div className="hidden sm:block h-6 w-[1px] bg-slate-200 dark:bg-zinc-800" />
 
           <div className="flex items-center gap-3 px-3 w-full py-2.5 sm:py-0">
-            <MapPin className="w-5 h-5 text-zinc-400 shrink-0" />
+            <MapPin className="w-5 h-5 text-slate-400 dark:text-zinc-400 shrink-0" />
             <input
               type="text"
               value={locationQuery}
               onChange={(e) => setLocationQuery(e.target.value)}
               placeholder="Location (e.g. Dhaka, Remote)"
-              className="bg-transparent text-white placeholder-zinc-500 text-sm w-full focus:outline-none"
+              className="bg-transparent text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-zinc-500 text-sm w-full focus:outline-none font-medium"
             />
           </div>
 

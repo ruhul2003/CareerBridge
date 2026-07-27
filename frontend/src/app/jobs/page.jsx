@@ -108,44 +108,44 @@ function JobsContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-zinc-100 pb-20 selection:bg-indigo-500/30 selection:text-white antialiased">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#09090b] text-slate-900 dark:text-zinc-100 pb-20 selection:bg-indigo-500/30 selection:text-white antialiased transition-colors duration-300">
       {/* Structural Ambient Background Glows */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute top-40 right-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-40 right-1/4 w-96 h-96 bg-emerald-500/10 dark:bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Dynamic Quantitative Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12">
         <div className="flex items-center gap-3">
           <div className="h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
-          <h2 className="text-sm font-medium tracking-widest text-zinc-400 uppercase">
+          <h2 className="text-sm font-medium tracking-widest text-slate-500 dark:text-zinc-400 uppercase">
             Available Opportunities ({filteredJobs.length})
           </h2>
         </div>
-        <p className="text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-100 mt-2">
+        <p className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900 dark:text-zinc-100 mt-2">
           Discover your next challenge
         </p>
       </div>
 
-      <div className="border-b border-zinc-800/60 bg-transparent backdrop-blur-md sticky top-0 z-50">
+      <div className="border-b border-slate-200 dark:border-zinc-800/60 bg-white/80 dark:bg-transparent backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5">
           <div className="flex flex-col lg:flex-row gap-5 items-stretch lg:items-center">
 
             {/* Search Input */}
             <div className="flex-1 relative">
-              <Search className="absolute left-4 top-3.5 text-zinc-500 transition-colors group-focus-within:text-indigo-400" size={18} />
+              <Search className="absolute left-4 top-3.5 text-slate-400 dark:text-zinc-500 transition-colors group-focus-within:text-indigo-500" size={18} />
               <input
                 type="text"
                 placeholder="Search by position, company, or skills..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-zinc-950/60 border border-zinc-800/80 pl-11 pr-4 py-3.5 rounded-xl text-sm transition-all focus:outline-none focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/30 placeholder-zinc-500 text-white"
+                className="w-full bg-white dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800/80 pl-11 pr-4 py-3.5 rounded-xl text-sm transition-all focus:outline-none focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/30 placeholder-slate-400 dark:placeholder-zinc-500 text-slate-900 dark:text-white shadow-sm"
               />
             </div>
 
             {/* Filter Controls Wrapper */}
-            <div className="flex flex-wrap lg:flex-nowrap items-center gap-6 bg-zinc-900/60 border border-zinc-800/40 p-2 lg:p-1.5 rounded-xl">
-              <div className="flex items-center gap-2 px-3 text-zinc-400 text-xs font-semibold tracking-wider uppercase">
-                <SlidersHorizontal size={14} className="text-zinc-500" />
+            <div className="flex flex-wrap lg:flex-nowrap items-center gap-6 bg-slate-100 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800/40 p-2 lg:p-1.5 rounded-xl">
+              <div className="flex items-center gap-2 px-3 text-slate-500 dark:text-zinc-400 text-xs font-semibold tracking-wider uppercase">
+                <SlidersHorizontal size={14} className="text-slate-400 dark:text-zinc-500" />
                 <span>Type</span>
               </div>
 
@@ -158,8 +158,8 @@ function JobsContent() {
                       type="button"
                       onClick={() => toggleType(type)}
                       className={`px-3.5 py-1.5 rounded-lg text-xs font-medium tracking-wide transition-all border cursor-pointer ${isChecked
-                          ? 'bg-indigo-600/10 border-indigo-500/40 text-indigo-300 shadow-[0_2px_10px_rgba(99,102,241,0.05)]'
-                          : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
+                          ? 'bg-indigo-600/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-300 shadow-sm'
+                          : 'bg-white dark:bg-zinc-950/40 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200'
                         }`}
                     >
                       <span className="capitalize">{type.replace('-', ' ')}</span>
@@ -168,18 +168,18 @@ function JobsContent() {
                 })}
               </div>
 
-              <div className="h-px lg:h-6 w-full lg:w-px bg-zinc-800/80" />
+              <div className="h-px lg:h-6 w-full lg:w-px bg-slate-200 dark:bg-zinc-800/80" />
 
               {/* Sort Selector */}
               <div className="relative flex items-center w-full lg:w-auto">
-                <ArrowUpDown size={14} className="absolute left-3 text-zinc-500 pointer-events-none" />
+                <ArrowUpDown size={14} className="absolute left-3 text-slate-400 dark:text-zinc-500 pointer-events-none" />
                 <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value)}
-                  className="w-full lg:w-auto bg-zinc-950/50 border border-zinc-800/60 rounded-lg pl-9 pr-8 py-1.5 text-xs font-medium text-zinc-300 focus:outline-none focus:border-indigo-500/80 appearance-none cursor-pointer hover:text-zinc-100 transition-colors"
+                  className="w-full lg:w-auto bg-white dark:bg-zinc-950/50 border border-slate-200 dark:border-zinc-800/60 rounded-lg pl-9 pr-8 py-1.5 text-xs font-medium text-slate-700 dark:text-zinc-300 focus:outline-none focus:border-indigo-500/80 appearance-none cursor-pointer hover:text-slate-900 dark:hover:text-zinc-100 transition-colors shadow-sm"
                 >
-                  <option className="bg-zinc-900">Most Recent</option>
-                  <option className="bg-zinc-900">Salary High to Low</option>
+                  <option className="bg-white text-slate-900 dark:bg-zinc-900 dark:text-white">Most Recent</option>
+                  <option className="bg-white text-slate-900 dark:bg-zinc-900 dark:text-white">Salary High to Low</option>
                 </select>
               </div>
             </div>
@@ -192,14 +192,14 @@ function JobsContent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-40 gap-4">
-            <div className="w-8 h-8 border-2 border-indigo-500/30 border-t-indigo-400 rounded-full animate-spin" />
-            <span className="text-xs text-zinc-500 font-medium tracking-widest uppercase">Fetching Positions</span>
+            <div className="w-8 h-8 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
+            <span className="text-xs text-slate-500 dark:text-zinc-500 font-medium tracking-widest uppercase">Fetching Positions</span>
           </div>
         ) : filteredJobs.length === 0 ? (
-          <div className="text-center py-32 border border-dashed border-zinc-800/60 rounded-3xl bg-zinc-900/10">
-            <Briefcase className="mx-auto text-zinc-600 mb-4" size={32} />
-            <h3 className="text-base font-medium text-zinc-300">No vacancies match your search</h3>
-            <p className="text-sm text-zinc-500 mt-1 max-w-xs mx-auto">Try resetting active filters or searching for another company or role.</p>
+          <div className="text-center py-32 border border-dashed border-slate-200 dark:border-zinc-800/60 rounded-3xl bg-white/50 dark:bg-zinc-900/10">
+            <Briefcase className="mx-auto text-slate-400 dark:text-zinc-600 mb-4" size={32} />
+            <h3 className="text-base font-medium text-slate-700 dark:text-zinc-300">No vacancies match your search</h3>
+            <p className="text-sm text-slate-500 dark:text-zinc-500 mt-1 max-w-xs mx-auto">Try resetting active filters or searching for another company or role.</p>
           </div>
         ) : (
           <>
@@ -212,14 +212,14 @@ function JobsContent() {
                 return (
                   <div
                     key={job._id}
-                    className="bg-zinc-900/40 border border-zinc-800/50 hover:border-zinc-700/80 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4),0_0_30px_rgba(99,102,241,0.03)] group flex flex-col justify-between"
+                    className="bg-white dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800/50 hover:border-indigo-500/50 dark:hover:border-zinc-700/80 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group flex flex-col justify-between"
                   >
                     <div>
                       {/* Company Logo, Position & Status Header */}
                       <div className="flex items-start justify-between gap-3 mb-4">
                         <div className="flex items-center gap-3.5">
                           {/* Company Image / Logo */}
-                          <div className="w-12 h-12 rounded-xl bg-zinc-800/80 border border-zinc-700/50 overflow-hidden flex items-center justify-center shrink-0 shadow-md">
+                          <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-zinc-800/80 border border-slate-200 dark:border-zinc-700/50 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
                             {companyLogo ? (
                               <img
                                 src={companyLogo}
@@ -233,7 +233,7 @@ function JobsContent() {
                               />
                             ) : null}
                             <span
-                              className="text-white font-bold text-lg"
+                              className="text-slate-800 dark:text-white font-bold text-lg"
                               style={{ display: companyLogo ? 'none' : 'flex' }}
                             >
                               {companyName.charAt(0).toUpperCase()}
@@ -242,10 +242,10 @@ function JobsContent() {
 
                           {/* Company Name & Category */}
                           <div>
-                            <p className="text-xs font-semibold text-indigo-400 tracking-wide">
+                            <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 tracking-wide">
                               {companyName}
                             </p>
-                            <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider">
+                            <span className="text-[10px] font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider">
                               {job.category || job.jobCategory || 'Tech'}
                             </span>
                           </div>
@@ -253,34 +253,34 @@ function JobsContent() {
 
                         {/* Status Tag */}
                         <span className={`text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md border uppercase ${job.status === 'active' || !job.status
-                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                            : 'bg-zinc-800/40 text-zinc-500 border-zinc-800'
+                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+                            : 'bg-slate-100 dark:bg-zinc-800/40 text-slate-500 dark:text-zinc-500 border-slate-200 dark:border-zinc-800'
                           }`}>
                           {job.status || 'Active'}
                         </span>
                       </div>
 
                       {/* Position Name */}
-                      <h3 className="text-xl font-bold tracking-tight text-white group-hover:text-indigo-300 transition-colors line-clamp-2 min-h-[56px] leading-snug">
+                      <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors line-clamp-2 min-h-[56px] leading-snug">
                         {positionName}
                       </h3>
 
                       {/* Operational Information Grid */}
                       <div className="mt-4 space-y-3.5 text-sm">
-                        <div className="text-emerald-400 font-semibold tracking-tight text-base">
+                        <div className="text-emerald-600 dark:text-emerald-400 font-semibold tracking-tight text-base">
                           {formatSalary(job.minSalary, job.maxSalary, job.currency || job.salary)}
                         </div>
 
-                        <div className="pt-3 space-y-2.5 border-t border-zinc-800/40">
-                          <div className="flex items-center gap-2.5 text-zinc-400 text-xs">
-                            <Briefcase size={14} className="text-zinc-500" />
+                        <div className="pt-3 space-y-2.5 border-t border-slate-200 dark:border-zinc-800/40">
+                          <div className="flex items-center gap-2.5 text-slate-600 dark:text-zinc-400 text-xs">
+                            <Briefcase size={14} className="text-slate-400 dark:text-zinc-500" />
                             <span className="capitalize">{job.type || job.jobType?.replace('-', ' ') || 'Full-time'}</span>
                           </div>
 
                           {job.location && (
-                            <div className="flex items-center gap-2.5 text-zinc-400 text-xs">
-                              <MapPin size={14} className="text-indigo-400/80" />
-                              <span className="text-zinc-300">{job.location}</span>
+                            <div className="flex items-center gap-2.5 text-slate-600 dark:text-zinc-400 text-xs">
+                              <MapPin size={14} className="text-indigo-500 dark:text-indigo-400/80" />
+                              <span className="text-slate-700 dark:text-zinc-300">{job.location}</span>
                             </div>
                           )}
                         </div>
@@ -290,7 +290,7 @@ function JobsContent() {
                     {/* Primary Button */}
                     <Link
                       href={`/jobs/${job._id}`}
-                      className="w-full mt-6 py-3 bg-indigo-600/10 hover:bg-indigo-600 text-indigo-300 hover:text-white text-xs font-semibold tracking-wider uppercase rounded-xl border border-indigo-500/30 hover:border-indigo-600 transition-all duration-300 active:scale-[0.985] shadow-lg flex items-center justify-center gap-2 group cursor-pointer"
+                      className="w-full mt-6 py-3 bg-indigo-50 dark:bg-indigo-600/10 hover:bg-indigo-600 text-indigo-600 dark:text-indigo-300 hover:text-white text-xs font-semibold tracking-wider uppercase rounded-xl border border-indigo-200 dark:border-indigo-500/30 hover:border-indigo-600 transition-all duration-300 active:scale-[0.985] shadow-sm flex items-center justify-center gap-2 group cursor-pointer"
                     >
                       View Details
                       <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
@@ -302,16 +302,16 @@ function JobsContent() {
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
-              <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 bg-zinc-900/40 border border-zinc-800/50 p-4 rounded-2xl">
-                <span className="text-xs text-zinc-400 font-medium">
-                  Showing <span className="text-white font-bold">{indexOfFirstJob + 1}</span> to <span className="text-white font-bold">{Math.min(indexOfLastJob, filteredJobs.length)}</span> of <span className="text-white font-bold">{filteredJobs.length}</span> positions
+              <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800/50 p-4 rounded-2xl shadow-sm">
+                <span className="text-xs text-slate-500 dark:text-zinc-400 font-medium">
+                  Showing <span className="text-slate-900 dark:text-white font-bold">{indexOfFirstJob + 1}</span> to <span className="text-slate-900 dark:text-white font-bold">{Math.min(indexOfLastJob, filteredJobs.length)}</span> of <span className="text-slate-900 dark:text-white font-bold">{filteredJobs.length}</span> positions
                 </span>
 
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="p-2 bg-zinc-950/60 border border-zinc-800/80 rounded-xl text-zinc-300 hover:text-white hover:border-indigo-500/50 disabled:opacity-40 disabled:hover:border-zinc-800/80 cursor-pointer transition disabled:cursor-not-allowed"
+                    className="p-2 bg-slate-100 dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800/80 rounded-xl text-slate-700 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-white hover:border-indigo-500/50 disabled:opacity-40 cursor-pointer transition disabled:cursor-not-allowed"
                   >
                     <ChevronLeft size={16} />
                   </button>
@@ -322,8 +322,8 @@ function JobsContent() {
                       onClick={() => handlePageChange(page)}
                       className={`w-9 h-9 text-xs font-bold rounded-xl border transition cursor-pointer ${
                         currentPage === page
-                          ? 'bg-indigo-600 border-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]'
-                          : 'bg-zinc-950/40 border-zinc-800/80 text-zinc-400 hover:text-white hover:border-zinc-700'
+                          ? 'bg-indigo-600 border-indigo-500 text-white shadow-md'
+                          : 'bg-slate-100 dark:bg-zinc-950/40 border-slate-200 dark:border-zinc-800/80 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
                       }`}
                     >
                       {page}
@@ -333,7 +333,7 @@ function JobsContent() {
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className="p-2 bg-zinc-950/60 border border-zinc-800/80 rounded-xl text-zinc-300 hover:text-white hover:border-indigo-500/50 disabled:opacity-40 disabled:hover:border-zinc-800/80 cursor-pointer transition disabled:cursor-not-allowed"
+                    className="p-2 bg-slate-100 dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800/80 rounded-xl text-slate-700 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-white hover:border-indigo-500/50 disabled:opacity-40 cursor-pointer transition disabled:cursor-not-allowed"
                   >
                     <ChevronRight size={16} />
                   </button>

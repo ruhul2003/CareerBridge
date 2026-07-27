@@ -228,22 +228,22 @@ export default function JobDetailsPage() {
   const parsedBenefits = parseListField(job.benefits);
 
   return (
-    <div className="min-h-screen bg-[#0d0d0e] text-zinc-100 pb-20 font-sans antialiased selection:bg-zinc-800">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0d0d0e] text-slate-900 dark:text-zinc-100 pb-20 font-sans antialiased transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-6 pt-12">
         
         {/* Top Navigation Row */}
         <div className="flex items-center justify-between mb-6">
-          <Link href="/jobs" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-300 transition group">
+          <Link href="/jobs" className="inline-flex items-center gap-2 text-slate-500 dark:text-zinc-500 hover:text-slate-900 dark:hover:text-zinc-300 transition group">
             <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition" />
             <span className="text-xs font-medium uppercase tracking-wider">All Opportunities</span>
           </Link>
         </div>
 
         {/* Header Hero Panel */}
-        <div className="bg-[#141416] border border-zinc-800/60 rounded-2xl p-8 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="bg-white dark:bg-[#141416] border border-slate-200 dark:border-zinc-800/60 rounded-2xl p-8 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-sm transition-colors duration-300">
           <div className="flex items-center gap-4">
             {/* Company Image / Logo */}
-            <div className="w-16 h-16 bg-[#1d1d20] border border-zinc-700/60 rounded-2xl overflow-hidden flex items-center justify-center shrink-0 shadow-lg">
+            <div className="w-16 h-16 bg-slate-100 dark:bg-[#1d1d20] border border-slate-200 dark:border-zinc-700/60 rounded-2xl overflow-hidden flex items-center justify-center shrink-0 shadow-md">
               {job.companyLogo || job.logo ? (
                 <img
                   src={job.companyLogo || job.logo}
@@ -257,7 +257,7 @@ export default function JobDetailsPage() {
                 />
               ) : null}
               <span
-                className="text-white font-bold text-2xl"
+                className="text-slate-800 dark:text-white font-bold text-2xl"
                 style={{ display: (job.companyLogo || job.logo) ? 'none' : 'flex' }}
               >
                 {(job.companyName || 'C').charAt(0).toUpperCase()}
@@ -266,16 +266,16 @@ export default function JobDetailsPage() {
 
             <div>
               {/* Position Name */}
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">{job.title || job.jobTitle || 'Untitled Position'}</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{job.title || job.jobTitle || 'Untitled Position'}</h1>
               
               {/* Company Name & Status */}
               <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-                <p className="text-indigo-400 text-sm font-semibold">{job.companyName || 'Company'}</p>
-                <span className="text-zinc-600">•</span>
-                <span className="text-zinc-400 text-xs font-medium">{job.category || job.jobCategory || 'Tech'}</span>
+                <p className="text-indigo-600 dark:text-indigo-400 text-sm font-semibold">{job.companyName || 'Company'}</p>
+                <span className="text-slate-300 dark:text-zinc-600">•</span>
+                <span className="text-slate-500 dark:text-zinc-400 text-xs font-medium">{job.category || job.jobCategory || 'Tech'}</span>
                 {(job.status === 'active' || !job.status) && (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> Active Role
+                  <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" /> Active Role
                   </span>
                 )}
               </div>
@@ -287,15 +287,15 @@ export default function JobDetailsPage() {
               onClick={handleSaveToggle}
               className={`p-3 border rounded-xl transition cursor-pointer ${
                 isSaved 
-                  ? 'bg-indigo-600/10 border-indigo-500/30 text-indigo-400 hover:text-indigo-300' 
-                  : 'bg-[#1d1d20] border-zinc-800 text-zinc-400 hover:text-zinc-200'
+                  ? 'bg-indigo-600/10 border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:text-indigo-500' 
+                  : 'bg-slate-100 dark:bg-[#1d1d20] border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200'
               }`}
               title={isSaved ? "Unsave Job" : "Save Job"}
             >
               <Bookmark size={18} className={isSaved ? 'fill-current' : ''} />
             </button>
             {applied ? (
-              <button disabled className="flex-1 sm:flex-initial px-6 py-3 bg-zinc-850 text-zinc-500 font-semibold rounded-xl cursor-not-allowed text-sm tracking-wide border border-zinc-800">
+              <button disabled className="flex-1 sm:flex-initial px-6 py-3 bg-slate-200 dark:bg-zinc-850 text-slate-400 dark:text-zinc-500 font-semibold rounded-xl cursor-not-allowed text-sm tracking-wide border border-slate-300 dark:border-zinc-800">
                 Applied
               </button>
             ) : (
@@ -311,24 +311,24 @@ export default function JobDetailsPage() {
 
         {/* Quick Info Grid Dashboard */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-[#141416] border border-zinc-800/50 rounded-xl p-5">
-            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1.5">Salary Range</p>
-            <p className="text-[15px] font-semibold text-emerald-400">{formatSalary(job.minSalary, job.maxSalary, job.currency || job.salary)}</p>
+          <div className="bg-white dark:bg-[#141416] border border-slate-200 dark:border-zinc-800/50 rounded-xl p-5 shadow-sm">
+            <p className="text-[10px] text-slate-400 dark:text-zinc-500 font-bold uppercase tracking-widest mb-1.5">Salary Range</p>
+            <p className="text-[15px] font-semibold text-emerald-600 dark:text-emerald-400">{formatSalary(job.minSalary, job.maxSalary, job.currency || job.salary)}</p>
           </div>
 
-          <div className="bg-[#141416] border border-zinc-800/50 rounded-xl p-5">
-            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1.5">Location</p>
-            <p className="text-[15px] font-semibold text-zinc-200">{job.location || 'Dhaka, Bangladesh'}</p>
+          <div className="bg-white dark:bg-[#141416] border border-slate-200 dark:border-zinc-800/50 rounded-xl p-5 shadow-sm">
+            <p className="text-[10px] text-slate-400 dark:text-zinc-500 font-bold uppercase tracking-widest mb-1.5">Location</p>
+            <p className="text-[15px] font-semibold text-slate-800 dark:text-zinc-200">{job.location || 'Dhaka, Bangladesh'}</p>
           </div>
 
-          <div className="bg-[#141416] border border-zinc-800/50 rounded-xl p-5">
-            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1.5">Job Type</p>
-            <p className="text-[15px] font-semibold text-zinc-200 capitalize">{((job.type || job.jobType) ? (job.type || job.jobType).replace('-', ' ') : 'Full-time')}</p>
+          <div className="bg-white dark:bg-[#141416] border border-slate-200 dark:border-zinc-800/50 rounded-xl p-5 shadow-sm">
+            <p className="text-[10px] text-slate-400 dark:text-zinc-500 font-bold uppercase tracking-widest mb-1.5">Job Type</p>
+            <p className="text-[15px] font-semibold text-slate-800 dark:text-zinc-200 capitalize">{((job.type || job.jobType) ? (job.type || job.jobType).replace('-', ' ') : 'Full-time')}</p>
           </div>
 
-          <div className="bg-[#141416] border border-zinc-800/50 rounded-xl p-5">
-            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1.5">Experience Level</p>
-            <p className="text-[15px] font-semibold text-zinc-200">{job.experienceLevel || 'Mid-Senior'}</p>
+          <div className="bg-white dark:bg-[#141416] border border-slate-200 dark:border-zinc-800/50 rounded-xl p-5 shadow-sm">
+            <p className="text-[10px] text-slate-400 dark:text-zinc-500 font-bold uppercase tracking-widest mb-1.5">Experience Level</p>
+            <p className="text-[15px] font-semibold text-slate-800 dark:text-zinc-200">{job.experienceLevel || 'Mid-Senior'}</p>
           </div>
         </div>
 
@@ -336,60 +336,60 @@ export default function JobDetailsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
           {/* Left Column: Descriptions, Responsibilities & Requirements */}
-          <div className="lg:col-span-8 bg-[#141416] border border-zinc-800/50 rounded-2xl p-8 space-y-8">
+          <div className="lg:col-span-8 bg-white dark:bg-[#141416] border border-slate-200 dark:border-zinc-800/50 rounded-2xl p-8 space-y-8 shadow-sm">
             <div>
-              <h2 className="text-lg font-semibold text-zinc-200 mb-3">Job Description</h2>
-              <p className="text-zinc-400 text-[14px] leading-relaxed font-normal">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-200 mb-3">Job Description</h2>
+              <p className="text-slate-600 dark:text-zinc-400 text-[14px] leading-relaxed font-normal">
                 {job.description || `Join ${job.companyName || 'our company'} as a ${job.title || job.jobTitle}. Build scalable digital services and work with modern technology teams.`}
               </p>
             </div>
 
-            <hr className="border-zinc-800/60" />
+            <hr className="border-slate-200 dark:border-zinc-800/60" />
 
             <div>
-              <h2 className="text-lg font-semibold text-zinc-200 mb-4">Responsibilities</h2>
-              <ul className="space-y-3.5 text-[14px] text-zinc-400">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-200 mb-4">Responsibilities</h2>
+              <ul className="space-y-3.5 text-[14px] text-slate-600 dark:text-zinc-400">
                 {parsedResponsibilities.length > 0 ? (
                   parsedResponsibilities.map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span className="text-indigo-400 mt-0.5">•</span>
+                      <span className="text-indigo-500 dark:text-indigo-400 mt-0.5">•</span>
                       <span>{item}</span>
                     </li>
                   ))
                 ) : (
-                  <li className="text-zinc-500 italic">No responsibilities listed.</li>
+                  <li className="text-slate-400 dark:text-zinc-500 italic">No responsibilities listed.</li>
                 )}
               </ul>
             </div>
 
-            <hr className="border-zinc-800/60" />
+            <hr className="border-slate-200 dark:border-zinc-800/60" />
 
             <div>
-              <h2 className="text-lg font-semibold text-zinc-200 mb-4">Requirements</h2>
-              <ul className="space-y-3.5 text-[14px] text-zinc-400">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-200 mb-4">Requirements</h2>
+              <ul className="space-y-3.5 text-[14px] text-slate-600 dark:text-zinc-400">
                 {parsedRequirements.length > 0 ? (
                   parsedRequirements.map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span className="text-indigo-400 mt-0.5">•</span>
+                      <span className="text-indigo-500 dark:text-indigo-400 mt-0.5">•</span>
                       <span>{item}</span>
                     </li>
                   ))
                 ) : (
-                  <li className="text-zinc-500 italic">No requirements listed.</li>
+                  <li className="text-slate-400 dark:text-zinc-500 italic">No requirements listed.</li>
                 )}
               </ul>
             </div>
 
             {parsedBenefits.length > 0 && (
               <>
-                <hr className="border-zinc-800/60" />
+                <hr className="border-slate-200 dark:border-zinc-800/60" />
                 <div>
-                  <h2 className="text-lg font-semibold text-zinc-200 mb-5">Benefits & Perks</h2>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-200 mb-5">Benefits & Perks</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {parsedBenefits.map((benefit, i) => (
-                      <div key={i} className="flex items-center gap-3 p-3 bg-[#1d1d20]/50 border border-zinc-800/40 rounded-xl">
-                        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-bold">✓</div>
-                        <span className="text-xs text-zinc-300 font-medium">{benefit}</span>
+                      <div key={i} className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-[#1d1d20]/50 border border-slate-200 dark:border-zinc-800/40 rounded-xl">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">✓</div>
+                        <span className="text-xs text-slate-700 dark:text-zinc-300 font-medium">{benefit}</span>
                       </div>
                     ))}
                   </div>
@@ -401,12 +401,12 @@ export default function JobDetailsPage() {
 
           {/* Right Column: Company Overview Sidebar */}
           <div className="lg:col-span-4 space-y-6">
-            <div className="bg-[#141416] border border-zinc-800/50 rounded-2xl overflow-hidden p-6">
-              <h3 className="font-bold text-sm text-zinc-200 mb-4 tracking-wider uppercase">Company Overview</h3>
+            <div className="bg-white dark:bg-[#141416] border border-slate-200 dark:border-zinc-800/50 rounded-2xl overflow-hidden p-6 shadow-sm">
+              <h3 className="font-bold text-sm text-slate-900 dark:text-zinc-200 mb-4 tracking-wider uppercase">Company Overview</h3>
               
               {/* Company Banner & Logo */}
-              <div className="p-6 bg-[#0d0d0e] border border-zinc-800/80 rounded-xl relative mb-5 flex flex-col items-center text-center">
-                <div className="w-16 h-16 bg-zinc-800 border border-zinc-700/60 rounded-2xl overflow-hidden flex items-center justify-center mb-3 shadow-md">
+              <div className="p-6 bg-slate-50 dark:bg-[#0d0d0e] border border-slate-200 dark:border-zinc-800/80 rounded-xl relative mb-5 flex flex-col items-center text-center">
+                <div className="w-16 h-16 bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700/60 rounded-2xl overflow-hidden flex items-center justify-center mb-3 shadow-md">
                   {job.companyLogo || job.logo ? (
                     <img
                       src={job.companyLogo || job.logo}
@@ -420,31 +420,31 @@ export default function JobDetailsPage() {
                     />
                   ) : null}
                   <span
-                    className="text-white font-bold text-2xl"
+                    className="text-slate-800 dark:text-white font-bold text-2xl"
                     style={{ display: (job.companyLogo || job.logo) ? 'none' : 'flex' }}
                   >
                     {(job.companyName || 'C').charAt(0).toUpperCase()}
                   </span>
                 </div>
-                <h4 className="text-base font-bold text-white">{job.companyName || 'Company'}</h4>
-                <p className="text-xs text-zinc-400 mt-1">{job.location || 'Dhaka, Bangladesh'}</p>
+                <h4 className="text-base font-bold text-slate-900 dark:text-white">{job.companyName || 'Company'}</h4>
+                <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">{job.location || 'Dhaka, Bangladesh'}</p>
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-zinc-800/60">
-                  <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">CATEGORY</span>
-                  <span className="font-semibold text-xs text-indigo-400">{job.category || job.jobCategory || 'Tech'}</span>
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-zinc-800/60">
+                  <span className="text-slate-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-wider">CATEGORY</span>
+                  <span className="font-semibold text-xs text-indigo-600 dark:text-indigo-400">{job.category || job.jobCategory || 'Tech'}</span>
                 </div>
 
-                <div className="flex items-center justify-between pb-3 border-b border-zinc-800/60">
-                  <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">JOB TYPE</span>
-                  <span className="font-semibold text-xs text-zinc-300 capitalize">{(job.type || job.jobType || 'Full-time').replace('-', ' ')}</span>
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-zinc-800/60">
+                  <span className="text-slate-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-wider">JOB TYPE</span>
+                  <span className="font-semibold text-xs text-slate-700 dark:text-zinc-300 capitalize">{(job.type || job.jobType || 'Full-time').replace('-', ' ')}</span>
                 </div>
 
                 <div className="pt-2 text-center">
                   <Link 
                     href="/companies" 
-                    className="inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-semibold transition py-1"
+                    className="inline-flex items-center gap-1.5 text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 font-semibold transition py-1"
                   >
                     View All Companies <ExternalLink size={12} />
                   </Link>
