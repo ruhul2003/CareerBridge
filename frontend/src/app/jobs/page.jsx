@@ -39,13 +39,18 @@ export default function JobsPage() {
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       result = result.filter(job =>
-        job.jobTitle?.toLowerCase().includes(q) ||
-        job.jobCategory?.toLowerCase().includes(q)
+        (job.title || job.jobTitle)?.toLowerCase().includes(q) ||
+        (job.companyName)?.toLowerCase().includes(q) ||
+        (job.category || job.jobCategory)?.toLowerCase().includes(q) ||
+        (job.location)?.toLowerCase().includes(q)
       );
     }
 
     if (selectedTypes.length > 0) {
-      result = result.filter(job => selectedTypes.includes(job.jobType));
+      result = result.filter(job => {
+        const type = (job.type || job.jobType || '').toLowerCase();
+        return selectedTypes.some(t => type.includes(t.toLowerCase()));
+      });
     }
 
     if (sortOption === 'Salary High to Low') {
@@ -59,14 +64,19 @@ export default function JobsPage() {
 
   const toggleType = (type) => {
     setSelectedTypes(prev =>
-      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+      prev.includes(type)
+        ? prev.filter(t => t !== type)
+        : [...prev, type]
     );
   };
 
-  const formatSalary = (min, max, currency = 'BDT') => {
-    if (min && max) return `${currency} ${Number(min).toLocaleString()} – ${Number(max).toLocaleString()}`;
-    if (min) return `From ${currency} ${Number(min).toLocaleString()}`;
-    if (max) return `Up to ${currency} ${Number(max).toLocaleString()}`;
+  const formatSalary = (min, max, currency) => {
+    const activeCurrency = currency && currency.trim() !== "" ? currency : 'BDT';
+    if (min && max) {
+      return `${activeCurrency} ${Number(min).toLocaleString()} - ${Number(max).toLocaleString()} / mo`;
+    }
+    if (min) return `From ${activeCurrency} ${Number(min).toLocaleString()} / mo`;
+    if (max) return `Up to ${activeCurrency} ${Number(max).toLocaleString()} / mo`;
     return 'Salary confidential';
   };
 
@@ -75,9 +85,6 @@ export default function JobsPage() {
       {/* Structural Ambient Background Glows */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute top-40 right-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
-
-      {/* Filter / Search Navigation Header */}
-
 
       {/* Dynamic Quantitative Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12">
@@ -101,10 +108,10 @@ export default function JobsPage() {
               <Search className="absolute left-4 top-3.5 text-zinc-500 transition-colors group-focus-within:text-indigo-400" size={18} />
               <input
                 type="text"
-                placeholder="Search matching roles, categories, keywords..."
+                placeholder="Search by position, company, or skills..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-zinc-950/60 border border-zinc-800/80 pl-11 pr-4 py-3.5 rounded-xl text-sm transition-all focus:outline-none focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/30 placeholder-zinc-500"
+                className="w-full bg-zinc-950/60 border border-zinc-800/80 pl-11 pr-4 py-3.5 rounded-xl text-sm transition-all focus:outline-none focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/30 placeholder-zinc-500 text-white"
               />
             </div>
 
@@ -123,7 +130,7 @@ export default function JobsPage() {
                       key={type}
                       type="button"
                       onClick={() => toggleType(type)}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-medium tracking-wide transition-all border ${isChecked
+                      className={`px-3.5 py-1.5 rounded-lg text-xs font-medium tracking-wide transition-all border cursor-pointer ${isChecked
                           ? 'bg-indigo-600/10 border-indigo-500/40 text-indigo-300 shadow-[0_2px_10px_rgba(99,102,241,0.05)]'
                           : 'bg-zinc-950/40 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
                         }`}
@@ -164,74 +171,105 @@ export default function JobsPage() {
         ) : filteredJobs.length === 0 ? (
           <div className="text-center py-32 border border-dashed border-zinc-800/60 rounded-3xl bg-zinc-900/10">
             <Briefcase className="mx-auto text-zinc-600 mb-4" size={32} />
-            <h3 className="text-base font-medium text-zinc-300">No vacancies match your filters</h3>
-            <p className="text-sm text-zinc-500 mt-1 max-w-xs mx-auto">Try resetting your active categories or adjusting your search phrase.</p>
+            <h3 className="text-base font-medium text-zinc-300">No vacancies match your search</h3>
+            <p className="text-sm text-zinc-500 mt-1 max-w-xs mx-auto">Try resetting active filters or searching for another company or role.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredJobs.map((job) => (
-              <div
-                key={job._id}
-                className="bg-zinc-900/40 border border-zinc-800/50 hover:border-zinc-700/80 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4),0_0_30px_rgba(99,102,241,0.03)] group flex flex-col justify-between"
-              >
-                <div>
-                  {/* Meta Details Row */}
-                  <div className="flex justify-between items-start gap-4 mb-5">
-                    <span className="inline-block px-2.5 py-1 text-[11px] font-semibold tracking-wide text-zinc-400 bg-zinc-800/40 rounded-md border border-zinc-800/60 uppercase">
-                      {job.jobCategory}
-                    </span>
-                    <span className={`text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md border uppercase ${job.status === 'active'
-                        ? 'bg-emerald-500/5 text-emerald-400 border-emerald-500/20'
-                        : 'bg-zinc-800/40 text-zinc-500 border-zinc-800'
-                      }`}>
-                      {job.status || 'Active'}
-                    </span>
-                  </div>
+            {filteredJobs.map((job) => {
+              const positionName = job.title || job.jobTitle || 'Position Title';
+              const companyName = job.companyName || 'Company';
+              const companyLogo = job.companyLogo || job.logo;
 
-                  {/* Title */}
-                  <h3 className="text-xl font-semibold tracking-tight text-zinc-100 group-hover:text-indigo-400 transition-colors line-clamp-2 min-h-[56px] leading-snug">
-                    {job.jobTitle}
-                  </h3>
+              return (
+                <div
+                  key={job._id}
+                  className="bg-zinc-900/40 border border-zinc-800/50 hover:border-zinc-700/80 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4),0_0_30px_rgba(99,102,241,0.03)] group flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Company Logo, Position & Status Header */}
+                    <div className="flex items-start justify-between gap-3 mb-4">
+                      <div className="flex items-center gap-3.5">
+                        {/* Company Image / Logo */}
+                        <div className="w-12 h-12 rounded-xl bg-zinc-800/80 border border-zinc-700/50 overflow-hidden flex items-center justify-center shrink-0 shadow-md">
+                          {companyLogo ? (
+                            <img
+                              src={companyLogo}
+                              alt={companyName}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.style.display = 'none';
+                                e.target.nextSibling.style.display = 'flex';
+                              }}
+                            />
+                          ) : null}
+                          <span
+                            className="text-white font-bold text-lg"
+                            style={{ display: companyLogo ? 'none' : 'flex' }}
+                          >
+                            {companyName.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
 
-                  {/* Operational Information Grid */}
-                  <div className="mt-5 space-y-3.5 text-sm">
-                    <div className="text-emerald-400 font-medium tracking-tight text-lg">
-                      {formatSalary(job.minSalary, job.maxSalary, job.currency)}
-                    </div>
-
-                    <div className="pt-2 space-y-2.5 border-t border-zinc-800/40">
-                      <div className="flex items-center gap-2.5 text-zinc-400 text-xs">
-                        <Briefcase size={15} className="text-zinc-500" />
-                        <span className="capitalize">{job.jobType?.replace('-', ' ')}</span>
+                        {/* Company Name & Category */}
+                        <div>
+                          <p className="text-xs font-semibold text-indigo-400 tracking-wide">
+                            {companyName}
+                          </p>
+                          <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider">
+                            {job.category || job.jobCategory || 'Tech'}
+                          </span>
+                        </div>
                       </div>
 
-                      {job.isRemote && (
-                        <div className="flex items-center gap-2.5 text-zinc-400 text-xs">
-                          <MapPin size={15} className="text-teal-500/80" />
-                          <span className="text-zinc-300">Remote Compatible</span>
-                        </div>
-                      )}
+                      {/* Status Tag */}
+                      <span className={`text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md border uppercase ${job.status === 'active' || !job.status
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                          : 'bg-zinc-800/40 text-zinc-500 border-zinc-800'
+                        }`}>
+                        {job.status || 'Active'}
+                      </span>
+                    </div>
 
-                      {job.deadline && (
-                        <div className="flex items-center gap-2.5 text-zinc-500 text-xs">
-                          <Calendar size={15} />
-                          <span>Closing: {new Date(job.deadline).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    {/* Position Name */}
+                    <h3 className="text-xl font-bold tracking-tight text-white group-hover:text-indigo-300 transition-colors line-clamp-2 min-h-[56px] leading-snug">
+                      {positionName}
+                    </h3>
+
+                    {/* Operational Information Grid */}
+                    <div className="mt-4 space-y-3.5 text-sm">
+                      <div className="text-emerald-400 font-semibold tracking-tight text-base">
+                        {formatSalary(job.minSalary, job.maxSalary, job.currency || job.salary)}
+                      </div>
+
+                      <div className="pt-3 space-y-2.5 border-t border-zinc-800/40">
+                        <div className="flex items-center gap-2.5 text-zinc-400 text-xs">
+                          <Briefcase size={14} className="text-zinc-500" />
+                          <span className="capitalize">{job.type || job.jobType?.replace('-', ' ') || 'Full-time'}</span>
                         </div>
-                      )}
+
+                        {job.location && (
+                          <div className="flex items-center gap-2.5 text-zinc-400 text-xs">
+                            <MapPin size={14} className="text-indigo-400/80" />
+                            <span className="text-zinc-300">{job.location}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Primary Button */}
-                <Link
-                  href={`/jobs/${job._id}`}
-                  className="w-full mt-7 py-3 bg-white/5 hover:bg-white/10 text-zinc-100 text-xs font-semibold tracking-wider uppercase rounded-xl border border-zinc-700 hover:border-zinc-500 backdrop-blur-md transition-all duration-300 active:scale-[0.985] shadow-lg flex items-center justify-center gap-2 group"
-                >
-                  View Details
-                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-                </Link>
-              </div>
-            ))}
+                  {/* Primary Button */}
+                  <Link
+                    href={`/jobs/${job._id}`}
+                    className="w-full mt-6 py-3 bg-indigo-600/10 hover:bg-indigo-600 text-indigo-300 hover:text-white text-xs font-semibold tracking-wider uppercase rounded-xl border border-indigo-500/30 hover:border-indigo-600 transition-all duration-300 active:scale-[0.985] shadow-lg flex items-center justify-center gap-2 group cursor-pointer"
+                  >
+                    View Details
+                    <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
