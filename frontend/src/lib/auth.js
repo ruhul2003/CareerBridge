@@ -22,10 +22,13 @@ export const auth = betterAuth({
     },
   },
 
-  accountLinking: {
-    enabled: true,                    
-    trustedProviders: ["google"],  
-    disableImplicitLinking: false,
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ["google"],
+      requireLocalEmailVerified: false,
+      disableImplicitLinking: false,
+    },
   },
 
   advanced: {
