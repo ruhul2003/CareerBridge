@@ -108,7 +108,7 @@ function JobsContent() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#09090b] text-slate-900 dark:text-zinc-100 pb-20 selection:bg-indigo-500/30 selection:text-white antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-[#f1f5f9] dark:bg-[#09090b] text-slate-900 dark:text-zinc-100 pb-20 selection:bg-indigo-500/30 selection:text-white antialiased transition-colors duration-300">
       {/* Structural Ambient Background Glows */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute top-40 right-1/4 w-96 h-96 bg-emerald-500/10 dark:bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
@@ -143,7 +143,7 @@ function JobsContent() {
             </div>
 
             {/* Filter Controls Wrapper */}
-            <div className="flex flex-wrap lg:flex-nowrap items-center gap-6 bg-slate-100 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800/40 p-2 lg:p-1.5 rounded-xl">
+            <div className="flex flex-wrap lg:flex-nowrap items-center gap-6 bg-white/90 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800/40 p-2 lg:p-1.5 rounded-xl shadow-sm">
               <div className="flex items-center gap-2 px-3 text-slate-500 dark:text-zinc-400 text-xs font-semibold tracking-wider uppercase">
                 <SlidersHorizontal size={14} className="text-slate-400 dark:text-zinc-500" />
                 <span>Type</span>
@@ -159,7 +159,7 @@ function JobsContent() {
                       onClick={() => toggleType(type)}
                       className={`px-3.5 py-1.5 rounded-lg text-xs font-medium tracking-wide transition-all border cursor-pointer ${isChecked
                           ? 'bg-indigo-600/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-300 shadow-sm'
-                          : 'bg-white dark:bg-zinc-950/40 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200'
+                          : 'bg-slate-50 dark:bg-zinc-950/40 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200'
                         }`}
                     >
                       <span className="capitalize">{type.replace('-', ' ')}</span>
@@ -176,7 +176,7 @@ function JobsContent() {
                 <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value)}
-                  className="w-full lg:w-auto bg-white dark:bg-zinc-950/50 border border-slate-200 dark:border-zinc-800/60 rounded-lg pl-9 pr-8 py-1.5 text-xs font-medium text-slate-700 dark:text-zinc-300 focus:outline-none focus:border-indigo-500/80 appearance-none cursor-pointer hover:text-slate-900 dark:hover:text-zinc-100 transition-colors shadow-sm"
+                  className="w-full lg:w-auto bg-slate-50 dark:bg-zinc-950/50 border border-slate-200 dark:border-zinc-800/60 rounded-lg pl-9 pr-8 py-1.5 text-xs font-medium text-slate-700 dark:text-zinc-300 focus:outline-none focus:border-indigo-500/80 appearance-none cursor-pointer hover:text-slate-900 dark:hover:text-zinc-100 transition-colors shadow-sm"
                 >
                   <option className="bg-white text-slate-900 dark:bg-zinc-900 dark:text-white">Most Recent</option>
                   <option className="bg-white text-slate-900 dark:bg-zinc-900 dark:text-white">Salary High to Low</option>
@@ -196,7 +196,7 @@ function JobsContent() {
             <span className="text-xs text-slate-500 dark:text-zinc-500 font-medium tracking-widest uppercase">Fetching Positions</span>
           </div>
         ) : filteredJobs.length === 0 ? (
-          <div className="text-center py-32 border border-dashed border-slate-200 dark:border-zinc-800/60 rounded-3xl bg-white/50 dark:bg-zinc-900/10">
+          <div className="text-center py-32 border border-dashed border-slate-300 dark:border-zinc-800/60 rounded-3xl bg-white/60 dark:bg-zinc-900/10 shadow-sm">
             <Briefcase className="mx-auto text-slate-400 dark:text-zinc-600 mb-4" size={32} />
             <h3 className="text-base font-medium text-slate-700 dark:text-zinc-300">No vacancies match your search</h3>
             <p className="text-sm text-slate-500 dark:text-zinc-500 mt-1 max-w-xs mx-auto">Try resetting active filters or searching for another company or role.</p>
@@ -212,7 +212,7 @@ function JobsContent() {
                 return (
                   <div
                     key={job._id}
-                    className="bg-white dark:bg-zinc-900/40 border border-slate-200/80 dark:border-zinc-800/50 hover:border-indigo-500/50 dark:hover:border-zinc-700/80 rounded-3xl p-6 sm:p-7 transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_45px_-12px_rgba(99,102,241,0.22)] dark:shadow-none hover:-translate-y-2 group flex flex-col justify-between"
+                    className="bg-white dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800/50 hover:border-indigo-500/60 dark:hover:border-zinc-700/80 rounded-3xl p-6 sm:p-7 transition-all duration-300 shadow-[0_8px_25px_-5px_rgba(0,0,0,0.06),0_6px_10px_-6px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_45px_-12px_rgba(99,102,241,0.22)] dark:shadow-none hover:-translate-y-2 group flex flex-col justify-between"
                   >
                     <div>
                       {/* Company Logo, Position & Status Header */}

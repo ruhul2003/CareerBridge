@@ -53,7 +53,7 @@ const CompaniesPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#0d0d0d] text-slate-900 dark:text-gray-100 px-6 py-12 font-sans transition-colors duration-300">
+        <div className="min-h-screen bg-[#f1f5f9] dark:bg-[#0d0d0d] text-slate-900 dark:text-gray-100 px-6 py-12 font-sans transition-colors duration-300">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="mb-10">
@@ -74,7 +74,7 @@ const CompaniesPage = () => {
                             placeholder="Search by name, industry, or location..."
                             value={searchInput}
                             onChange={(e) => setSearchInput(e.target.value)}
-                            className="w-full bg-transparent pl-12 pr-12 py-3.5 text-sm text-slate-900 dark:text-gray-200 placeholder-slate-400 dark:placeholder-gray-500 border-none outline-none focus:ring-1 focus:ring-indigo-500/20 rounded-xl"
+                            className="w-full bg-transparent pl-12 pr-12 py-3.5 text-sm text-slate-900 dark:text-gray-200 placeholder-slate-400 dark:placeholder-gray-500 border-none outline-none focus:ring-1 focus:ring-indigo-500/20 rounded-xl font-medium"
                         />
                         {searchInput && (
                             <button
@@ -93,12 +93,12 @@ const CompaniesPage = () => {
                         {[1, 2, 3, 4, 5, 6].map((i) => (
                             <div 
                                 key={i} 
-                                className="bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#222] h-80 rounded-3xl animate-pulse"
+                                className="bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#222] h-80 rounded-3xl animate-pulse shadow-sm"
                             />
                         ))}
                     </div>
                 ) : companies.length === 0 ? (
-                    <div className="text-center py-20 border border-dashed border-slate-200 dark:border-[#222] rounded-3xl bg-white/50 dark:bg-transparent">
+                    <div className="text-center py-20 border border-dashed border-slate-300 dark:border-[#222] rounded-3xl bg-white/60 dark:bg-transparent shadow-sm">
                         <p className="text-slate-600 dark:text-gray-400 text-lg">No companies found</p>
                         {searchInput && (
                             <p className="text-slate-400 dark:text-gray-500 mt-2">Try different keywords</p>
@@ -111,7 +111,7 @@ const CompaniesPage = () => {
                             {currentCompanies.map((company) => (
                                 <div 
                                     key={company._id} 
-                                    className="bg-white dark:bg-[#141414] border border-slate-200/80 dark:border-[#222] rounded-3xl p-7 hover:border-indigo-500/40 dark:hover:border-white/10 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_45px_-12px_rgba(99,102,241,0.22)] dark:shadow-none hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between"
+                                    className="bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#222] rounded-3xl p-7 hover:border-indigo-500/60 dark:hover:border-white/10 shadow-[0_8px_25px_-5px_rgba(0,0,0,0.06),0_6px_10px_-6px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_45px_-12px_rgba(99,102,241,0.22)] dark:shadow-none hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between"
                                 >
                                     <div>
                                         <div className="flex items-center justify-between mb-5">
