@@ -13,6 +13,28 @@ export function ThemeProvider({ children }) {
   const [theme, setThemeState] = useState("dark");
   const [mounted, setMounted] = useState(false);
 
+  const applyThemeClasses = (targetTheme) => {
+    const root = document.documentElement;
+    const body = document.body;
+    if (targetTheme === "dark") {
+      root.classList.add("dark");
+      root.classList.remove("light");
+      if (body) {
+        body.classList.add("dark");
+        body.classList.remove("light");
+      }
+      root.setAttribute("data-theme", "dark");
+    } else {
+      root.classList.remove("dark");
+      root.classList.add("light");
+      if (body) {
+        body.classList.remove("dark");
+        body.classList.add("light");
+      }
+      root.setAttribute("data-theme", "light");
+    }
+  };
+
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     let initialTheme = "dark";
@@ -23,34 +45,14 @@ export function ThemeProvider({ children }) {
     }
 
     setThemeState(initialTheme);
-
-    const root = document.documentElement;
-    if (initialTheme === "dark") {
-      root.classList.add("dark");
-      root.classList.remove("light");
-      root.setAttribute("data-theme", "dark");
-    } else {
-      root.classList.remove("dark");
-      root.classList.add("light");
-      root.setAttribute("data-theme", "light");
-    }
-
+    applyThemeClasses(initialTheme);
     setMounted(true);
   }, []);
 
   const toggleTheme = () => {
     setThemeState((prevTheme) => {
       const nextTheme = prevTheme === "dark" ? "light" : "dark";
-      const root = document.documentElement;
-      if (nextTheme === "dark") {
-        root.classList.add("dark");
-        root.classList.remove("light");
-        root.setAttribute("data-theme", "dark");
-      } else {
-        root.classList.remove("dark");
-        root.classList.add("light");
-        root.setAttribute("data-theme", "light");
-      }
+      applyThemeClasses(nextTheme);
       localStorage.setItem("theme", nextTheme);
       return nextTheme;
     });
@@ -58,16 +60,7 @@ export function ThemeProvider({ children }) {
 
   const setTheme = (newTheme) => {
     setThemeState(newTheme);
-    const root = document.documentElement;
-    if (newTheme === "dark") {
-      root.classList.add("dark");
-      root.classList.remove("light");
-      root.setAttribute("data-theme", "dark");
-    } else {
-      root.classList.remove("dark");
-      root.classList.add("light");
-      root.setAttribute("data-theme", "light");
-    }
+    applyThemeClasses(newTheme);
     localStorage.setItem("theme", newTheme);
   };
 
