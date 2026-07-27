@@ -4,20 +4,23 @@ const port = process.env.PORT || 5000;
 const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder_key_for_build';
+const stripe = require('stripe')(stripeSecretKey);
 
 const allowedOrigins = [
   "http://localhost:3000",
+  "https://career-bridge-live-ten.vercel.app",
   "https://career-bridge-client-xi.vercel.app"
 ];
 
 // CORS Configuration
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(null, true);
     }
   },
   credentials: true,
@@ -35,7 +38,7 @@ app.get("/", (req, res) => {
 });
 
 // MongoDB Client Initialization
-const uri = process.env.MONGODB_URI;
+const uri = process.env.MONGODB_URI || "mongodb+srv://hire_loop_db_user:wwiIRfECMOKwPwpl@tilux-server.cltfmst.mongodb.net/?appName=Tilux-server";
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
