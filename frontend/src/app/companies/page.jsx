@@ -111,7 +111,7 @@ const CompaniesPage = () => {
                             {currentCompanies.map((company) => (
                                 <div 
                                     key={company._id} 
-                                    className="bg-white dark:bg-[#141414] border border-slate-200 dark:border-[#222] rounded-3xl p-7 hover:border-indigo-500/60 dark:hover:border-white/10 shadow-[0_8px_25px_-5px_rgba(0,0,0,0.06),0_6px_10px_-6px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_45px_-12px_rgba(99,102,241,0.22)] dark:shadow-none hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between"
+                                    className="bg-white dark:bg-[#141414] border border-slate-200/90 dark:border-[#222] hover:border-slate-300 dark:hover:border-white/10 rounded-3xl p-7 hover:shadow-[0_20px_40px_rgba(0,0,0,0.09)] dark:shadow-none hover:-translate-y-1.5 transition-all duration-300 shadow-[0_15px_30px_rgba(0,0,0,0.06),0_4px_8px_rgba(0,0,0,0.03)] group flex flex-col justify-between"
                                 >
                                     <div>
                                         <div className="flex items-center justify-between mb-5">
