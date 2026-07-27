@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, Briefcase, Calendar,ArrowRight, MapPin, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import { Search, Briefcase, Calendar, ArrowRight, MapPin, SlidersHorizontal, ArrowUpDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 const JOB_TYPES = ['full-time', 'part-time', 'contract', 'freelance'];
+const ITEMS_PER_PAGE = 12;
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState([]);
@@ -13,6 +14,7 @@ export default function JobsPage() {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [sortOption, setSortOption] = useState('Most Recent');
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
 
@@ -60,6 +62,7 @@ export default function JobsPage() {
     }
 
     setFilteredJobs(result);
+    setCurrentPage(1);
   }, [searchQuery, selectedTypes, sortOption, jobs]);
 
   const toggleType = (type) => {
@@ -78,6 +81,17 @@ export default function JobsPage() {
     if (min) return `From ${activeCurrency} ${Number(min).toLocaleString()} / mo`;
     if (max) return `Up to ${activeCurrency} ${Number(max).toLocaleString()} / mo`;
     return 'Salary confidential';
+  };
+
+  // Pagination calculation
+  const totalPages = Math.ceil(filteredJobs.length / ITEMS_PER_PAGE);
+  const indexOfLastJob = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstJob = indexOfLastJob - ITEMS_PER_PAGE;
+  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -175,102 +189,145 @@ export default function JobsPage() {
             <p className="text-sm text-zinc-500 mt-1 max-w-xs mx-auto">Try resetting active filters or searching for another company or role.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredJobs.map((job) => {
-              const positionName = job.title || job.jobTitle || 'Position Title';
-              const companyName = job.companyName || 'Company';
-              const companyLogo = job.companyLogo || job.logo;
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {currentJobs.map((job) => {
+                const positionName = job.title || job.jobTitle || 'Position Title';
+                const companyName = job.companyName || 'Company';
+                const companyLogo = job.companyLogo || job.logo;
 
-              return (
-                <div
-                  key={job._id}
-                  className="bg-zinc-900/40 border border-zinc-800/50 hover:border-zinc-700/80 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4),0_0_30px_rgba(99,102,241,0.03)] group flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Company Logo, Position & Status Header */}
-                    <div className="flex items-start justify-between gap-3 mb-4">
-                      <div className="flex items-center gap-3.5">
-                        {/* Company Image / Logo */}
-                        <div className="w-12 h-12 rounded-xl bg-zinc-800/80 border border-zinc-700/50 overflow-hidden flex items-center justify-center shrink-0 shadow-md">
-                          {companyLogo ? (
-                            <img
-                              src={companyLogo}
-                              alt={companyName}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
-                              }}
-                            />
-                          ) : null}
-                          <span
-                            className="text-white font-bold text-lg"
-                            style={{ display: companyLogo ? 'none' : 'flex' }}
-                          >
-                            {companyName.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-
-                        {/* Company Name & Category */}
-                        <div>
-                          <p className="text-xs font-semibold text-indigo-400 tracking-wide">
-                            {companyName}
-                          </p>
-                          <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider">
-                            {job.category || job.jobCategory || 'Tech'}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Status Tag */}
-                      <span className={`text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md border uppercase ${job.status === 'active' || !job.status
-                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                          : 'bg-zinc-800/40 text-zinc-500 border-zinc-800'
-                        }`}>
-                        {job.status || 'Active'}
-                      </span>
-                    </div>
-
-                    {/* Position Name */}
-                    <h3 className="text-xl font-bold tracking-tight text-white group-hover:text-indigo-300 transition-colors line-clamp-2 min-h-[56px] leading-snug">
-                      {positionName}
-                    </h3>
-
-                    {/* Operational Information Grid */}
-                    <div className="mt-4 space-y-3.5 text-sm">
-                      <div className="text-emerald-400 font-semibold tracking-tight text-base">
-                        {formatSalary(job.minSalary, job.maxSalary, job.currency || job.salary)}
-                      </div>
-
-                      <div className="pt-3 space-y-2.5 border-t border-zinc-800/40">
-                        <div className="flex items-center gap-2.5 text-zinc-400 text-xs">
-                          <Briefcase size={14} className="text-zinc-500" />
-                          <span className="capitalize">{job.type || job.jobType?.replace('-', ' ') || 'Full-time'}</span>
-                        </div>
-
-                        {job.location && (
-                          <div className="flex items-center gap-2.5 text-zinc-400 text-xs">
-                            <MapPin size={14} className="text-indigo-400/80" />
-                            <span className="text-zinc-300">{job.location}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Primary Button */}
-                  <Link
-                    href={`/jobs/${job._id}`}
-                    className="w-full mt-6 py-3 bg-indigo-600/10 hover:bg-indigo-600 text-indigo-300 hover:text-white text-xs font-semibold tracking-wider uppercase rounded-xl border border-indigo-500/30 hover:border-indigo-600 transition-all duration-300 active:scale-[0.985] shadow-lg flex items-center justify-center gap-2 group cursor-pointer"
+                return (
+                  <div
+                    key={job._id}
+                    className="bg-zinc-900/40 border border-zinc-800/50 hover:border-zinc-700/80 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4),0_0_30px_rgba(99,102,241,0.03)] group flex flex-col justify-between"
                   >
-                    View Details
-                    <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-                  </Link>
+                    <div>
+                      {/* Company Logo, Position & Status Header */}
+                      <div className="flex items-start justify-between gap-3 mb-4">
+                        <div className="flex items-center gap-3.5">
+                          {/* Company Image / Logo */}
+                          <div className="w-12 h-12 rounded-xl bg-zinc-800/80 border border-zinc-700/50 overflow-hidden flex items-center justify-center shrink-0 shadow-md">
+                            {companyLogo ? (
+                              <img
+                                src={companyLogo}
+                                alt={companyName}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.style.display = 'none';
+                                  e.target.nextSibling.style.display = 'flex';
+                                }}
+                              />
+                            ) : null}
+                            <span
+                              className="text-white font-bold text-lg"
+                              style={{ display: companyLogo ? 'none' : 'flex' }}
+                            >
+                              {companyName.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+
+                          {/* Company Name & Category */}
+                          <div>
+                            <p className="text-xs font-semibold text-indigo-400 tracking-wide">
+                              {companyName}
+                            </p>
+                            <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider">
+                              {job.category || job.jobCategory || 'Tech'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Status Tag */}
+                        <span className={`text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md border uppercase ${job.status === 'active' || !job.status
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                            : 'bg-zinc-800/40 text-zinc-500 border-zinc-800'
+                          }`}>
+                          {job.status || 'Active'}
+                        </span>
+                      </div>
+
+                      {/* Position Name */}
+                      <h3 className="text-xl font-bold tracking-tight text-white group-hover:text-indigo-300 transition-colors line-clamp-2 min-h-[56px] leading-snug">
+                        {positionName}
+                      </h3>
+
+                      {/* Operational Information Grid */}
+                      <div className="mt-4 space-y-3.5 text-sm">
+                        <div className="text-emerald-400 font-semibold tracking-tight text-base">
+                          {formatSalary(job.minSalary, job.maxSalary, job.currency || job.salary)}
+                        </div>
+
+                        <div className="pt-3 space-y-2.5 border-t border-zinc-800/40">
+                          <div className="flex items-center gap-2.5 text-zinc-400 text-xs">
+                            <Briefcase size={14} className="text-zinc-500" />
+                            <span className="capitalize">{job.type || job.jobType?.replace('-', ' ') || 'Full-time'}</span>
+                          </div>
+
+                          {job.location && (
+                            <div className="flex items-center gap-2.5 text-zinc-400 text-xs">
+                              <MapPin size={14} className="text-indigo-400/80" />
+                              <span className="text-zinc-300">{job.location}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Primary Button */}
+                    <Link
+                      href={`/jobs/${job._id}`}
+                      className="w-full mt-6 py-3 bg-indigo-600/10 hover:bg-indigo-600 text-indigo-300 hover:text-white text-xs font-semibold tracking-wider uppercase rounded-xl border border-indigo-500/30 hover:border-indigo-600 transition-all duration-300 active:scale-[0.985] shadow-lg flex items-center justify-center gap-2 group cursor-pointer"
+                    >
+                      View Details
+                      <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 bg-zinc-900/40 border border-zinc-800/50 p-4 rounded-2xl">
+                <span className="text-xs text-zinc-400 font-medium">
+                  Showing <span className="text-white font-bold">{indexOfFirstJob + 1}</span> to <span className="text-white font-bold">{Math.min(indexOfLastJob, filteredJobs.length)}</span> of <span className="text-white font-bold">{filteredJobs.length}</span> positions
+                </span>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="p-2 bg-zinc-950/60 border border-zinc-800/80 rounded-xl text-zinc-300 hover:text-white hover:border-indigo-500/50 disabled:opacity-40 disabled:hover:border-zinc-800/80 cursor-pointer transition disabled:cursor-not-allowed"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`w-9 h-9 text-xs font-bold rounded-xl border transition cursor-pointer ${
+                        currentPage === page
+                          ? 'bg-indigo-600 border-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]'
+                          : 'bg-zinc-950/40 border-zinc-800/80 text-zinc-400 hover:text-white hover:border-zinc-700'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="p-2 bg-zinc-950/60 border border-zinc-800/80 rounded-xl text-zinc-300 hover:text-white hover:border-indigo-500/50 disabled:opacity-40 disabled:hover:border-zinc-800/80 cursor-pointer transition disabled:cursor-not-allowed"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
