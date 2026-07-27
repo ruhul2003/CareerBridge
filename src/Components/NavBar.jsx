@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import ThemeToggle from "@/Components/ThemeToggle";
 
 export default function Navbar() {
   const router = useRouter();
@@ -43,26 +44,21 @@ export default function Navbar() {
     },
   ];
 
-  const dashboardLinks =
-    {
-      seeker: "/dashboard/seeker",
-      recruiter: "/dashboard/recruiter",
-    }
-  
+  const dashboardLinks = {
+    seeker: "/dashboard/seeker",
+    recruiter: "/dashboard/recruiter",
+  };
 
-  if(user?.email){
-    navLinks.push(
-      {
-        label:'Dashboard',
-        href: dashboardLinks[user?.role] || 'seeker'
-      }
-    )
+  if (user?.email) {
+    navLinks.push({
+      label: "Dashboard",
+      href: dashboardLinks[user?.role] || "seeker",
+    });
   }
 
   return (
-    <nav className="w-full max-w-6xl mx-auto px-4 sm:px-6 my-4">
-      <div className="bg-[#121214] border border-zinc-800/80 rounded-2xl px-6 py-3 flex items-center justify-between shadow-xl">
-        
+    <nav className="w-full max-w-6xl mx-auto px-4 sm:px-6 my-4 sticky top-4 z-50">
+      <div className="bg-white/90 dark:bg-[#121214]/90 border border-zinc-200 dark:border-zinc-800/80 rounded-2xl px-6 py-3 flex items-center justify-between shadow-xl backdrop-blur-md transition-colors duration-300">
         {/* Logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-0.5 font-bold text-2xl tracking-tight select-none">
@@ -74,14 +70,14 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden sm:flex items-center gap-6">
+        <div className="hidden sm:flex items-center gap-5">
           {/* Nav Links using map */}
           <ul className="flex items-center gap-6">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-zinc-400 hover:text-white text-sm font-medium transition-colors duration-200"
+                  className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white text-sm font-medium transition-colors duration-200"
                 >
                   {link.label}
                 </Link>
@@ -89,25 +85,28 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <div className="h-5 w-[1px] bg-zinc-800 mx-1" />
+          <div className="h-5 w-[1px] bg-zinc-200 dark:bg-zinc-800 mx-1" />
+
+          {/* Theme Toggle Button */}
+          <ThemeToggle />
 
           {/* Dynamic Session Rendering */}
           {isPending ? (
-            <div className="w-20 h-7 bg-zinc-800 animate-pulse rounded-lg" />
+            <div className="w-20 h-7 bg-zinc-200 dark:bg-zinc-800 animate-pulse rounded-lg" />
           ) : session ? (
             <div className="flex items-center gap-4">
-              <span className="text-zinc-300 text-sm font-medium bg-zinc-900 px-3 py-1.5 border border-zinc-800 rounded-xl">
+              <span className="text-zinc-800 dark:text-zinc-300 text-sm font-medium bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 border border-zinc-200 dark:border-zinc-800 rounded-xl">
                 {session.user?.name}
               </span>
               <button
                 onClick={handleSignOut}
-                className="text-sm font-medium text-rose-400 hover:text-rose-300 transition-colors duration-200 cursor-pointer"
+                className="text-sm font-medium text-rose-500 dark:text-rose-400 hover:text-rose-600 dark:hover:text-rose-300 transition-colors duration-200 cursor-pointer"
               >
                 Sign Out
               </button>
             </div>
           ) : (
-            <>
+            <div className="flex items-center gap-3">
               <Link
                 href="/login"
                 className="text-[#6366f1] hover:text-[#4f46e5] text-sm font-medium transition-colors duration-200"
@@ -120,31 +119,34 @@ export default function Navbar() {
               >
                 Get Started
               </Link>
-            </>
+            </div>
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="sm:hidden text-zinc-400 hover:text-white focus:outline-none"
-          aria-label="Toggle Menu"
-        >
-          {isMenuOpen ? (
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          )}
-        </button>
+        {/* Mobile Menu Action Bar */}
+        <div className="flex items-center gap-3 sm:hidden">
+          <ThemeToggle />
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white focus:outline-none p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800"
+            aria-label="Toggle Menu"
+          >
+            {isMenuOpen ? (
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="sm:hidden mt-2 bg-[#121214] border border-zinc-800/80 rounded-2xl px-6 py-6 shadow-xl">
+        <div className="sm:hidden mt-2 bg-white/95 dark:bg-[#121214]/95 border border-zinc-200 dark:border-zinc-800/80 rounded-2xl px-6 py-6 shadow-xl backdrop-blur-md transition-colors duration-300">
           <div className="flex flex-col gap-4">
             {/* Nav Links */}
             <ul className="space-y-1">
@@ -152,7 +154,7 @@ export default function Navbar() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="block py-3 px-4 text-zinc-400 hover:text-white text-base font-medium transition-colors duration-200 rounded-xl hover:bg-zinc-900"
+                    className="block py-3 px-4 text-zinc-700 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white text-base font-medium transition-colors duration-200 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-900"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.label}
@@ -161,12 +163,12 @@ export default function Navbar() {
               ))}
             </ul>
 
-            <div className="border-t border-zinc-800 pt-4 mt-2">
+            <div className="border-t border-zinc-200 dark:border-zinc-800 pt-4 mt-2">
               {isPending ? (
-                <div className="w-20 h-7 bg-zinc-800 animate-pulse rounded-lg" />
+                <div className="w-20 h-7 bg-zinc-200 dark:bg-zinc-800 animate-pulse rounded-lg" />
               ) : session ? (
                 <div className="flex flex-col gap-3">
-                  <div className="text-zinc-300 text-sm font-medium bg-zinc-900 px-4 py-3 border border-zinc-800 rounded-xl">
+                  <div className="text-zinc-800 dark:text-zinc-300 text-sm font-medium bg-zinc-100 dark:bg-zinc-900 px-4 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl">
                     {session.user?.name}
                   </div>
                   <button
@@ -174,7 +176,7 @@ export default function Navbar() {
                       handleSignOut();
                       setIsMenuOpen(false);
                     }}
-                    className="w-full text-left py-3 px-4 text-rose-400 hover:text-rose-300 hover:bg-zinc-900 rounded-xl transition-colors duration-200 font-medium"
+                    className="w-full text-left py-3 px-4 text-rose-500 dark:text-rose-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-xl transition-colors duration-200 font-medium"
                   >
                     Sign Out
                   </button>
@@ -182,14 +184,14 @@ export default function Navbar() {
               ) : (
                 <div className="flex flex-col gap-3">
                   <Link
-                    href="/auth/signin"
-                    className="w-full text-center py-3 px-4 text-[#6366f1] hover:bg-zinc-900 rounded-xl transition-colors duration-200 font-medium"
+                    href="/login"
+                    className="w-full text-center py-3 px-4 text-[#6366f1] hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-xl transition-colors duration-200 font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign In
                   </Link>
                   <Link
-                    href="/auth/signup"
+                    href="/signup"
                     className="w-full text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 rounded-xl font-medium shadow-lg shadow-indigo-600/10 hover:opacity-90 transition-all duration-200"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -203,4 +205,4 @@ export default function Navbar() {
       )}
     </nav>
   );
-}
+}
