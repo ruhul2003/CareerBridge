@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight, Search, MapPin, Sparkles, Briefcase, Globe } from "lucide-react";
 
@@ -41,8 +42,11 @@ const slides = [
 ];
 
 export default function HeroSection() {
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [locationQuery, setLocationQuery] = useState("");
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -59,6 +63,20 @@ export default function HeroSection() {
     }, 6000);
     return () => clearInterval(timer);
   }, [isPaused, nextSlide]);
+
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) params.set("search", searchQuery.trim());
+    if (locationQuery.trim()) params.set("location", locationQuery.trim());
+
+    const queryString = params.toString();
+    router.push(queryString ? `/jobs?${queryString}` : "/jobs");
+  };
+
+  const handleTrendingClick = (position) => {
+    router.push(`/jobs?search=${encodeURIComponent(position)}`);
+  };
 
   const slide = slides[currentSlide];
 
@@ -144,8 +162,9 @@ export default function HeroSection() {
           </motion.p>
         </AnimatePresence>
 
-        {/* Search Bar Container */}
-        <motion.div
+        {/* Search Bar Container Form */}
+        <motion.form
+          onSubmit={handleSearch}
           initial={{ opacity: 0, y: 30, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
@@ -155,6 +174,8 @@ export default function HeroSection() {
             <Search className="w-5 h-5 text-zinc-400 shrink-0" />
             <input
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Job title, skill or company"
               className="bg-transparent text-white placeholder-zinc-500 text-sm w-full focus:outline-none"
             />
@@ -166,19 +187,22 @@ export default function HeroSection() {
             <MapPin className="w-5 h-5 text-zinc-400 shrink-0" />
             <input
               type="text"
-              placeholder="Location or Remote"
+              value={locationQuery}
+              onChange={(e) => setLocationQuery(e.target.value)}
+              placeholder="Location (e.g. Dhaka, Remote)"
               className="bg-transparent text-white placeholder-zinc-500 text-sm w-full focus:outline-none"
             />
           </div>
 
           <motion.button
+            type="submit"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             className={`${slide.buttonBg} text-white p-3 sm:p-3.5 rounded-xl transition-all shrink-0 w-full sm:w-auto flex items-center justify-center cursor-pointer shadow-lg`}
           >
             <Search className="w-5 h-5" />
           </motion.button>
-        </motion.div>
+        </motion.form>
 
         {/* Trending Positions */}
         <motion.div
@@ -191,10 +215,12 @@ export default function HeroSection() {
             Trending Positions:
           </span>
 
-          {["Product Designer", "AI Engineer", "DevOps Engineer", "Frontend Lead"].map(
+          {["Product Designer", "AI Engineer", "DevOps Engineer", "Frontend Specialist"].map(
             (position, index) => (
               <motion.button
                 key={index}
+                type="button"
+                onClick={() => handleTrendingClick(position)}
                 whileHover={{
                   y: -2,
                   backgroundColor: "rgba(39, 39, 42, 0.9)",

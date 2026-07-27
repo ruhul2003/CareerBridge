@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Search, Briefcase, Calendar, ArrowRight, MapPin, SlidersHorizontal, ArrowUpDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 const JOB_TYPES = ['full-time', 'part-time', 'contract', 'freelance'];
 const ITEMS_PER_PAGE = 12;
 
-export default function JobsPage() {
+function JobsContent() {
+  const searchParams = useSearchParams();
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -17,6 +19,17 @@ export default function JobsPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
+
+  // Read URL search / location query parameters from Hero Banner or Company links
+  useEffect(() => {
+    const searchVal = searchParams.get('search') || searchParams.get('company') || '';
+    const locationVal = searchParams.get('location') || '';
+
+    const initialCombined = [searchVal, locationVal].filter(Boolean).join(' ');
+    if (initialCombined) {
+      setSearchQuery(initialCombined);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -331,5 +344,20 @@ export default function JobsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function JobsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#09090b] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 border-2 border-indigo-500/30 border-t-indigo-400 rounded-full animate-spin" />
+          <span className="text-xs text-zinc-500 font-medium tracking-widest uppercase">Loading Jobs</span>
+        </div>
+      </div>
+    }>
+      <JobsContent />
+    </Suspense>
   );
 }
