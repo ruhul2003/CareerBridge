@@ -212,14 +212,14 @@ function JobsContent() {
                 return (
                   <div
                     key={job._id}
-                    className="bg-white dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800/50 hover:border-indigo-500/50 dark:hover:border-zinc-700/80 rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group flex flex-col justify-between"
+                    className="bg-white dark:bg-zinc-900/40 border border-slate-200/80 dark:border-zinc-800/50 hover:border-indigo-500/50 dark:hover:border-zinc-700/80 rounded-3xl p-6 sm:p-7 transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_45px_-12px_rgba(99,102,241,0.22)] dark:shadow-none hover:-translate-y-2 group flex flex-col justify-between"
                   >
                     <div>
                       {/* Company Logo, Position & Status Header */}
                       <div className="flex items-start justify-between gap-3 mb-4">
                         <div className="flex items-center gap-3.5">
                           {/* Company Image / Logo */}
-                          <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-zinc-800/80 border border-slate-200 dark:border-zinc-700/50 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
+                          <div className="w-14 h-14 rounded-2xl bg-slate-100/90 dark:bg-zinc-800/80 border border-slate-200/80 dark:border-zinc-700/50 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
                             {companyLogo ? (
                               <img
                                 src={companyLogo}
@@ -233,7 +233,7 @@ function JobsContent() {
                               />
                             ) : null}
                             <span
-                              className="text-slate-800 dark:text-white font-bold text-lg"
+                              className="text-slate-800 dark:text-white font-bold text-xl"
                               style={{ display: companyLogo ? 'none' : 'flex' }}
                             >
                               {companyName.charAt(0).toUpperCase()}
@@ -252,7 +252,7 @@ function JobsContent() {
                         </div>
 
                         {/* Status Tag */}
-                        <span className={`text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md border uppercase ${job.status === 'active' || !job.status
+                        <span className={`text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-full border uppercase ${job.status === 'active' || !job.status
                             ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
                             : 'bg-slate-100 dark:bg-zinc-800/40 text-slate-500 dark:text-zinc-500 border-slate-200 dark:border-zinc-800'
                           }`}>
@@ -271,7 +271,7 @@ function JobsContent() {
                           {formatSalary(job.minSalary, job.maxSalary, job.currency || job.salary)}
                         </div>
 
-                        <div className="pt-3 space-y-2.5 border-t border-slate-200 dark:border-zinc-800/40">
+                        <div className="pt-3 space-y-2.5 border-t border-slate-200/80 dark:border-zinc-800/40">
                           <div className="flex items-center gap-2.5 text-slate-600 dark:text-zinc-400 text-xs">
                             <Briefcase size={14} className="text-slate-400 dark:text-zinc-500" />
                             <span className="capitalize">{job.type || job.jobType?.replace('-', ' ') || 'Full-time'}</span>
