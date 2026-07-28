@@ -113,18 +113,18 @@ export default function HeroSection() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="block dark:hidden absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-50 transition-opacity duration-500"
+            className="block dark:hidden absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-95 transition-opacity duration-500"
             style={{ backgroundImage: `url(${slide.lightImage})` }}
           />
         </AnimatePresence>
 
         {/* Ambient Grid Pattern for Professional Light Mode Backdrop */}
-        <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:24px_24px] opacity-60 dark:opacity-40 pointer-events-none z-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:24px_24px] opacity-30 dark:opacity-40 pointer-events-none z-10" />
 
         {/* Multi-layered Vignette & Adaptive Light/Dark Gradients */}
-        <div className="absolute inset-0 bg-white/75 dark:bg-black/60 z-10 transition-colors duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/85 to-white/40 dark:from-black dark:via-black/75 dark:to-black/40 z-10 transition-colors duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-transparent to-white/90 dark:from-black/80 dark:via-transparent dark:to-black/80 z-10 transition-colors duration-500" />
+        <div className="absolute inset-0 bg-white/20 dark:bg-black/60 z-10 transition-colors duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/35 to-white/10 dark:from-black dark:via-black/75 dark:to-black/40 z-10 transition-colors duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-white/40 dark:from-black/80 dark:via-transparent dark:to-black/80 z-10 transition-colors duration-500" />
 
         {/* Ambient Color Glow tied to current slide accent */}
         <motion.div
@@ -146,10 +146,10 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 15 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2.5 bg-slate-100/90 dark:bg-zinc-950/80 backdrop-blur-xl border border-slate-200/90 dark:border-zinc-800/80 rounded-full px-4.5 py-2 mb-8 shadow-md shadow-slate-200/80 dark:shadow-2xl dark:shadow-black/60 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300"
+            className="inline-flex items-center gap-2.5 bg-white/95 dark:bg-zinc-950/80 backdrop-blur-xl border border-slate-300/80 dark:border-zinc-800/80 rounded-full px-4.5 py-2 mb-8 shadow-md shadow-slate-300/60 dark:shadow-2xl dark:shadow-black/60 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300"
           >
             {slide.badgeIcon}
-            <p className="text-xs font-semibold tracking-[0.12em] text-slate-700 dark:text-zinc-300 uppercase">
+            <p className="text-xs font-bold tracking-[0.12em] text-slate-800 dark:text-zinc-300 uppercase">
               {slide.badgeText}
             </p>
           </motion.div>
@@ -163,7 +163,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 max-w-3xl leading-[1.12] drop-shadow-sm dark:drop-shadow-lg"
+            className="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-950 dark:text-white mb-6 max-w-3xl leading-[1.12] drop-shadow-sm dark:drop-shadow-lg"
           >
             {slide.title}
           </motion.h1>
@@ -177,7 +177,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-slate-600 dark:text-zinc-300 text-base sm:text-lg font-normal sm:font-light max-w-2xl leading-relaxed mb-10"
+            className="text-slate-800 dark:text-zinc-300 text-base sm:text-lg font-medium max-w-2xl leading-relaxed mb-10 drop-shadow-sm"
           >
             {slide.description}
           </motion.p>
