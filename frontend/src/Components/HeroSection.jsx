@@ -9,6 +9,7 @@ const slides = [
   {
     id: 1,
     image: "/banner-1.png",
+    lightImage: "/banner-light-1.png",
     badgeIcon: <Briefcase className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />,
     badgeText: "50,000+ New Jobs This Month",
     title: "Find Your Dream Job Today",
@@ -21,6 +22,7 @@ const slides = [
   {
     id: 2,
     image: "/banner-2.png",
+    lightImage: "/banner-light-2.png",
     badgeIcon: <Globe className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
     badgeText: "Global Tech Companies Hiring",
     title: "Connect With Industry Leaders",
@@ -33,6 +35,7 @@ const slides = [
   {
     id: 3,
     image: "/banner-3.png",
+    lightImage: "/banner-light-3.png",
     badgeIcon: <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />,
     badgeText: "Smart Skill Matching Engine",
     title: "Accelerate Your Career Growth",
@@ -92,14 +95,26 @@ export default function HeroSection() {
       {/* Background Image Slider with Motion Crossfade & Theme Reactivity */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         <AnimatePresence mode="wait">
+          {/* Dark Mode Background Image */}
           <motion.div
-            key={slide.id}
+            key={`dark-${slide.id}`}
             initial={{ opacity: 0, scale: 1.08 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-100 transition-opacity duration-500"
+            className="hidden dark:block absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-100 transition-opacity duration-500"
             style={{ backgroundImage: `url(${slide.image})` }}
+          />
+
+          {/* Light Mode Specific Background Image */}
+          <motion.div
+            key={`light-${slide.id}`}
+            initial={{ opacity: 0, scale: 1.08 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="block dark:hidden absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-50 transition-opacity duration-500"
+            style={{ backgroundImage: `url(${slide.lightImage})` }}
           />
         </AnimatePresence>
 
