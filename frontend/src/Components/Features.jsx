@@ -114,7 +114,7 @@ export default function FeaturesSection() {
                                 scale: 1.03,
                                 transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
                             }}
-                            className="group bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-3xl p-8 transition-all duration-300 shadow-lg dark:shadow-xl"
+                            className="group bg-white dark:bg-zinc-900 border border-slate-200/90 dark:border-zinc-800 hover:border-blue-400/60 dark:hover:border-blue-600/60 rounded-3xl p-8 transition-all duration-300 shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-blue-500/15"
                         >
                             <motion.div 
                                 initial={{ scale: 0.8, opacity: 0 }}

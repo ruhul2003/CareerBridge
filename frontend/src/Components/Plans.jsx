@@ -196,8 +196,8 @@ const PricingPage = () => {
                     {activePlans.map((plan, idx) => (
                         <div
                             key={idx}
-                            className={`relative bg-zinc-900 border rounded-2xl p-6 shadow-xl flex flex-col justify-between min-h-[480px] transition-all duration-300 hover:-translate-y-1 ${plan.popular
-                                ? 'border-blue-500/80 ring-2 ring-blue-500/10'
+                            className={`relative bg-zinc-900 border rounded-2xl p-6 shadow-2xl shadow-black/80 flex flex-col justify-between min-h-[480px] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-blue-500/15 ${plan.popular
+                                ? 'border-blue-500/80 ring-2 ring-blue-500/20'
                                 : 'border-zinc-800 hover:border-zinc-700'
                                 }`}
                         >

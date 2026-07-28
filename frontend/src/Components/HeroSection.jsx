@@ -131,7 +131,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 15 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2.5 bg-slate-100/90 dark:bg-zinc-950/80 backdrop-blur-xl border border-slate-200/90 dark:border-zinc-800/80 rounded-full px-4 py-1.5 mb-8 shadow-sm dark:shadow-2xl transition-all"
+            className="inline-flex items-center gap-2.5 bg-slate-100/90 dark:bg-zinc-950/80 backdrop-blur-xl border border-slate-200/90 dark:border-zinc-800/80 rounded-full px-4.5 py-2 mb-8 shadow-md shadow-slate-200/80 dark:shadow-2xl dark:shadow-black/60 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300"
           >
             {slide.badgeIcon}
             <p className="text-xs font-semibold tracking-[0.12em] text-slate-700 dark:text-zinc-300 uppercase">
@@ -174,7 +174,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-3xl bg-white dark:bg-zinc-950/85 backdrop-blur-xl border border-slate-200/90 dark:border-zinc-800/80 rounded-2xl p-2 sm:p-2.5 flex flex-col sm:flex-row items-center gap-2 shadow-xl shadow-slate-200/60 dark:shadow-2xl transition-all duration-300 group focus-within:border-indigo-500/50 focus-within:ring-2 focus-within:ring-indigo-500/20"
+          className="w-full max-w-3xl bg-white dark:bg-zinc-950/90 backdrop-blur-2xl border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-2.5 sm:p-3 flex flex-col sm:flex-row items-center gap-2 shadow-2xl shadow-slate-300/70 dark:shadow-2xl dark:shadow-black/90 hover:shadow-indigo-500/10 hover:border-slate-300/90 dark:hover:border-zinc-700 transition-all duration-300 group focus-within:border-indigo-500/60 focus-within:ring-4 focus-within:ring-indigo-500/15"
         >
           <div className="flex items-center gap-3 px-3 w-full py-2.5 sm:py-0">
             <Search className="w-5 h-5 text-slate-400 dark:text-zinc-400 group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 shrink-0 transition-colors" />
@@ -204,7 +204,7 @@ export default function HeroSection() {
             type="submit"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            className={`${slide.buttonBg} text-white p-3 sm:p-3.5 rounded-xl transition-all shrink-0 w-full sm:w-auto flex items-center justify-center cursor-pointer shadow-md hover:shadow-lg`}
+            className={`${slide.buttonBg} text-white p-3.5 sm:p-4 rounded-xl transition-all shrink-0 w-full sm:w-auto flex items-center justify-center cursor-pointer shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40`}
           >
             <Search className="w-5 h-5" />
           </motion.button>
@@ -230,7 +230,7 @@ export default function HeroSection() {
                 whileHover={{
                   y: -2,
                 }}
-                className="bg-slate-100/90 dark:bg-zinc-900/80 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/80 text-slate-700 dark:text-zinc-300 hover:bg-slate-200/80 dark:hover:bg-zinc-800 hover:text-slate-900 dark:hover:text-white px-4 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-sm"
+                className="bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800 hover:text-slate-900 dark:hover:text-white px-4 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-md shadow-slate-200/60 dark:shadow-lg dark:shadow-black/50 hover:shadow-lg hover:shadow-indigo-500/10"
               >
                 {position}
               </motion.button>
@@ -243,13 +243,13 @@ export default function HeroSection() {
           <button
             onClick={prevSlide}
             aria-label="Previous Slide"
-            className="p-2.5 rounded-full bg-white/90 dark:bg-zinc-900/80 border border-slate-200/90 dark:border-zinc-800/80 text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer shadow-md backdrop-blur-md active:scale-95"
+            className="p-3 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-slate-200/90 dark:border-zinc-800/90 text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer shadow-lg shadow-slate-200/80 dark:shadow-xl dark:shadow-black/70 hover:shadow-xl hover:shadow-indigo-500/15 backdrop-blur-md active:scale-95"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
 
           {/* Slide Dots with Animated Progress */}
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-white/90 dark:bg-zinc-950/70 border border-slate-200/90 dark:border-zinc-800/60 rounded-full backdrop-blur-md shadow-md">
+          <div className="flex items-center gap-2 px-3.5 py-2 bg-white/90 dark:bg-zinc-950/80 border border-slate-200/90 dark:border-zinc-800/80 rounded-full backdrop-blur-md shadow-lg shadow-slate-200/80 dark:shadow-xl dark:shadow-black/70">
             {slides.map((s, idx) => (
               <button
                 key={s.id}
@@ -274,7 +274,7 @@ export default function HeroSection() {
           <button
             onClick={nextSlide}
             aria-label="Next Slide"
-            className="p-2.5 rounded-full bg-white/90 dark:bg-zinc-900/80 border border-slate-200/90 dark:border-zinc-800/80 text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer shadow-md backdrop-blur-md active:scale-95"
+            className="p-3 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-slate-200/90 dark:border-zinc-800/90 text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer shadow-lg shadow-slate-200/80 dark:shadow-xl dark:shadow-black/70 hover:shadow-xl hover:shadow-indigo-500/15 backdrop-blur-md active:scale-95"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

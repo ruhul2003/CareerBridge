@@ -102,17 +102,17 @@ export default function StatsSection() {
               whileHover={{ 
                 y: -6, 
               }}
-              className="bg-white/90 dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-zinc-200 dark:border-zinc-900 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-lg dark:shadow-2xl transition-colors duration-300"
+              className="bg-white dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-indigo-500/10 hover:border-slate-300 dark:hover:border-zinc-700 transition-all duration-300"
             >
-              <div className="flex items-center text-zinc-600 dark:text-zinc-400">
+              <div className="flex items-center text-slate-500 dark:text-zinc-400">
                 {stat.icon}
               </div>
               
               <div className="mt-8">
-                <div className="text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-2.5">
+                <div className="text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-2.5">
                   {stat.number}
                 </div>
-                <div className="text-sm text-zinc-600 dark:text-zinc-400 font-medium tracking-wide">
+                <div className="text-sm text-slate-600 dark:text-zinc-400 font-medium tracking-wide">
                   {stat.label}
                 </div>
               </div>
