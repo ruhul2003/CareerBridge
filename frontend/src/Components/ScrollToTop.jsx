@@ -55,13 +55,6 @@ export default function ScrollToTop() {
           >
             {/* SVG Circular Progress Ring */}
             <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 48 48">
-              <defs>
-                <linearGradient id="scroll-progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#06b6d4" />
-                  <stop offset="50%" stopColor="#6366f1" />
-                  <stop offset="100%" stopColor="#a855f7" />
-                </linearGradient>
-              </defs>
               {/* Background Track */}
               <circle
                 cx="24"
@@ -76,7 +69,7 @@ export default function ScrollToTop() {
                 cx="24"
                 cy="24"
                 r={radius}
-                stroke="url(#scroll-progress-gradient)"
+                className="stroke-indigo-600 dark:stroke-cyan-400"
                 strokeWidth="3"
                 fill="none"
                 strokeLinecap="round"
