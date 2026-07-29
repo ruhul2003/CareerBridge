@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/Components/NavBar";
 import Footer from "@/Components/footer";
+import ScrollToTop from "@/Components/ScrollToTop";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/context/ThemeContext";
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
             <Toaster position="top-right" reverseOrder={false} />
           </main>
           <Footer />
+          <ScrollToTop />
         </ThemeProvider>
       </body>
     </html>
