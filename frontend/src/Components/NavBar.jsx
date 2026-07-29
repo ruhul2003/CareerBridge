@@ -89,8 +89,8 @@ export default function Navbar() {
     : "U";
 
   return (
-    <header className="sticky top-2 z-50 max-w-7xl mx-auto px-4 sm:px-6 my-1.5">
-      <div className="relative bg-white/40 dark:bg-[#0d1322]/40 backdrop-blur-md border border-zinc-200/60 dark:border-slate-800/60 rounded-full px-6 sm:px-7 py-3 sm:py-3.5 shadow-lg shadow-indigo-500/5 dark:shadow-cyan-500/5 transition-all duration-300 flex items-center justify-between min-h-[60px]">
+    <header className="sticky top-2 z-50 w-full max-w-full sm:max-w-[98%] xl:max-w-[1500px] mx-auto px-3 sm:px-6 my-1.5">
+      <div className="relative bg-white/40 dark:bg-[#0d1322]/40 backdrop-blur-md border border-zinc-200/60 dark:border-slate-800/60 rounded-full px-6 sm:px-8 py-3 sm:py-3.5 shadow-lg shadow-indigo-500/5 dark:shadow-cyan-500/5 transition-all duration-300 flex items-center justify-between min-h-[60px]">
         
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group select-none">
