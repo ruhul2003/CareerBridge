@@ -17,6 +17,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import CustomCursor from "@/Components/CustomCursor";
+
 export default function RootLayout({ children }) {
   return (
     <html
@@ -26,6 +28,7 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full bg-zinc-50 text-zinc-900 dark:bg-black dark:text-zinc-100 transition-colors duration-300 flex flex-col">
         <ThemeProvider>
+          <CustomCursor />
           <NavBar />
           <main className="flex-1">
             {children}
