@@ -94,10 +94,12 @@ export default function Navbar() {
         
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group select-none">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 p-[1.5px] shadow-sm group-hover:shadow-indigo-500/25 transition-all duration-300 group-hover:scale-105">
-            <div className="w-full h-full bg-white dark:bg-slate-900 rounded-[10.5px] flex items-center justify-center">
-              <Briefcase className="w-5 h-5 text-indigo-600 dark:text-cyan-400 group-hover:rotate-6 transition-transform duration-300" />
-            </div>
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 p-[1.5px] shadow-sm group-hover:shadow-indigo-500/25 transition-all duration-300 group-hover:scale-105 overflow-hidden">
+            <img
+              src="/logo.png"
+              alt="CareerBridge Logo"
+              className="w-full h-full object-cover rounded-[10px]"
+            />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-0.5 text-2xl font-black tracking-tight leading-none">

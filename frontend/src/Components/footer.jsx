@@ -11,7 +11,14 @@ export default function Footer() {
           
           {/* Brand Info (Takes 5 columns on desktop) */}
           <div className="md:col-span-5 flex flex-col gap-4">
-            <Link href="/" className="flex items-center gap-0.5 font-bold text-2xl tracking-tight select-none">
+            <Link href="/" className="flex items-center gap-2.5 font-bold text-2xl tracking-tight select-none">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 p-[1px] shadow-sm overflow-hidden">
+                <img
+                  src="/logo.png"
+                  alt="CareerBridge Logo"
+                  className="w-full h-full object-cover rounded-[7px]"
+                />
+              </div>
               <span className="text-[#38bdf8]">Career</span>
               <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-orange-500 bg-clip-text text-transparent">
                 Bridge

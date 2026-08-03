@@ -99,6 +99,12 @@ app.get("/api/jobs", async (req, res) => {
     if (req.query.status) {
       query.status = req.query.status;
     }
+    if (req.query.division && req.query.division !== 'All') {
+      query.$or = [
+        { division: { $regex: req.query.division, $options: "i" } },
+        { location: { $regex: req.query.division, $options: "i" } }
+      ];
+    }
 
     const cursor = jobCollection.find(query);
     const result = await cursor.toArray();

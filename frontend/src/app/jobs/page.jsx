@@ -6,6 +6,17 @@ import { Search, Briefcase, Calendar, ArrowRight, MapPin, SlidersHorizontal, Arr
 import Link from 'next/link';
 
 const JOB_TYPES = ['full-time', 'part-time', 'contract', 'freelance'];
+const BANGLADESH_DIVISIONS = [
+  'All Divisions',
+  'Dhaka',
+  'Chattogram',
+  'Rajshahi',
+  'Khulna',
+  'Barishal',
+  'Sylhet',
+  'Rangpur',
+  'Mymensingh'
+];
 const ITEMS_PER_PAGE = 12;
 
 function JobsContent() {
@@ -14,20 +25,31 @@ function JobsContent() {
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedDivision, setSelectedDivision] = useState('All Divisions');
   const [sortOption, setSortOption] = useState('Most Recent');
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
   const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
 
-  // Read URL search / location query parameters from Hero Banner or Company links
+  // Read URL search / location / division query parameters
   useEffect(() => {
     const searchVal = searchParams.get('search') || searchParams.get('company') || '';
     const locationVal = searchParams.get('location') || '';
+    const divisionVal = searchParams.get('division') || '';
 
     const initialCombined = [searchVal, locationVal].filter(Boolean).join(' ');
     if (initialCombined) {
       setSearchQuery(initialCombined);
+    }
+    if (divisionVal) {
+      // Find matching division case-insensitively
+      const matchedDiv = BANGLADESH_DIVISIONS.find(
+        d => d.toLowerCase() === divisionVal.toLowerCase()
+      );
+      if (matchedDiv) {
+        setSelectedDivision(matchedDiv);
+      }
     }
   }, [searchParams]);
 
@@ -57,7 +79,16 @@ function JobsContent() {
         (job.title || job.jobTitle)?.toLowerCase().includes(q) ||
         (job.companyName)?.toLowerCase().includes(q) ||
         (job.category || job.jobCategory)?.toLowerCase().includes(q) ||
-        (job.location)?.toLowerCase().includes(q)
+        (job.location)?.toLowerCase().includes(q) ||
+        (job.division)?.toLowerCase().includes(q)
+      );
+    }
+
+    if (selectedDivision && selectedDivision !== 'All Divisions') {
+      const divLower = selectedDivision.toLowerCase();
+      result = result.filter(job =>
+        (job.division && job.division.toLowerCase() === divLower) ||
+        (job.location && job.location.toLowerCase().includes(divLower))
       );
     }
 
@@ -76,7 +107,7 @@ function JobsContent() {
 
     setFilteredJobs(result);
     setCurrentPage(1);
-  }, [searchQuery, selectedTypes, sortOption, jobs]);
+  }, [searchQuery, selectedTypes, selectedDivision, sortOption, jobs]);
 
   const toggleType = (type) => {
     setSelectedTypes(prev =>
@@ -124,9 +155,33 @@ function JobsContent() {
         <p className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900 dark:text-zinc-100 mt-2">
           Discover your next challenge
         </p>
+
+        {/* Division Quick Filter Bar */}
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mr-1 flex items-center gap-1">
+            <MapPin size={14} className="text-indigo-500" /> Division:
+          </span>
+          {BANGLADESH_DIVISIONS.map((div) => {
+            const isSelected = selectedDivision === div;
+            return (
+              <button
+                key={div}
+                type="button"
+                onClick={() => setSelectedDivision(div)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium tracking-wide transition-all cursor-pointer border ${
+                  isSelected
+                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-500/20'
+                    : 'bg-white dark:bg-zinc-900/60 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-300 hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-white'
+                }`}
+              >
+                {div}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      <div className="border-b border-slate-200 dark:border-zinc-800/60 bg-white/80 dark:bg-transparent backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
+      <div className="border-b border-slate-200 dark:border-zinc-800/60 bg-white/80 dark:bg-transparent backdrop-blur-md sticky top-0 z-50 transition-colors duration-300 mt-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5">
           <div className="flex flex-col lg:flex-row gap-5 items-stretch lg:items-center">
 
@@ -135,7 +190,7 @@ function JobsContent() {
               <Search className="absolute left-4 top-3.5 text-slate-400 dark:text-zinc-500 transition-colors group-focus-within:text-indigo-500" size={18} />
               <input
                 type="text"
-                placeholder="Search by position, company, or skills..."
+                placeholder="Search by position, company, skills or location..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-white dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800/80 pl-11 pr-4 py-3.5 rounded-xl text-sm transition-all focus:outline-none focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/30 placeholder-slate-400 dark:placeholder-zinc-500 text-slate-900 dark:text-white shadow-sm"
@@ -143,8 +198,27 @@ function JobsContent() {
             </div>
 
             {/* Filter Controls Wrapper */}
-            <div className="flex flex-wrap lg:flex-nowrap items-center gap-6 bg-white/90 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800/40 p-2 lg:p-1.5 rounded-xl shadow-sm">
-              <div className="flex items-center gap-2 px-3 text-slate-500 dark:text-zinc-400 text-xs font-semibold tracking-wider uppercase">
+            <div className="flex flex-wrap lg:flex-nowrap items-center gap-4 bg-white/90 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800/40 p-2 lg:p-1.5 rounded-xl shadow-sm">
+              
+              {/* Division Dropdown Selector */}
+              <div className="relative flex items-center w-full sm:w-auto">
+                <MapPin size={14} className="absolute left-3 text-indigo-500 pointer-events-none" />
+                <select
+                  value={selectedDivision}
+                  onChange={(e) => setSelectedDivision(e.target.value)}
+                  className="w-full sm:w-auto bg-slate-50 dark:bg-zinc-950/50 border border-slate-200 dark:border-zinc-800/60 rounded-lg pl-9 pr-8 py-1.5 text-xs font-semibold text-slate-700 dark:text-zinc-300 focus:outline-none focus:border-indigo-500/80 appearance-none cursor-pointer hover:text-slate-900 dark:hover:text-zinc-100 transition-colors shadow-sm"
+                >
+                  {BANGLADESH_DIVISIONS.map((div) => (
+                    <option key={div} value={div} className="bg-white text-slate-900 dark:bg-zinc-900 dark:text-white">
+                      {div === 'All Divisions' ? '📍 All Divisions (BD)' : `📍 ${div} Division`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="h-px lg:h-6 w-full lg:w-px bg-slate-200 dark:bg-zinc-800/80" />
+
+              <div className="flex items-center gap-2 px-2 text-slate-500 dark:text-zinc-400 text-xs font-semibold tracking-wider uppercase">
                 <SlidersHorizontal size={14} className="text-slate-400 dark:text-zinc-500" />
                 <span>Type</span>
               </div>
@@ -157,7 +231,7 @@ function JobsContent() {
                       key={type}
                       type="button"
                       onClick={() => toggleType(type)}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-medium tracking-wide transition-all border cursor-pointer ${isChecked
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium tracking-wide transition-all border cursor-pointer ${isChecked
                           ? 'bg-indigo-600/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-300 shadow-sm'
                           : 'bg-slate-50 dark:bg-zinc-950/40 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200'
                         }`}
@@ -199,7 +273,7 @@ function JobsContent() {
           <div className="text-center py-32 border border-dashed border-slate-300 dark:border-zinc-800/60 rounded-3xl bg-white/60 dark:bg-zinc-900/10 shadow-sm">
             <Briefcase className="mx-auto text-slate-400 dark:text-zinc-600 mb-4" size={32} />
             <h3 className="text-base font-medium text-slate-700 dark:text-zinc-300">No vacancies match your search</h3>
-            <p className="text-sm text-slate-500 dark:text-zinc-500 mt-1 max-w-xs mx-auto">Try resetting active filters or searching for another company or role.</p>
+            <p className="text-sm text-slate-500 dark:text-zinc-500 mt-1 max-w-xs mx-auto">Try resetting active filters or selecting a different division or role.</p>
           </div>
         ) : (
           <>
@@ -277,10 +351,17 @@ function JobsContent() {
                             <span className="capitalize">{job.type || job.jobType?.replace('-', ' ') || 'Full-time'}</span>
                           </div>
 
-                          {job.location && (
-                            <div className="flex items-center gap-2.5 text-slate-600 dark:text-zinc-400 text-xs">
-                              <MapPin size={14} className="text-indigo-500 dark:text-indigo-400/80" />
-                              <span className="text-slate-700 dark:text-zinc-300">{job.location}</span>
+                          {(job.location || job.division) && (
+                            <div className="flex items-center justify-between gap-2 text-slate-600 dark:text-zinc-400 text-xs">
+                              <div className="flex items-center gap-2.5">
+                                <MapPin size={14} className="text-indigo-500 dark:text-indigo-400/80" />
+                                <span className="text-slate-700 dark:text-zinc-300">{job.location || job.division}</span>
+                              </div>
+                              {job.division && (
+                                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/20">
+                                  {job.division}
+                                </span>
+                              )}
                             </div>
                           )}
                         </div>
