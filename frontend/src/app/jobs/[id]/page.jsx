@@ -294,17 +294,19 @@ export default function JobDetailsPage() {
             >
               <Bookmark size={18} className={isSaved ? 'fill-current' : ''} />
             </button>
-            {applied ? (
-              <button disabled className="flex-1 sm:flex-initial px-6 py-3 bg-slate-200 dark:bg-zinc-850 text-slate-400 dark:text-zinc-500 font-semibold rounded-xl cursor-not-allowed text-sm tracking-wide border border-slate-300 dark:border-zinc-800">
-                Applied
-              </button>
-            ) : (
-              <button 
-                onClick={handleApplyClick}
-                className="flex-1 sm:flex-initial px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition text-sm tracking-wide cursor-pointer shadow-lg"
-              >
-                Apply Now
-              </button>
+            {user?.role !== 'recruiter' && (
+              applied ? (
+                <button disabled className="flex-1 sm:flex-initial px-6 py-3 bg-slate-200 dark:bg-zinc-850 text-slate-400 dark:text-zinc-500 font-semibold rounded-xl cursor-not-allowed text-sm tracking-wide border border-slate-300 dark:border-zinc-800">
+                  Applied
+                </button>
+              ) : (
+                <button 
+                  onClick={handleApplyClick}
+                  className="flex-1 sm:flex-initial px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition text-sm tracking-wide cursor-pointer shadow-lg"
+                >
+                  Apply Now
+                </button>
+              )
             )}
           </div>
         </div>
