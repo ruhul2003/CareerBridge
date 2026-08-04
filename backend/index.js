@@ -200,6 +200,16 @@ app.get('/api/applications', async (req, res) => {
     if (req.query.jobId) {
       query.jobId = req.query.jobId;
     }
+    if (req.query.companyId) {
+      // Find all jobs for this company first, to handle older applications that might not have companyId saved,
+      // and also query by companyId directly.
+      const jobs = await jobCollection.find({ companyId: req.query.companyId }).toArray();
+      const jobIds = jobs.map(j => j._id.toString());
+      query.$or = [
+        { companyId: req.query.companyId },
+        { jobId: { $in: jobIds } }
+      ];
+    }
     const cursor = applicationColection.find(query);
     const result = await cursor.toArray();
     res.send(result);
@@ -230,7 +240,8 @@ app.post('/api/applications', async (req, res) => {
           companyName: job.companyName,
           jobType: job.jobType,
           isRemote: job.isRemote,
-          location: job.location
+          location: job.location,
+          companyId: job.companyId
         };
       }
     } catch (e) {
@@ -413,32 +424,34 @@ app.post("/api/companies", async (req, res) => {
   }
 });
 
-// GET companies with search support
+// GET companies with search and recruiterId support
 app.get("/api/companies", async (req, res) => {
     try {
-        const { search } = req.query;
+        const { search, recruiterId } = req.query;
 
         let query = {};
+
+        if (recruiterId) {
+            query.recruiterId = recruiterId;
+        }
 
         if (search && search.trim() !== '') {
             const searchRegex = new RegExp(search.trim(), 'i');
 
-            query = {
-                $or: [
-                    { name: searchRegex },
-                    { industry: searchRegex },
-                    { location: searchRegex },
-                    { description: searchRegex },
-                    { tagline: searchRegex }
-                ]
-            };
+            query.$or = [
+                { name: searchRegex },
+                { industry: searchRegex },
+                { location: searchRegex },
+                { description: searchRegex },
+                { tagline: searchRegex }
+            ];
         }
 
         const companies = await companyCollection.find(query)
             .sort({ createdAt: -1 })     // Newest first
             .toArray();
 
-        res.json(companies); // Better to use .json() instead of .send()
+        res.json(companies);
     } catch (error) {
         console.error("Error fetching companies:", error);
         res.status(500).json({ 
@@ -514,28 +527,53 @@ app.post('/api/activate-subscription', async (req, res) => {
     }
 });
 
-// GET companies with filter and query matching
-app.get("/api/companies", async (req, res) => {
+// PATCH update job details or status
+app.patch("/api/jobs/:id", async (req, res) => {
   try {
-    const { recruiterId, search } = req.query;
-    const query = {};
+    const id = req.params.id;
+    const updateData = req.body;
 
-    if (recruiterId) {
-      query.recruiterId = recruiterId;
+    delete updateData._id; // Safety check
+
+    const result = await jobCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { ...updateData, updatedAt: new Date() } }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ success: false, message: "Job not found" });
     }
 
-    if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: "i" } },
-        { industry: { $regex: search, $options: "i" } },
-        { location: { $regex: search, $options: "i" } }
-      ];
-    }
-
-    const result = await companyCollection.find(query).toArray();
-    res.send(result);
+    res.json({ success: true, modifiedCount: result.modifiedCount });
   } catch (error) {
-    res.status(500).send({ message: "Error fetching companies", error });
+    console.error("Error updating job:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// PATCH update application status
+app.patch("/api/applications/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({ success: false, message: "Status is required" });
+    }
+
+    const result = await applicationColection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { status, updatedAt: new Date() } }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ success: false, message: "Application not found" });
+    }
+
+    res.json({ success: true, modifiedCount: result.modifiedCount });
+  } catch (error) {
+    console.error("Error updating application status:", error);
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 

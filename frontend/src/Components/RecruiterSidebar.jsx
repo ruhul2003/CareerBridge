@@ -10,7 +10,7 @@ import {
     Settings,
 } from 'lucide-react';
 
-const RecruiterSidebar = ({ currentTab, setCurrentTab }) => {
+const RecruiterSidebar = ({ currentTab, setCurrentTab, user }) => {
     const menuItems = [
         {
             id: 'dashboard',
@@ -39,6 +39,17 @@ const RecruiterSidebar = ({ currentTab, setCurrentTab }) => {
         },
     ];
 
+    const getPlanLabel = (plan) => {
+        if (plan === 'recruiter_enterprise') return 'ENTERPRISE';
+        if (plan === 'recruiter_growth') return 'GROWTH';
+        return 'FREE';
+    };
+
+    const getInitials = (name) => {
+        if (!name) return 'R';
+        return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    };
+
     return (
         <aside className="w-72  bg-[#0b0b0d] border-r border-neutral-800 flex flex-col justify-between">
 
@@ -50,26 +61,36 @@ const RecruiterSidebar = ({ currentTab, setCurrentTab }) => {
 
                     <div className="flex items-center gap-3">
 
-                        <Image
-                            src="https://i.pravatar.cc/100?img=12"
-                            alt="Recruiter"
-                            width={48}
-                            height={48}
-                            className="rounded-full"
-                        />
+                        {user?.image ? (
+                            <Image
+                                src={user.image}
+                                alt="Recruiter"
+                                width={48}
+                                height={48}
+                                className="rounded-full object-cover"
+                            />
+                        ) : (
+                            <div className="w-12 h-12 rounded-full bg-neutral-800 text-white flex items-center justify-center font-bold text-lg border border-neutral-700 shrink-0">
+                                {getInitials(user?.name || user?.fullName)}
+                            </div>
+                        )}
 
-                        <div>
+                        <div className="min-w-0 flex-1">
 
-                            <h2 className="font-semibold text-white">
-                                Alex Sterling
+                            <h2 className="font-semibold text-white truncate" title={user?.name || user?.fullName}>
+                                {user?.name || user?.fullName || 'Recruiter'}
                             </h2>
 
-                            <p className="text-xs text-gray-400">
-                                Recruiter
+                            <p className="text-xs text-gray-400 truncate" title={user?.email}>
+                                {user?.email}
                             </p>
 
-                            <span className="inline-block mt-2 text-[10px] bg-neutral-800 text-gray-300 px-2 py-1 rounded">
-                                PREMIUM ACCOUNT
+                            <span className={`inline-block mt-2 text-[9px] font-bold px-2 py-0.5 rounded tracking-wider ${
+                                user?.plan === 'recruiter_enterprise' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' :
+                                user?.plan === 'recruiter_growth' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
+                                'bg-zinc-800 text-zinc-400 border border-zinc-700'
+                            }`}>
+                                {getPlanLabel(user?.plan)}
                             </span>
 
                         </div>

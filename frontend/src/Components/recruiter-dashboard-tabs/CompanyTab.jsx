@@ -6,23 +6,24 @@ import {
     ImageIcon, MapPin, Briefcase, Globe, Users, ExternalLink 
 } from 'lucide-react';
 
-const CompanyTab = () => {
-    const CURRENT_RECRUITER_ID = "current-user-id"; 
+const CompanyTab = ({ user }) => {
+    const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
 
     const [company, setCompany] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     
     const [formData, setFormData] = useState({
-        name: '', industry: '', website: '', location: '', employeeRange: '', description: '',
+        name: '', industry: '', website: '', location: '', employeeRange: '1-10', description: '',
     });
     const [logo, setLogo] = useState(null);
     const fileInputRef = useRef(null);
 
     const fetchMyCompany = async () => {
+        if (!user?.id) return;
         setIsLoading(true);
         try {
-            const res = await fetch(`http://localhost:5000/api/companies?recruiterId=${CURRENT_RECRUITER_ID}`);
+            const res = await fetch(`${SERVER_URL}/api/companies?recruiterId=${user.id}`);
             if (res.ok) {
                 const data = await res.json();
                 if (data && data.length > 0) {
@@ -39,8 +40,10 @@ const CompanyTab = () => {
     };
 
     useEffect(() => {
-        fetchMyCompany();
-    }, []);
+        if (user?.id) {
+            fetchMyCompany();
+        }
+    }, [user?.id]);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -53,21 +56,22 @@ const CompanyTab = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!user?.id) return;
         try {
-            const res = await fetch('http://localhost:5000/api/companies', {
+            const res = await fetch(`${SERVER_URL}/api/companies`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...formData,
                     logo: logo ? logo.name : null,
-                    recruiterId: CURRENT_RECRUITER_ID, 
+                    recruiterId: user.id, 
                 }),
             });
 
             if (res.ok) {
                 alert("Company registered successfully!");
                 setIsModalOpen(false);
-                setFormData({ name: '', industry: '', website: '', location: '', employeeRange: '', description: '' });
+                setFormData({ name: '', industry: '', website: '', location: '', employeeRange: '1-10', description: '' });
                 setLogo(null);
                 fetchMyCompany(); 
             }
