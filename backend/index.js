@@ -577,6 +577,119 @@ app.patch("/api/applications/:id", async (req, res) => {
   }
 });
 
+// ====================== ADMIN ENDPOINTS ======================
+
+// GET admin statistics
+app.get("/api/admin/stats", async (req, res) => {
+  try {
+    const totalUsers = await userscollection.countDocuments();
+    const totalJobs = await jobCollection.countDocuments();
+    const totalCompanies = await companyCollection.countDocuments();
+    const totalApplications = await applicationColection.countDocuments();
+    const totalSeekers = await userscollection.countDocuments({ role: "seeker" });
+    const totalRecruiters = await userscollection.countDocuments({ role: "recruiter" });
+    const totalAdmins = await userscollection.countDocuments({ role: "admin" });
+
+    res.json({
+      success: true,
+      stats: {
+        totalUsers,
+        totalSeekers,
+        totalRecruiters,
+        totalAdmins,
+        totalJobs,
+        totalCompanies,
+        totalApplications
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET all users
+app.get("/api/admin/users", async (req, res) => {
+  try {
+    const users = await userscollection.find({}).toArray();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// PATCH update user role
+app.patch("/api/admin/users/:id/role", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { role } = req.body;
+
+    if (!role) {
+      return res.status(400).json({ success: false, message: "Role is required" });
+    }
+
+    const result = await userscollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { role, updatedAt: new Date() } }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, modifiedCount: result.modifiedCount });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// DELETE user
+app.delete("/api/admin/users/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await userscollection.deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, deletedCount: result.deletedCount });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// DELETE job
+app.delete("/api/admin/jobs/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await jobCollection.deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    res.json({ success: true, deletedCount: result.deletedCount });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// DELETE company
+app.delete("/api/admin/companies/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await companyCollection.deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ success: false, message: "Company not found" });
+    }
+
+    res.json({ success: true, deletedCount: result.deletedCount });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // Ping configuration for direct backend confirmation
 app.get("/api/db-ping", async (req, res) => {
   try {
