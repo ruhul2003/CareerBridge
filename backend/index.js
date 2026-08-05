@@ -723,7 +723,7 @@ app.post("/api/ai/chat", async (req, res) => {
     const fullPrompt = `${systemContext}\n\n${context ? `User Context: ${context}\n\n` : ''}User Question: ${prompt}`;
 
     const response = await aiClient.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.0-flash",
       contents: fullPrompt,
     });
 
@@ -761,7 +761,7 @@ Return your response strictly as a raw JSON object (without markdown code block 
 }`;
 
     const response = await aiClient.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.0-flash",
       contents: prompt,
     });
 
