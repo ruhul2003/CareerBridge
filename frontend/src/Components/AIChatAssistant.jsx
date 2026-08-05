@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Bot, Sparkles, Send, X, Minimize2, RefreshCw, User } from 'lucide-react';
+import { Bot, Sparkles, Send, X, Minimize2, RefreshCw, User, ArrowUp } from 'lucide-react';
 
 export default function AIChatAssistant() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,10 +15,15 @@ export default function AIChatAssistant() {
   ]);
 
   const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
   const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const scrollToTop = () => {
+    chatContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -102,6 +107,13 @@ export default function AIChatAssistant() {
             </div>
             <div className="flex items-center gap-1">
               <button
+                onClick={scrollToTop}
+                className="p-1.5 hover:bg-white/15 rounded-lg text-indigo-100 transition cursor-pointer"
+                title="Scroll to top of chat"
+              >
+                <ArrowUp size={16} />
+              </button>
+              <button
                 onClick={() => setIsOpen(false)}
                 className="p-1.5 hover:bg-white/15 rounded-lg text-indigo-100 transition cursor-pointer"
                 title="Minimize"
@@ -112,7 +124,7 @@ export default function AIChatAssistant() {
           </div>
 
           {/* Messages Container */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3 scrollbar-thin scrollbar-thumb-slate-700">
+          <div ref={chatContainerRef} className="flex-1 p-4 overflow-y-auto space-y-3 scrollbar-thin scrollbar-thumb-slate-700">
             {messages.map((msg, idx) => (
               <div
                 key={idx}

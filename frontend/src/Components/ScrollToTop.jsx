@@ -43,7 +43,7 @@ export default function ScrollToTop() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="fixed bottom-6 right-6 z-50"
+          className="fixed bottom-20 right-6 z-40"
         >
           <motion.button
             whileHover={{ scale: 1.1 }}
