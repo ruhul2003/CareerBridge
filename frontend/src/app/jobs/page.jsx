@@ -168,11 +168,10 @@ function JobsContent() {
                 key={div}
                 type="button"
                 onClick={() => setSelectedDivision(div)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-medium tracking-wide transition-all cursor-pointer border ${
-                  isSelected
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium tracking-wide transition-all cursor-pointer border ${isSelected
                     ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-500/20'
                     : 'bg-white dark:bg-zinc-900/60 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-300 hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-white'
-                }`}
+                  }`}
               >
                 {div}
               </button>
@@ -199,7 +198,7 @@ function JobsContent() {
 
             {/* Filter Controls Wrapper */}
             <div className="flex flex-wrap lg:flex-nowrap items-center gap-4 bg-white/90 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800/40 p-2 lg:p-1.5 rounded-xl shadow-sm">
-              
+
               {/* Division Dropdown Selector */}
               <div className="relative flex items-center w-full sm:w-auto">
                 <MapPin size={14} className="absolute left-3 text-indigo-500 pointer-events-none" />
@@ -210,7 +209,7 @@ function JobsContent() {
                 >
                   {BANGLADESH_DIVISIONS.map((div) => (
                     <option key={div} value={div} className="bg-white text-slate-900 dark:bg-zinc-900 dark:text-white">
-                      {div === 'All Divisions' ? '📍 All Divisions (BD)' : `📍 ${div} Division`}
+                      {div === 'All Divisions' ? ' All Divisions (BD)' : ` ${div} Division`}
                     </option>
                   ))}
                 </select>
@@ -232,8 +231,8 @@ function JobsContent() {
                       type="button"
                       onClick={() => toggleType(type)}
                       className={`px-3 py-1.5 rounded-lg text-xs font-medium tracking-wide transition-all border cursor-pointer ${isChecked
-                          ? 'bg-indigo-600/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-300 shadow-sm'
-                          : 'bg-slate-50 dark:bg-zinc-950/40 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200'
+                        ? 'bg-indigo-600/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-300 shadow-sm'
+                        : 'bg-slate-50 dark:bg-zinc-950/40 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200'
                         }`}
                     >
                       <span className="capitalize">{type.replace('-', ' ')}</span>
@@ -327,8 +326,8 @@ function JobsContent() {
 
                         {/* Status Tag */}
                         <span className={`text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-full border uppercase ${job.status === 'active' || !job.status
-                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
-                            : 'bg-slate-100 dark:bg-zinc-800/40 text-slate-500 dark:text-zinc-500 border-slate-200 dark:border-zinc-800'
+                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+                          : 'bg-slate-100 dark:bg-zinc-800/40 text-slate-500 dark:text-zinc-500 border-slate-200 dark:border-zinc-800'
                           }`}>
                           {job.status || 'Active'}
                         </span>
@@ -401,11 +400,10 @@ function JobsContent() {
                     <button
                       key={page}
                       onClick={() => handlePageChange(page)}
-                      className={`w-9 h-9 text-xs font-bold rounded-xl border transition cursor-pointer ${
-                        currentPage === page
+                      className={`w-9 h-9 text-xs font-bold rounded-xl border transition cursor-pointer ${currentPage === page
                           ? 'bg-indigo-600 border-indigo-500 text-white shadow-md'
                           : 'bg-slate-100 dark:bg-zinc-950/40 border-slate-200 dark:border-zinc-800/80 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
-                      }`}
+                        }`}
                     >
                       {page}
                     </button>

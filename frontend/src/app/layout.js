@@ -18,6 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 import CustomCursor from "@/Components/CustomCursor";
+import AIChatAssistant from "@/Components/AIChatAssistant";
 
 export default function RootLayout({ children }) {
   return (
@@ -36,6 +37,7 @@ export default function RootLayout({ children }) {
           </main>
           <Footer />
           <ScrollToTop />
+          <AIChatAssistant />
         </ThemeProvider>
       </body>
     </html>

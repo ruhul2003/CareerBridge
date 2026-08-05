@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
     Briefcase, MapPin, DollarSign, Calendar, Plus, Edit2, 
-    Power, X, Building2, HelpCircle, Check, Loader2 
+    Power, X, Building2, HelpCircle, Check, Loader2, Sparkles 
 } from 'lucide-react';
 
 const JobsTab = ({ user }) => {
@@ -13,6 +13,44 @@ const JobsTab = ({ user }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingJob, setEditingJob] = useState(null);
+    const [aiGenerating, setAiGenerating] = useState(false);
+
+    const handleGenerateAI = async () => {
+        if (!formData.jobTitle) {
+            alert('Please enter a Job Title first so AI can generate the posting!');
+            return;
+        }
+        setAiGenerating(true);
+        try {
+            const res = await fetch(`${SERVER_URL}/api/ai/generate-job-description`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: formData.jobTitle,
+                    category: formData.division,
+                    jobType: formData.jobType,
+                    location: formData.location,
+                    companyName: company?.name
+                })
+            });
+
+            const data = await res.json();
+            if (data.success && data.data) {
+                setFormData((prev) => ({
+                    ...prev,
+                    description: data.data.description || prev.description,
+                    requirements: data.data.requirements || prev.requirements
+                }));
+            } else {
+                alert(data.message || 'Failed to generate content with AI');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error connecting to AI service');
+        } finally {
+            setAiGenerating(false);
+        }
+    };
 
     // Form states
     const [formData, setFormData] = useState({
@@ -415,7 +453,18 @@ const JobsTab = ({ user }) => {
 
                             {/* Row 5 - Description */}
                             <div>
-                                <label className="block text-xs font-medium text-zinc-300 mb-2">Job Description *</label>
+                                <div className="flex items-center justify-between mb-2">
+                                    <label className="block text-xs font-medium text-zinc-300">Job Description *</label>
+                                    <button
+                                        type="button"
+                                        onClick={handleGenerateAI}
+                                        disabled={aiGenerating}
+                                        className="flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 px-2.5 py-1 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+                                    >
+                                        <Sparkles size={13} className={aiGenerating ? "animate-spin text-indigo-400" : "text-amber-400"} />
+                                        <span>{aiGenerating ? "Generating with Gemini..." : "✨ Auto-Fill with AI"}</span>
+                                    </button>
+                                </div>
                                 <textarea 
                                     required value={formData.description} 
                                     onChange={(e) => setFormData({...formData, description: e.target.value})}

@@ -700,6 +700,84 @@ app.get("/api/db-ping", async (req, res) => {
   }
 });
 
+// ====================== AI ENDPOINTS (GEMINI API) ======================
+
+const { GoogleGenAI } = require("@google/genai");
+const geminiApiKey = process.env.GEMINI_API_KEY;
+const aiClient = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
+
+// AI Chat & Career Coach Endpoint
+app.post("/api/ai/chat", async (req, res) => {
+  try {
+    const { prompt, context } = req.body;
+    if (!prompt) {
+      return res.status(400).json({ success: false, message: "Prompt is required" });
+    }
+
+    if (!aiClient) {
+      return res.status(500).json({ success: false, message: "Gemini API key is not configured on server" });
+    }
+
+    const systemContext = "You are CareerBridge AI Assistant, an expert career advisor, resume consultant, and interview coach for the CareerBridge job portal platform. Provide encouraging, concise, highly relevant, and practical advice. Use markdown styling with clear headings and short bullet points.";
+
+    const fullPrompt = `${systemContext}\n\n${context ? `User Context: ${context}\n\n` : ''}User Question: ${prompt}`;
+
+    const response = await aiClient.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: fullPrompt,
+    });
+
+    res.json({ success: true, reply: response.text });
+  } catch (error) {
+    console.error("AI Chat Error:", error);
+    res.status(500).json({ success: false, message: error.message || "Failed to generate AI response" });
+  }
+});
+
+// AI Job Description Generator Endpoint
+app.post("/api/ai/generate-job-description", async (req, res) => {
+  try {
+    const { title, category, jobType, location, companyName } = req.body;
+    if (!title) {
+      return res.status(400).json({ success: false, message: "Job title is required" });
+    }
+
+    if (!aiClient) {
+      return res.status(500).json({ success: false, message: "Gemini API key is not configured on server" });
+    }
+
+    const prompt = `You are an expert HR Specialist writing a job posting for ${companyName || 'our company'}.
+Generate a professional, compelling job description for the role:
+Position: ${title}
+Category: ${category || 'Technology'}
+Job Type: ${jobType || 'Full-time'}
+Location: ${location || 'Dhaka, Bangladesh'}
+
+Return your response strictly as a raw JSON object (without markdown code block backticks) with the exact keys:
+{
+  "description": "A 2 paragraph summary describing the role and impact...",
+  "responsibilities": "Bullet list of key responsibilities...",
+  "requirements": "Bullet list of required qualifications and skills..."
+}`;
+
+    const response = await aiClient.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+    });
+
+    let resultText = response.text.trim();
+    if (resultText.startsWith("```")) {
+      resultText = resultText.replace(/^```(json)?\n?/, '').replace(/\n?```$/, '').trim();
+    }
+
+    const parsedData = JSON.parse(resultText);
+    res.json({ success: true, data: parsedData });
+  } catch (error) {
+    console.error("AI Job Description Error:", error);
+    res.status(500).json({ success: false, message: error.message || "Failed to generate job description" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Application listening natively on port ${port}`);
 });
