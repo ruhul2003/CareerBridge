@@ -49,7 +49,7 @@ export default function AIChatAssistant() {
       } else {
         setMessages((prev) => [
           ...prev,
-          { role: 'assistant', content: 'Sorry, I ran into an error generating a response. Please try again.' }
+          { role: 'assistant', content: `⚠️ ${data.message || 'Sorry, I ran into an error generating a response. Please try again.'}` }
         ]);
       }
     } catch (err) {
@@ -95,7 +95,7 @@ export default function AIChatAssistant() {
               <div>
                 <div className="flex items-center gap-1.5">
                   <h3 className="font-bold text-sm leading-none">CareerBridge AI</h3>
-                  <span className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase">Gemini 2.5</span>
+                  <span className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase">Gemini 2.0</span>
                 </div>
                 <p className="text-[11px] text-indigo-100/80 mt-0.5">Your personal career coach</p>
               </div>
