@@ -294,7 +294,7 @@ export default function JobDetailsPage() {
             >
               <Bookmark size={18} className={isSaved ? 'fill-current' : ''} />
             </button>
-            {user?.role !== 'recruiter' && (
+            {user?.role !== 'recruiter' && user?.role !== 'admin' && (
               applied ? (
                 <button disabled className="flex-1 sm:flex-initial px-6 py-3 bg-slate-200 dark:bg-zinc-850 text-slate-400 dark:text-zinc-500 font-semibold rounded-xl cursor-not-allowed text-sm tracking-wide border border-slate-300 dark:border-zinc-800">
                   Applied
