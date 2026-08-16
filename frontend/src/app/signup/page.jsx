@@ -21,7 +21,9 @@ function SignUpForm() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [role, setRole] = useState("seeker");
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -59,6 +61,12 @@ function SignUpForm() {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match. Please ensure both password fields are identical.");
+      setIsLoading(false);
+      return;
+    }
 
     try {
       let avatarUrl = "";
@@ -192,27 +200,60 @@ function SignUpForm() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">Password</label>
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
-                  <Lock className="w-5 h-5" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">Password</label>
+                <div className="relative">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
+                    <Lock className="w-5 h-5" />
+                  </div>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full pl-11 pr-12 py-3 bg-zinc-900 border border-zinc-800 rounded-2xl text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-600 transition-all"
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-zinc-400 hover:text-white"
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
                 </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-12 py-3 bg-zinc-900 border border-zinc-800 rounded-2xl text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-600 transition-all"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-zinc-400 hover:text-white"
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </button>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">Confirm Password</label>
+                <div className="relative">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
+                    <Lock className="w-5 h-5" />
+                  </div>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className={`w-full pl-11 pr-12 py-3 bg-zinc-900 border rounded-2xl text-white placeholder-zinc-500 focus:outline-none transition-all ${
+                      confirmPassword && confirmPassword !== password
+                        ? "border-rose-500/80 focus:border-rose-500"
+                        : "border-zinc-800 focus:border-indigo-600"
+                    }`}
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-zinc-400 hover:text-white"
+                  >
+                    {showConfirmPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+                {confirmPassword && confirmPassword !== password && (
+                  <p className="text-[11px] text-rose-400 mt-1.5 font-medium">Passwords do not match</p>
+                )}
               </div>
             </div>
 
