@@ -26,10 +26,30 @@ next, react, better-auth, @better-auth/mongo-adapter
 mongodb, stripe, @stripe/stripe-js
 lucide-react, motion, react-hot-toast, @heroui/react
 
-How to Run Locally
+## 🛠️ How to Run Locally
 
-Clone the repo
-npm install
-Create .env.local with your credentials (MongoDB, Google OAuth, Stripe)
-npm run dev
-Visit http://localhost:3000
+1. Clone the repository
+2. `npm install`
+3. Create `.env.local` with your credentials (MongoDB, Google OAuth, Stripe)
+4. `npm run dev`
+5. Open [http://localhost:3000](http://localhost:3000)
+
+---
+
+## 👥 Development Team
+
+| Name | Student ID | Role |
+| :--- | :---: | :--- |
+| **MD. Ruhul Amin** | `41230301323` | **Team Leader** & Full-Stack Architect |
+| **Anike Podder** | `41230301317` | Developer |
+| **Farjana Afrin Urmi** | `41230301324` | Developer |
+| **Azharul Islam Tohin** | `41230301335` | Developer |
+
+---
+
+## 🙏 Acknowledgements & Thanksgiving
+
+We express our deepest gratitude to the entire **CareerBridge** development team for their extraordinary dedication, technical ingenuity, and collaborative spirit throughout the project lifecycle. Building an enterprise-grade e-recruitment platform required solving complex architectural, UI/UX, and AI integration challenges. 
+
+Special recognition goes to our **Team Leader, MD. Ruhul Amin** (`41230301323`), for providing strategic vision, architecting the full-stack system, and orchestrating the integration of **Next.js 16**, **Express.js**, **Google Gemini 2.0 Flash**, and **Stripe**. Equal appreciation goes to **Anike Podder** (`41230301317`), **Farjana Afrin Urmi** (`41230301324`), and **Azharul Islam Tohin** (`41230301335`) for their invaluable contributions toward frontend interfaces, backend API engineering, database schema optimization, and system quality assurance.
+
