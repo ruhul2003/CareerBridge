@@ -5,11 +5,12 @@ import { ArrowLeft, Bookmark, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
+import toast from 'react-hot-toast';
 
 export default function JobDetailsPage() {
   const params = useParams();
   const router = useRouter();
-  const jobId = params.id;
+  const jobId = params?.id;
 
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,9 +19,11 @@ export default function JobDetailsPage() {
   const [applied, setApplied] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [resume, setResume] = useState('');
+  const [cv, setCv] = useState('');
   const [coverLetter, setCoverLetter] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [uploadingDoc, setUploadingDoc] = useState({ resume: false, cv: false });
   const [isSaved, setIsSaved] = useState(false);
 
   const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
@@ -49,6 +52,7 @@ export default function JobDetailsPage() {
     fetchJobDetails();
   }, [jobId, SERVER_URL]);
 
+  // Check if user has already applied for this job
   useEffect(() => {
     const checkIfApplied = async () => {
       if (!user?.id || !jobId) return;
@@ -109,6 +113,7 @@ export default function JobDetailsPage() {
 
       if (docType === 'resume') setResume(data.documentUrl);
       if (docType === 'cv') setCv(data.documentUrl);
+      toast.success(`${docType.toUpperCase()} file attached!`);
     } catch (err) {
       console.error(err);
       setSubmitError(err.message || `Failed to upload ${docType}`);
@@ -119,7 +124,12 @@ export default function JobDetailsPage() {
 
   const handleApplyClick = () => {
     if (!user) {
+      toast.error('Please log in to apply for this job.');
       router.push('/login');
+      return;
+    }
+    if (user.role === 'recruiter' || user.role === 'admin') {
+      toast.error('Recruiters and Admins cannot apply for job postings.');
       return;
     }
     setShowApplyModal(true);
@@ -128,7 +138,7 @@ export default function JobDetailsPage() {
   const handleApplySubmit = async (e) => {
     e.preventDefault();
     if (!resume && !cv) {
-      setSubmitError('Please provide at least a Resume or CV');
+      setSubmitError('Please upload or provide at least a Resume or CV.');
       return;
     }
     setSubmitting(true);
@@ -144,7 +154,7 @@ export default function JobDetailsPage() {
           jobId,
           applicantId: user.id,
           applicantEmail: user.email,
-          applicantName: user.name,
+          applicantName: user.name || user.fullName || user.email || 'Applicant',
           resume,
           cv,
           coverLetter,
@@ -158,9 +168,10 @@ export default function JobDetailsPage() {
 
       setApplied(true);
       setShowApplyModal(false);
+      toast.success('Application submitted successfully!');
     } catch (err) {
       console.error(err);
-      setSubmitError(err.message || 'Something went wrong');
+      setSubmitError(err.message || 'Something went wrong submitting application');
     } finally {
       setSubmitting(false);
     }
@@ -170,12 +181,11 @@ export default function JobDetailsPage() {
     const checkIfSaved = async () => {
       if (!user?.id || !jobId) return;
       try {
-        const res = await fetch(`${SERVER_URL}/api/saved-jobs?userId=${user.id}&jobId=${jobId}`);
+        const res = await fetch(`${SERVER_URL}/api/saved-jobs?userId=${user.id}`);
         if (res.ok) {
           const data = await res.json();
-          if (data && data.length > 0) {
-            setIsSaved(true);
-          }
+          const exists = data.some(item => item.jobId === jobId || item._id === jobId);
+          setIsSaved(exists);
         }
       } catch (err) {
         console.error("Error checking saved job status:", err);
@@ -221,14 +231,20 @@ export default function JobDetailsPage() {
 
   // Dynamic salary formatting helper matching your schema fields
   const formatSalary = (min, max, currency) => {
-    const activeCurrency = currency && currency.trim() !== "" ? currency : 'BDT';
-    
-    if (min && max) {
-      return `${activeCurrency} ${Number(min).toLocaleString()} – ${Number(max).toLocaleString()}`;
+    try {
+      const activeCurrency = currency && typeof currency === 'string' && currency.trim() !== "" ? currency : 'BDT';
+      const numMin = min !== undefined && min !== null ? Number(min) : NaN;
+      const numMax = max !== undefined && max !== null ? Number(max) : NaN;
+
+      if (!isNaN(numMin) && !isNaN(numMax) && min && max) {
+        return `${activeCurrency} ${numMin.toLocaleString()} – ${numMax.toLocaleString()}`;
+      }
+      if (!isNaN(numMin) && min) return `From ${activeCurrency} ${numMin.toLocaleString()}`;
+      if (!isNaN(numMax) && max) return `Up to ${activeCurrency} ${numMax.toLocaleString()}`;
+      return typeof currency === 'string' && currency ? currency : 'Salary confidential';
+    } catch (e) {
+      return 'Salary confidential';
     }
-    if (min) return `From ${activeCurrency} ${Number(min).toLocaleString()}`;
-    if (max) return `Up to ${activeCurrency} ${Number(max).toLocaleString()}`;
-    return 'Salary confidential';
   };
 
   const parseListField = (fieldData) => {

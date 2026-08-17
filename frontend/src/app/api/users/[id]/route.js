@@ -13,7 +13,12 @@ export async function GET(request, { params }) {
     const db = client.db(process.env.AUTH_DB_NAME || "hireloop_db");
     const users = db.collection("user");
 
-    const user = await users.findOne({ _id: new ObjectId(id) });
+    let query = { id: id };
+    if (ObjectId.isValid(id)) {
+      query = { $or: [{ _id: new ObjectId(id) }, { id: id }] };
+    }
+
+    const user = await users.findOne(query);
 
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
@@ -28,7 +33,7 @@ export async function GET(request, { params }) {
 
 export async function PATCH(request, { params }) {
   try {
-    const { id } = await params;   // ← This is the fix
+    const { id } = await params;
 
     const body = await request.json();
 
@@ -55,8 +60,13 @@ export async function PATCH(request, { params }) {
       updateFields.cvUrl = c;
     }
 
+    let updateQuery = { id: id };
+    if (ObjectId.isValid(id)) {
+      updateQuery = { $or: [{ _id: new ObjectId(id) }, { id: id }] };
+    }
+
     const result = await users.updateOne(
-      { _id: new ObjectId(id) },
+      updateQuery,
       { $set: updateFields }
     );
 

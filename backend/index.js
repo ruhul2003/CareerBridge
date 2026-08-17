@@ -296,7 +296,11 @@ app.post('/api/applications', async (req, res) => {
 app.get("/api/users/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const user = await userscollection.findOne({ _id: new ObjectId(id) });
+    let query = { id: id };
+    if (ObjectId.isValid(id)) {
+      query = { $or: [{ _id: new ObjectId(id) }, { id: id }] };
+    }
+    const user = await userscollection.findOne(query);
     if (!user) return res.status(404).json({ success: false, message: "User not found" });
     res.json(user);
   } catch (error) {
@@ -330,8 +334,13 @@ app.patch("/api/users/:id", async (req, res) => {
       updateFields.cvUrl = finalCv;
     }
 
+    let updateQuery = { id: id };
+    if (ObjectId.isValid(id)) {
+      updateQuery = { $or: [{ _id: new ObjectId(id) }, { id: id }] };
+    }
+
     const result = await userscollection.updateOne(
-      { _id: new ObjectId(id) },
+      updateQuery,
       { $set: updateFields }
     );
 
