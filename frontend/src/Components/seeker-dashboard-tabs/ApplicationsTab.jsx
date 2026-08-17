@@ -100,6 +100,8 @@ const ApplicationsTab = () => {
     );
   }
 
+  const [selectedApp, setSelectedApp] = useState(null);
+
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       
@@ -223,7 +225,10 @@ const ApplicationsTab = () => {
 
                     {/* Operational Action Anchor Cell */}
                     <td className="p-4 text-right">
-                      <button className="text-neutral-400 hover:text-white font-medium text-xs bg-[#141417] border border-[#27272a] px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
+                      <button 
+                        onClick={() => setSelectedApp(app)}
+                        className="text-neutral-400 hover:text-white font-medium text-xs bg-[#141417] border border-[#27272a] px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+                      >
                         Details
                       </button>
                     </td>
@@ -261,6 +266,83 @@ const ApplicationsTab = () => {
         )}
 
       </div>
+
+      {/* Application Detail Modal for Seeker */}
+      {selectedApp && (
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#121214] border border-zinc-800 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl space-y-6 p-6">
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-white">{selectedApp.jobTitle}</h3>
+                <p className="text-xs text-zinc-400">{selectedApp.companyName} • Applied on {formatTime(selectedApp.appliedAt)}</p>
+              </div>
+              <button onClick={() => setSelectedApp(null)} className="text-zinc-500 hover:text-white text-lg">
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1">Status</h4>
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getStatusBadge(selectedApp.status)}`}>
+                  {selectedApp.status || 'Applied'}
+                </span>
+              </div>
+
+              {selectedApp.coverLetter && (
+                <div>
+                  <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1">Cover Letter</h4>
+                  <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-300 whitespace-pre-wrap">
+                    {selectedApp.coverLetter}
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">Submitted Documents</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-xl flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-indigo-400" />
+                      <span className="text-xs font-medium text-white">Resume</span>
+                    </div>
+                    {selectedApp.resume ? (
+                      <a href={selectedApp.resume} target="_blank" rel="noreferrer" className="text-xs text-indigo-400 hover:underline flex items-center gap-1">
+                        View <Download className="w-3 h-3" />
+                      </a>
+                    ) : (
+                      <span className="text-[10px] text-zinc-500">None</span>
+                    )}
+                  </div>
+
+                  <div className="bg-[#141417] border border-[#27272a] p-3 rounded-xl flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-emerald-400" />
+                      <span className="text-xs font-medium text-white">CV</span>
+                    </div>
+                    {selectedApp.cv ? (
+                      <a href={selectedApp.cv} target="_blank" rel="noreferrer" className="text-xs text-emerald-400 hover:underline flex items-center gap-1">
+                        View <Download className="w-3 h-3" />
+                      </a>
+                    ) : (
+                      <span className="text-[10px] text-zinc-500">None</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-zinc-800 flex justify-end">
+              <button
+                onClick={() => setSelectedApp(null)}
+                className="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-semibold rounded-xl transition"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

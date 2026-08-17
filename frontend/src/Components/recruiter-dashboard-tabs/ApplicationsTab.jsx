@@ -271,29 +271,59 @@ const ApplicationsTab = ({ user }) => {
                                 </div>
                             </div>
 
-                            {/* Resume */}
-                            <div className="space-y-2">
+                            {/* Candidate Documents (Resume & CV) */}
+                            <div className="space-y-3">
                                 <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Candidate Documents</h4>
-                                <div className="bg-[#1f1f21] border border-zinc-800 rounded-xl p-4 flex items-center justify-between gap-4">
-                                    <div className="flex items-center gap-3">
-                                        <FileText className="w-8 h-8 text-amber-500" />
-                                        <div>
-                                            <p className="text-xs font-semibold text-white">Curriculum Vitae / Resume</p>
-                                            <p className="text-[10px] text-zinc-500">Submitted file</p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {/* Resume Card */}
+                                    <div className="bg-[#1f1f21] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between gap-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-400">
+                                                <FileText className="w-5 h-5" />
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-semibold text-white">Resume</p>
+                                                <p className="text-[10px] text-zinc-400">Primary candidate document</p>
+                                            </div>
                                         </div>
+                                        {selectedApp.resume ? (
+                                            <a 
+                                                href={selectedApp.resume}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition shadow"
+                                            >
+                                                <Download className="w-3.5 h-3.5" /> View Resume
+                                            </a>
+                                        ) : (
+                                            <span className="text-[11px] text-zinc-500 italic">No Resume attached</span>
+                                        )}
                                     </div>
-                                    {selectedApp.resume ? (
-                                        <a 
-                                            href={selectedApp.resume}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="px-4 py-2 bg-white text-black hover:bg-zinc-200 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition shadow"
-                                        >
-                                            <Download className="w-3.5 h-3.5" /> View Resume
-                                        </a>
-                                    ) : (
-                                        <span className="text-xs text-zinc-500">No document attached</span>
-                                    )}
+
+                                    {/* CV Card */}
+                                    <div className="bg-[#1f1f21] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between gap-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-400">
+                                                <FileText className="w-5 h-5" />
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-semibold text-white">Curriculum Vitae (CV)</p>
+                                                <p className="text-[10px] text-zinc-400">Detailed work history document</p>
+                                            </div>
+                                        </div>
+                                        {selectedApp.cv ? (
+                                            <a 
+                                                href={selectedApp.cv}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition shadow"
+                                            >
+                                                <Download className="w-3.5 h-3.5" /> View CV
+                                            </a>
+                                        ) : (
+                                            <span className="text-[11px] text-zinc-500 italic">No CV attached</span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 

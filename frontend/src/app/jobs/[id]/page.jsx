@@ -67,6 +67,56 @@ export default function JobDetailsPage() {
     checkIfApplied();
   }, [user, jobId, SERVER_URL]);
 
+  // Prefill resume and cv from user profile
+  useEffect(() => {
+    const fetchUserProfileDocs = async () => {
+      if (!user?.id) return;
+      try {
+        const res = await fetch(`/api/users/${user.id}`);
+        if (res.ok) {
+          const userData = await res.json();
+          if (userData.resume || userData.resumeUrl) {
+            setResume(userData.resume || userData.resumeUrl);
+          }
+          if (userData.cv || userData.cvUrl) {
+            setCv(userData.cv || userData.cvUrl);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching user profile docs:", err);
+      }
+    };
+    fetchUserProfileDocs();
+  }, [user]);
+
+  const handleDocumentUploadModal = async (e, docType) => {
+    const file = e.target.files[0];
+    if (!file || !user?.id) return;
+
+    setUploadingDoc((prev) => ({ ...prev, [docType]: true }));
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('userId', user.id);
+    formData.append('type', docType);
+
+    try {
+      const res = await fetch('/api/upload-document', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Upload failed');
+
+      if (docType === 'resume') setResume(data.documentUrl);
+      if (docType === 'cv') setCv(data.documentUrl);
+    } catch (err) {
+      console.error(err);
+      setSubmitError(err.message || `Failed to upload ${docType}`);
+    } finally {
+      setUploadingDoc((prev) => ({ ...prev, [docType]: false }));
+    }
+  };
+
   const handleApplyClick = () => {
     if (!user) {
       router.push('/login');
@@ -77,8 +127,8 @@ export default function JobDetailsPage() {
 
   const handleApplySubmit = async (e) => {
     e.preventDefault();
-    if (!resume) {
-      setSubmitError('Resume URL is required');
+    if (!resume && !cv) {
+      setSubmitError('Please provide at least a Resume or CV');
       return;
     }
     setSubmitting(true);
@@ -96,6 +146,7 @@ export default function JobDetailsPage() {
           applicantEmail: user.email,
           applicantName: user.name,
           resume,
+          cv,
           coverLetter,
         }),
       });
@@ -497,15 +548,49 @@ export default function JobDetailsPage() {
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Resume URL <span className="text-red-500">*</span></label>
+              {/* Resume Field */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Resume / CV Document</label>
+                  <label className="cursor-pointer text-[10px] text-indigo-400 hover:underline font-semibold">
+                    {uploadingDoc.resume ? 'Uploading File...' : 'Upload File (PDF/DOC)'}
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx,.txt"
+                      className="hidden"
+                      onChange={(e) => handleDocumentUploadModal(e, 'resume')}
+                    />
+                  </label>
+                </div>
                 <input
-                  type="url"
-                  placeholder="https://drive.google.com/..."
-                  required
+                  type="text"
+                  placeholder="Resume URL or file link (https://...)"
                   value={resume}
                   onChange={(e) => setResume(e.target.value)}
-                  className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-xl px-4 py-2.5 text-sm focus:border-indigo-500 outline-none transition"
+                  className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-xl px-4 py-2 text-xs focus:border-indigo-500 outline-none transition"
+                />
+              </div>
+
+              {/* CV Field */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Curriculum Vitae (CV)</label>
+                  <label className="cursor-pointer text-[10px] text-emerald-400 hover:underline font-semibold">
+                    {uploadingDoc.cv ? 'Uploading File...' : 'Upload File (PDF/DOC)'}
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx,.txt"
+                      className="hidden"
+                      onChange={(e) => handleDocumentUploadModal(e, 'cv')}
+                    />
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  placeholder="CV URL or file link (https://...)"
+                  value={cv}
+                  onChange={(e) => setCv(e.target.value)}
+                  className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-xl px-4 py-2 text-xs focus:border-indigo-500 outline-none transition"
                 />
               </div>
 

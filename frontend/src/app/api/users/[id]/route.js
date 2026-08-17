@@ -36,17 +36,28 @@ export async function PATCH(request, { params }) {
     const db = client.db(process.env.AUTH_DB_NAME || "hireloop_db");
     const users = db.collection("user");
 
+    const updateFields = { 
+      fullName: body.fullName,
+      email: body.email,
+      title: body.title,
+      skills: body.skills || [],
+      updatedAt: new Date()
+    };
+
+    if (body.resume !== undefined || body.resumeUrl !== undefined) {
+      const r = body.resume || body.resumeUrl || "";
+      updateFields.resume = r;
+      updateFields.resumeUrl = r;
+    }
+    if (body.cv !== undefined || body.cvUrl !== undefined) {
+      const c = body.cv || body.cvUrl || "";
+      updateFields.cv = c;
+      updateFields.cvUrl = c;
+    }
+
     const result = await users.updateOne(
       { _id: new ObjectId(id) },
-      { 
-        $set: { 
-          fullName: body.fullName,
-          email: body.email,
-          title: body.title,
-          skills: body.skills || [],
-          updatedAt: new Date()
-        } 
-      }
+      { $set: updateFields }
     );
 
     if (result.matchedCount === 0) {

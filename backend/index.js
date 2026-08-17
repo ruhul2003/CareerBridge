@@ -211,7 +211,27 @@ app.get('/api/applications', async (req, res) => {
       ];
     }
     const cursor = applicationColection.find(query);
-    const result = await cursor.toArray();
+    let result = await cursor.toArray();
+
+    // Enrich applications with user profile resume/cv if missing in application document
+    result = await Promise.all(result.map(async (app) => {
+      if ((!app.resume || !app.cv) && app.applicantId) {
+        try {
+          const userDoc = await userscollection.findOne({ _id: new ObjectId(app.applicantId) });
+          if (userDoc) {
+            return {
+              ...app,
+              resume: app.resume || userDoc.resume || userDoc.resumeUrl || "",
+              cv: app.cv || userDoc.cv || userDoc.cvUrl || ""
+            };
+          }
+        } catch (e) {
+          // ignore invalid objectId format if any
+        }
+      }
+      return app;
+    }));
+
     res.send(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -221,7 +241,7 @@ app.get('/api/applications', async (req, res) => {
 // POST application
 app.post('/api/applications', async (req, res) => {
   try {
-    const { jobId, applicantId, applicantEmail, applicantName, resume, coverLetter } = req.body;
+    const { jobId, applicantId, applicantEmail, applicantName, resume, cv, coverLetter } = req.body;
     if (!jobId || !applicantId) {
       return res.status(400).json({ success: false, message: "jobId and applicantId are required" });
     }
@@ -253,8 +273,9 @@ app.post('/api/applications', async (req, res) => {
       applicantId,
       applicantEmail,
       applicantName,
-      resume,
-      coverLetter,
+      resume: resume || "",
+      cv: cv || "",
+      coverLetter: coverLetter || "",
       ...jobDetails,
       status: "Applied",
       appliedAt: new Date()
@@ -287,21 +308,31 @@ app.get("/api/users/:id", async (req, res) => {
 app.patch("/api/users/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const { fullName, email, title, skills } = req.body;
+    const { fullName, email, title, skills, resume, cv, resumeUrl, cvUrl } = req.body;
 
-    const updateDoc = {
-      $set: {
-        fullName,
-        email,
-        title,
-        skills: skills || [],
-        updatedAt: new Date()
-      }
+    const finalResume = resume !== undefined ? resume : (resumeUrl !== undefined ? resumeUrl : undefined);
+    const finalCv = cv !== undefined ? cv : (cvUrl !== undefined ? cvUrl : undefined);
+
+    const updateFields = {
+      fullName,
+      email,
+      title,
+      skills: skills || [],
+      updatedAt: new Date()
     };
+
+    if (finalResume !== undefined) {
+      updateFields.resume = finalResume;
+      updateFields.resumeUrl = finalResume;
+    }
+    if (finalCv !== undefined) {
+      updateFields.cv = finalCv;
+      updateFields.cvUrl = finalCv;
+    }
 
     const result = await userscollection.updateOne(
       { _id: new ObjectId(id) },
-      updateDoc
+      { $set: updateFields }
     );
 
     if (result.matchedCount === 0) {
