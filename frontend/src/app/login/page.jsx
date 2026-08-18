@@ -179,7 +179,7 @@ function LoginForm() {
       {/* Footer Link */}
       <p className="text-center text-zinc-500 text-sm">
         Do not have an account?{" "}
-        <Link href={`/auth/signup?redirect=${redirectTo}`} className="text-indigo-400 hover:text-indigo-300 font-medium">
+        <Link href={`/signup?redirect=${redirectTo}`} className="text-indigo-400 hover:text-indigo-300 font-medium">
           Create account
         </Link>
       </p>
