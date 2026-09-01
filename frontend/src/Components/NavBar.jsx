@@ -18,6 +18,7 @@ import {
   X,
   ArrowRight,
   ShieldCheck,
+  User,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -162,10 +163,14 @@ export default function Navbar() {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center gap-2.5 p-1.5 pl-3 pr-2.5 rounded-full bg-zinc-100/80 dark:bg-slate-800/80 hover:bg-zinc-200/80 dark:hover:bg-slate-700/80 border border-zinc-200/70 dark:border-slate-700/60 transition-all duration-200 cursor-pointer"
+                className="flex items-center gap-2.5 p-1.5 pl-2.5 pr-2.5 rounded-full bg-zinc-100/80 dark:bg-slate-800/80 hover:bg-zinc-200/80 dark:hover:bg-slate-700/80 border border-zinc-200/70 dark:border-slate-700/60 transition-all duration-200 cursor-pointer"
               >
-                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
-                  {userInitial}
+                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-sm overflow-hidden flex-shrink-0">
+                  {user?.image ? (
+                    <img src={user.image} alt={user?.name || "User"} className="w-full h-full object-cover" />
+                  ) : (
+                    <User className="w-4 h-4 text-white" />
+                  )}
                 </div>
                 <span className="text-xs font-semibold text-zinc-700 dark:text-slate-200 max-w-[100px] truncate">
                   {user?.name || "Account"}
@@ -183,13 +188,22 @@ export default function Navbar() {
                     transition={{ duration: 0.15, ease: "easeOut" }}
                     className="absolute right-0 mt-3 w-64 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-2xl border border-zinc-200/80 dark:border-slate-800/80 rounded-2xl p-2 shadow-2xl z-50"
                   >
-                    <div className="px-3 py-2.5 mb-1 bg-zinc-50 dark:bg-slate-800/50 rounded-xl border border-zinc-100 dark:border-slate-800/60">
-                      <p className="text-[10px] text-zinc-400 font-medium tracking-wider uppercase">Signed in as</p>
-                      <p className="text-xs font-bold text-zinc-800 dark:text-slate-100 truncate">{user?.name || "User"}</p>
-                      <p className="text-[11px] text-zinc-500 dark:text-slate-400 truncate">{user?.email}</p>
-                      <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-cyan-400 border border-indigo-200 dark:border-cyan-800/50 capitalize">
-                        <ShieldCheck className="w-3 h-3" />
-                        {user?.role || "Seeker"}
+                    <div className="px-3 py-2.5 mb-1 bg-zinc-50 dark:bg-slate-800/50 rounded-xl border border-zinc-100 dark:border-slate-800/60 flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shadow-sm overflow-hidden flex-shrink-0">
+                        {user?.image ? (
+                          <img src={user.image} alt={user?.name || "User"} className="w-full h-full object-cover" />
+                        ) : (
+                          <User className="w-5 h-5 text-white" />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] text-zinc-400 font-medium tracking-wider uppercase">Signed in as</p>
+                        <p className="text-xs font-bold text-zinc-800 dark:text-slate-100 truncate">{user?.name || "User"}</p>
+                        <p className="text-[11px] text-zinc-500 dark:text-slate-400 truncate">{user?.email}</p>
+                        <div className="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-cyan-400 border border-indigo-200 dark:border-cyan-800/50 capitalize">
+                          <ShieldCheck className="w-3 h-3" />
+                          {user?.role || "Seeker"}
+                        </div>
                       </div>
                     </div>
 
@@ -292,12 +306,19 @@ export default function Navbar() {
                 <div className="w-full h-10 bg-zinc-200 dark:bg-slate-800 animate-pulse rounded-2xl" />
               ) : session ? (
                 <div className="space-y-2">
-                  <div className="px-4 py-2.5 bg-zinc-50 dark:bg-slate-800/50 rounded-2xl border border-zinc-100 dark:border-slate-800 flex items-center justify-between">
-                    <div>
-                      <p className="text-xs font-bold text-zinc-800 dark:text-slate-100">{user?.name}</p>
-                      <p className="text-[11px] text-zinc-500 dark:text-slate-400">{user?.email}</p>
+                  <div className="px-4 py-2.5 bg-zinc-50 dark:bg-slate-800/50 rounded-2xl border border-zinc-100 dark:border-slate-800 flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shadow-sm overflow-hidden flex-shrink-0">
+                      {user?.image ? (
+                        <img src={user.image} alt={user?.name || "User"} className="w-full h-full object-cover" />
+                      ) : (
+                        <User className="w-5 h-5 text-white" />
+                      )}
                     </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-cyan-400 capitalize">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold text-zinc-800 dark:text-slate-100 truncate">{user?.name || "User"}</p>
+                      <p className="text-[11px] text-zinc-500 dark:text-slate-400 truncate">{user?.email}</p>
+                    </div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-cyan-400 capitalize whitespace-nowrap">
                       {user?.role || "Seeker"}
                     </span>
                   </div>
