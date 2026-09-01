@@ -51,13 +51,13 @@ const RecruiterSidebar = ({ currentTab, setCurrentTab, user }) => {
     };
 
     return (
-        <aside className="w-72  bg-[#0b0b0d] border-r border-neutral-800 flex flex-col justify-between">
+        <aside className="w-72 bg-white dark:bg-[#0b0b0d] border-r border-zinc-200 dark:border-neutral-800 flex flex-col justify-between transition-colors duration-200">
 
             {/* Top */}
             <div>
 
                 {/* Profile */}
-                <div className="p-6 border-b border-neutral-800">
+                <div className="p-6 border-b border-zinc-200 dark:border-neutral-800">
 
                     <div className="flex items-center gap-3">
 
@@ -70,25 +70,25 @@ const RecruiterSidebar = ({ currentTab, setCurrentTab, user }) => {
                                 className="rounded-full object-cover"
                             />
                         ) : (
-                            <div className="w-12 h-12 rounded-full bg-neutral-800 text-white flex items-center justify-center font-bold text-lg border border-neutral-700 shrink-0">
+                            <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-neutral-800 text-zinc-900 dark:text-white flex items-center justify-center font-bold text-lg border border-zinc-300 dark:border-neutral-700 shrink-0">
                                 {getInitials(user?.name || user?.fullName)}
                             </div>
                         )}
 
                         <div className="min-w-0 flex-1">
 
-                            <h2 className="font-semibold text-white truncate" title={user?.name || user?.fullName}>
+                            <h2 className="font-semibold text-zinc-900 dark:text-white truncate" title={user?.name || user?.fullName}>
                                 {user?.name || user?.fullName || 'Recruiter'}
                             </h2>
 
-                            <p className="text-xs text-gray-400 truncate" title={user?.email}>
+                            <p className="text-xs text-zinc-500 dark:text-gray-400 truncate" title={user?.email}>
                                 {user?.email}
                             </p>
 
                             <span className={`inline-block mt-2 text-[9px] font-bold px-2 py-0.5 rounded tracking-wider ${
                                 user?.plan === 'recruiter_enterprise' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' :
                                 user?.plan === 'recruiter_growth' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
-                                'bg-zinc-800 text-zinc-400 border border-zinc-700'
+                                'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400 border border-zinc-300 dark:border-zinc-700'
                             }`}>
                                 {getPlanLabel(user?.plan)}
                             </span>
@@ -109,13 +109,12 @@ const RecruiterSidebar = ({ currentTab, setCurrentTab, user }) => {
                             <button
                                 key={item.id}
                                 onClick={() => setCurrentTab(item.id)}
-                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200
-
-                ${currentTab === item.id
-                                        ? 'bg-neutral-800 text-white border-l-4 border-white'
-                                        : 'text-gray-400 hover:bg-neutral-900 hover:text-white'
+                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer
+                                    ${currentTab === item.id
+                                        ? 'bg-zinc-100 dark:bg-neutral-800 text-zinc-900 dark:text-white border-l-4 border-indigo-600 dark:border-white font-medium'
+                                        : 'text-zinc-600 dark:text-gray-400 hover:bg-zinc-100 dark:hover:bg-neutral-900 hover:text-zinc-900 dark:hover:text-white'
                                     }
-                `}
+                                `}
                             >
                                 <Icon size={18} />
 

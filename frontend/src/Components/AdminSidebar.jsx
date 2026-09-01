@@ -25,7 +25,7 @@ const AdminSidebar = ({ currentTab, setCurrentTab }) => {
   };
 
   return (
-    <aside className="w-64 min-h-screen bg-[#09090b] border-r border-[#1e1e24] p-5 flex flex-col justify-between text-gray-400 select-none">
+    <aside className="w-64 min-h-screen bg-white dark:bg-[#09090b] border-r border-zinc-200 dark:border-[#1e1e24] p-5 flex flex-col justify-between text-zinc-600 dark:text-gray-400 select-none transition-colors duration-200">
       <div>
         {/* Profile Branding Header */}
         <div className="flex items-center gap-3 mb-8 px-2">
@@ -33,8 +33,8 @@ const AdminSidebar = ({ currentTab, setCurrentTab }) => {
             <span className="text-white font-bold text-lg">AD</span>
           </div>
           <div>
-            <h2 className="text-white font-semibold text-sm leading-tight">Admin Portal</h2>
-            <p className="text-[11px] text-zinc-500">Root Operations</p>
+            <h2 className="text-zinc-900 dark:text-white font-semibold text-sm leading-tight">Admin Portal</h2>
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-500">Root Operations</p>
           </div>
         </div>
 
@@ -49,11 +49,11 @@ const AdminSidebar = ({ currentTab, setCurrentTab }) => {
                 onClick={() => setCurrentTab(item.id)}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium cursor-pointer outline-none transition-all duration-200 active:scale-[0.98] ${
                   isActive 
-                    ? 'bg-[#18181b] text-white border border-[#27272a] shadow-sm' 
-                    : 'hover:bg-[#121214] hover:text-gray-200 border border-transparent'
+                    ? 'bg-zinc-100 dark:bg-[#18181b] text-zinc-900 dark:text-white border border-zinc-200 dark:border-[#27272a] shadow-sm' 
+                    : 'hover:bg-zinc-100 dark:hover:bg-[#121214] text-zinc-600 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-gray-200 border border-transparent'
                 }`}
               >
-                <Icon className={`w-4 h-4 transition-colors duration-200 ${isActive ? 'text-white' : 'text-gray-500'}`} />
+                <Icon className={`w-4 h-4 transition-colors duration-200 ${isActive ? 'text-indigo-600 dark:text-white' : 'text-zinc-400 dark:text-gray-500'}`} />
                 {item.name}
               </button>
             );

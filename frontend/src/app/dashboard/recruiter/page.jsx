@@ -49,14 +49,14 @@ const RecruiterDashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#09090b] text-gray-200 font-sans selection:bg-neutral-800">
+    <div className="flex min-h-screen bg-slate-50 dark:bg-[#09090b] text-slate-800 dark:text-gray-200 font-sans selection:bg-neutral-800 transition-colors duration-200">
       <RecruiterSidebar
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
         user={user}
       />
 
-      <main className="flex-1 bg-[#020203] overflow-y-auto p-8">
+      <main className="flex-1 bg-white dark:bg-[#020203] overflow-y-auto p-8 transition-colors duration-200">
         {renderTabContent()}
       </main>
     </div>

@@ -46,9 +46,9 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="flex bg-[#09090b] min-h-screen text-gray-200 font-sans selection:bg-neutral-800">
+    <div className="flex bg-slate-50 dark:bg-[#09090b] min-h-screen text-slate-800 dark:text-gray-200 font-sans selection:bg-neutral-800 transition-colors duration-200">
       <AdminSidebar currentTab={currentTab} setCurrentTab={setCurrentTab} />
-      <main className="flex-1 bg-[#020203] overflow-y-auto max-h-screen p-8">
+      <main className="flex-1 bg-white dark:bg-[#020203] overflow-y-auto max-h-screen p-8 transition-colors duration-200">
         {renderTabContent()}
       </main>
     </div>
