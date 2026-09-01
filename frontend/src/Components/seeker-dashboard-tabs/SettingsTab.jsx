@@ -432,23 +432,6 @@ const SettingsTab = () => {
         </button>
       </div>
 
-      {/* Theme Preference */}
-      <div className="bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#1e1e24] rounded-2xl p-6 shadow-sm">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-              <Sun className="w-4 h-4 text-amber-500 dark:hidden" />
-              <Moon className="w-4 h-4 text-indigo-400 hidden dark:block" />
-              Appearance & Theme Preference
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-neutral-400 mt-1">
-              Switch between Light Mode and Dark Mode for the application.
-            </p>
-          </div>
-          <ThemeToggle />
-        </div>
-      </div>
-
       {/* Profile Picture & General Details */}
       <div className="bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#1e1e24] rounded-2xl p-6 shadow-sm space-y-6">
         <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-100 dark:border-[#1e1e24] pb-3">
