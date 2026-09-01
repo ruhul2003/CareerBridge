@@ -3,10 +3,7 @@ import { Search, MapPin, DollarSign, Bookmark, Calendar, Clock } from 'lucide-re
 import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
 
-const SavedJobsTab = () => {
-  const { data: session, isPending: sessionLoading } = authClient.useSession();
-  const user = session?.user;
-
+const SavedJobsTab = ({ user }) => {
   const [savedJobs, setSavedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,7 +13,10 @@ const SavedJobsTab = () => {
 
   useEffect(() => {
     const fetchSavedJobs = async () => {
-      if (!user?.id) return;
+      if (!user?.id) {
+        setLoading(false);
+        return;
+      }
       try {
         const res = await fetch(`${SERVER_URL}/api/saved-jobs?userId=${user.id}`);
         if (res.ok) {
@@ -31,12 +31,8 @@ const SavedJobsTab = () => {
       }
     };
 
-    if (user?.id) {
-      fetchSavedJobs();
-    } else if (!sessionLoading && !user) {
-      setLoading(false);
-    }
-  }, [user, sessionLoading, SERVER_URL]);
+    fetchSavedJobs();
+  }, [user?.id, SERVER_URL]);
 
   const handleUnsave = async (jobId) => {
     if (!user?.id) return;

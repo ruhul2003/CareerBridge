@@ -31,7 +31,7 @@ import { authClient } from '@/lib/auth-client';
 import ThemeToggle from '@/Components/ThemeToggle';
 import toast from 'react-hot-toast';
 
-const SettingsTab = () => {
+const SettingsTab = ({ user }) => {
   const [profile, setProfile] = useState({
     fullName: '',
     email: '',
@@ -87,8 +87,7 @@ const SettingsTab = () => {
   const [uploadingDoc, setUploadingDoc] = useState({ resume: false, cv: false });
   const [message, setMessage] = useState({ type: '', text: '' });
 
-  const session = authClient.useSession();
-  const userId = session.data?.user?.id;
+  const userId = user?.id;
 
   // Fetch user profile
   useEffect(() => {

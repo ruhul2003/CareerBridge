@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Download, FileText, CheckCircle2, Calendar, TrendingUp, MoreVertical } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 
-const ApplicationsTab = () => {
-  const { data: session, isPending: sessionLoading } = authClient.useSession();
-  const user = session?.user;
-
+const ApplicationsTab = ({ user }) => {
   const [subTab, setSubTab] = useState('Active');
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +12,10 @@ const ApplicationsTab = () => {
 
   useEffect(() => {
     const fetchApplications = async () => {
-      if (!user?.id) return;
+      if (!user?.id) {
+        setLoading(false);
+        return;
+      }
       try {
         const res = await fetch(`${SERVER_URL}/api/applications?applicantId=${user.id}`);
         if (res.ok) {
@@ -31,12 +31,8 @@ const ApplicationsTab = () => {
       }
     };
 
-    if (user?.id) {
-      fetchApplications();
-    } else if (!sessionLoading && !user) {
-      setLoading(false);
-    }
-  }, [user, sessionLoading, SERVER_URL]);
+    fetchApplications();
+  }, [user?.id, SERVER_URL]);
 
   // Helper function to return conditional style states for mapping badges
   const getStatusBadge = (status) => {

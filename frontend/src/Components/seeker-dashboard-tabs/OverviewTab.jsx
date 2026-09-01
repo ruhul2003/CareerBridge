@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Bookmark, Send, Calendar, ShieldCheck } from 'lucide-react';
-import { authClient } from '@/lib/auth-client';
 
-const OverviewTab = ({ onEditProfile }) => {
-  const { data: session, isPending: sessionLoading } = authClient.useSession();
-  const user = session?.user;
-
+const OverviewTab = ({ user, onEditProfile }) => {
   const [applications, setApplications] = useState([]);
   const [savedJobsCount, setSavedJobsCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -14,7 +10,10 @@ const OverviewTab = ({ onEditProfile }) => {
 
   useEffect(() => {
     const fetchOverviewData = async () => {
-      if (!user?.id) return;
+      if (!user?.id) {
+        setLoading(false);
+        return;
+      }
       try {
         const [appRes, savedRes] = await Promise.all([
           fetch(`${SERVER_URL}/api/applications?applicantId=${user.id}`),
@@ -35,12 +34,8 @@ const OverviewTab = ({ onEditProfile }) => {
       }
     };
 
-    if (user?.id) {
-      fetchOverviewData();
-    } else if (!sessionLoading && !user) {
-      setLoading(false);
-    }
-  }, [user, sessionLoading, SERVER_URL]);
+    fetchOverviewData();
+  }, [user?.id, SERVER_URL]);
 
   // Calculate status counts
   const appliedCount = applications.filter(a => a.status === 'Applied').length;
