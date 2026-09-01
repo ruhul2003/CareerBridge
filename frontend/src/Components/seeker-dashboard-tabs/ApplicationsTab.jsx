@@ -6,6 +6,7 @@ const ApplicationsTab = ({ user }) => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedApp, setSelectedApp] = useState(null);
 
   const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
 
@@ -94,8 +95,6 @@ const ApplicationsTab = ({ user }) => {
       </div>
     );
   }
-
-  const [selectedApp, setSelectedApp] = useState(null);
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
