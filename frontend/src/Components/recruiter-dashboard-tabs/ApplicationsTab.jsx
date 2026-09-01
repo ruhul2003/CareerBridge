@@ -144,11 +144,11 @@ const ApplicationsTab = ({ user }) => {
 
     if (!company) {
         return (
-            <div className="bg-[#141416] border border-zinc-800 rounded-2xl p-12 text-center max-w-2xl mx-auto my-8 font-sans">
-                <Building2 className="w-12 h-12 text-zinc-500 mx-auto mb-4" />
-                <h2 className="text-xl font-bold text-white mb-2">No Company Registered</h2>
-                <p className="text-zinc-400 text-sm mb-6">
-                    Please create or claim your company profile in the <span className="text-indigo-400 font-semibold">Company Tab</span> to start reviewing applicant submissions.
+            <div className="bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-12 text-center max-w-2xl mx-auto my-8 font-sans shadow-sm transition-colors duration-200">
+                <Building2 className="w-12 h-12 text-zinc-400 dark:text-zinc-500 mx-auto mb-4" />
+                <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">No Company Registered</h2>
+                <p className="text-zinc-600 dark:text-zinc-400 text-sm mb-6">
+                    Please create or claim your company profile in the <span className="text-indigo-600 dark:text-indigo-400 font-semibold">Company Tab</span> to start reviewing applicant submissions.
                 </p>
             </div>
         );
@@ -157,25 +157,25 @@ const ApplicationsTab = ({ user }) => {
     return (
         <div className="space-y-6 font-sans">
             {/* Header & Filter Controls */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#141416] border border-zinc-800/80 rounded-2xl p-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl p-6 shadow-sm transition-colors duration-200">
                 <div>
-                    <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-indigo-400" />
+                    <h2 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+                        <FileText className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         Applicant Management Hub
                     </h2>
-                    <p className="text-xs text-zinc-400 mt-1">
-                        Review submissions, inspect candidate educational & experience background, and track hiring decisions for <span className="text-indigo-400 font-semibold">{company.name}</span>.
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                        Review submissions, inspect candidate educational & experience background, and track hiring decisions for <span className="text-indigo-600 dark:text-indigo-400 font-semibold">{company.name}</span>.
                     </p>
                 </div>
 
                 {/* Job Filter Dropdown */}
                 <div className="flex items-center gap-3">
-                    <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider whitespace-nowrap">Filter by Job:</span>
+                    <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider whitespace-nowrap">Filter by Job:</span>
                     <div className="relative min-w-[200px]">
                         <select
                             value={selectedJobFilter}
                             onChange={(e) => setSelectedJobFilter(e.target.value)}
-                            className="w-full bg-[#1c1c1f] border border-zinc-700/70 text-white text-xs font-medium rounded-xl px-3 py-2.5 outline-none appearance-none cursor-pointer pr-8 focus:border-indigo-500 transition-colors"
+                            className="w-full bg-zinc-100 dark:bg-[#1c1c1f] border border-zinc-200 dark:border-zinc-700/70 text-zinc-900 dark:text-white text-xs font-medium rounded-xl px-3 py-2.5 outline-none appearance-none cursor-pointer pr-8 focus:border-indigo-500 transition-colors"
                         >
                             <option value="all">All Posted Positions ({applications.length})</option>
                             {jobs.map(job => (
@@ -191,21 +191,21 @@ const ApplicationsTab = ({ user }) => {
 
             {/* Applications Table */}
             {filteredApplications.length === 0 ? (
-                <div className="bg-[#141416] border border-zinc-800/80 rounded-2xl p-12 text-center">
-                    <User className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
-                    <h3 className="text-lg font-bold text-white mb-1">No Applications Received Yet</h3>
-                    <p className="text-zinc-400 text-xs">
+                <div className="bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl p-12 text-center shadow-sm transition-colors duration-200">
+                    <User className="w-12 h-12 text-zinc-400 dark:text-zinc-600 mx-auto mb-3" />
+                    <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">No Applications Received Yet</h3>
+                    <p className="text-zinc-500 dark:text-zinc-400 text-xs">
                         {selectedJobFilter === 'all' 
                             ? "No job seekers have applied for your company's active roles yet." 
                             : "No applications submitted for this specific job position yet."}
                     </p>
                 </div>
             ) : (
-                <div className="bg-[#141416] border border-zinc-800/80 rounded-2xl overflow-hidden shadow-xl">
+                <div className="bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl overflow-hidden shadow-xl transition-colors duration-200">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="border-b border-zinc-800/80 bg-zinc-900/60 text-zinc-400 text-[11px] font-bold uppercase tracking-wider">
+                                <tr className="border-b border-zinc-200 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900/60 text-zinc-500 dark:text-zinc-400 text-[11px] font-bold uppercase tracking-wider">
                                     <th className="py-4 px-6">Applicant Name</th>
                                     <th className="py-4 px-6">Applied Role</th>
                                     <th className="py-4 px-6">Applied Date</th>
@@ -213,24 +213,24 @@ const ApplicationsTab = ({ user }) => {
                                     <th className="py-4 px-6 text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-zinc-800/60 text-xs">
+                            <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800/60 text-xs">
                                 {filteredApplications.map((app) => (
-                                    <tr key={app._id} className="hover:bg-zinc-900/40 transition-colors">
+                                    <tr key={app._id} className="hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors">
                                         <td className="py-4 px-6">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-9 h-9 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm flex-shrink-0">
                                                     {app.applicantName ? app.applicantName.charAt(0).toUpperCase() : 'A'}
                                                 </div>
                                                 <div>
-                                                    <p className="font-semibold text-white text-sm">{app.applicantName}</p>
-                                                    <p className="text-[11px] text-zinc-400">{app.applicantEmail}</p>
+                                                    <p className="font-semibold text-zinc-900 dark:text-white text-sm">{app.applicantName}</p>
+                                                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400">{app.applicantEmail}</p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="py-4 px-6 font-medium text-zinc-200">
+                                        <td className="py-4 px-6 font-medium text-zinc-800 dark:text-zinc-200">
                                             {app.jobTitle || 'Job Opportunity'}
                                         </td>
-                                        <td className="py-4 px-6 text-zinc-400">
+                                        <td className="py-4 px-6 text-zinc-500 dark:text-zinc-400">
                                             {new Date(app.appliedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                                         </td>
                                         <td className="py-4 px-6">
@@ -239,11 +239,11 @@ const ApplicationsTab = ({ user }) => {
                                                     value={app.status || 'Applied'}
                                                     onChange={(e) => handleUpdateStatus(app._id, e.target.value)}
                                                     className={`px-3 py-1.5 rounded-full text-xs font-bold border outline-none appearance-none cursor-pointer pr-7 ${
-                                                        app.status === 'Applied' ? 'bg-blue-500/10 border-blue-500/20 text-blue-400' :
-                                                        app.status === 'Interviewing' ? 'bg-green-500/10 border-green-500/20 text-green-400' :
-                                                        app.status === 'Reviewing' ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' :
-                                                        app.status === 'Offered' ? 'bg-purple-500/10 border-purple-500/20 text-purple-400' :
-                                                        'bg-red-500/10 border-red-500/20 text-red-400'
+                                                        app.status === 'Applied' ? 'bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400' :
+                                                        app.status === 'Interviewing' ? 'bg-green-500/10 border-green-500/20 text-green-600 dark:text-green-400' :
+                                                        app.status === 'Reviewing' ? 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400' :
+                                                        app.status === 'Offered' ? 'bg-purple-500/10 border-purple-500/20 text-purple-600 dark:text-purple-400' :
+                                                        'bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400'
                                                     }`}
                                                 >
                                                     <option value="Applied">Applied</option>

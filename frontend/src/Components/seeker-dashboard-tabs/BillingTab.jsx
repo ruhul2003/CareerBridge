@@ -43,75 +43,75 @@ const BillingTab = () => {
         <div className="max-w-5xl mx-auto space-y-6">
             {/* Header */}
             <div>
-                <h2 className="text-2xl font-semibold text-white tracking-tight mb-1">Subscription & Billing</h2>
-                <p className="text-xs text-neutral-500">Manage your workspace plans, pricing subscriptions, and invoice logs.</p>
+                <h2 className="text-2xl font-semibold text-zinc-900 dark:text-white tracking-tight mb-1">Subscription & Billing</h2>
+                <p className="text-xs text-zinc-500 dark:text-neutral-500">Manage your workspace plans, pricing subscriptions, and invoice logs.</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Left - Plan Info */}
                 <div className="lg:col-span-2 space-y-4">
                     {/* Active Subscription */}
-                    <div className="bg-[#09090b] border border-[#1e1e24] rounded-2xl p-6">
+                    <div className="bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-[#1e1e24] rounded-2xl p-6 shadow-sm transition-colors duration-200">
                         <div className="flex items-start justify-between">
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center">
-                                    <CreditCard className="w-6 h-6 text-indigo-400" />
+                                    <CreditCard className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                                 </div>
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <h3 className="text-lg font-semibold text-white">{planName}</h3>
+                                        <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">{planName}</h3>
                                         {isActive && (
-                                            <span className="text-xs font-bold bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full">ACTIVE</span>
+                                            <span className="text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1 rounded-full">ACTIVE</span>
                                         )}
                                     </div>
-                                    <p className="text-sm text-neutral-500 mt-1">
+                                    <p className="text-sm text-zinc-500 dark:text-neutral-500 mt-1">
                                         Next billing: {subscription?.nextBilling || 'N/A'}
                                     </p>
                                 </div>
                             </div>
 
                             <div className="text-right">
-                                <p className="text-3xl font-bold text-white">
-                                    {subscription?.amount || '$19'}<span className="text-sm font-normal text-neutral-500">/mo</span>
+                                <p className="text-3xl font-bold text-zinc-900 dark:text-white">
+                                    {subscription?.amount || '$19'}<span className="text-sm font-normal text-zinc-500 dark:text-neutral-500">/mo</span>
                                 </p>
                             </div>
                         </div>
                     </div>
 
                     {/* Plan Features */}
-                    <div className="bg-[#09090b] border border-[#1e1e24] rounded-2xl p-6">
-                        <h4 className="font-semibold mb-4 text-white">Plan Benefits</h4>
+                    <div className="bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-[#1e1e24] rounded-2xl p-6 shadow-sm transition-colors duration-200">
+                        <h4 className="font-semibold mb-4 text-zinc-900 dark:text-white">Plan Benefits</h4>
                         <ul className="space-y-3 text-sm">
                             {subscription?.features?.map((feature, i) => (
-                                <li key={i} className="flex items-center gap-3 text-neutral-300">
-                                    <Check className="w-4 h-4 text-emerald-400" />
+                                <li key={i} className="flex items-center gap-3 text-zinc-700 dark:text-neutral-300">
+                                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                                     {feature}
                                 </li>
                             )) || (
-                                <li className="text-neutral-500">No features loaded yet.</li>
+                                <li className="text-zinc-500 dark:text-neutral-500">No features loaded yet.</li>
                             )}
                         </ul>
                     </div>
                 </div>
 
                 {/* Right Column - Payment Method */}
-                <div className="bg-[#09090b] border border-[#1e1e24] rounded-2xl p-6 h-fit">
-                    <h3 className="text-sm font-semibold text-white mb-4">Payment Method</h3>
+                <div className="bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-[#1e1e24] rounded-2xl p-6 h-fit shadow-sm transition-colors duration-200">
+                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-white mb-4">Payment Method</h3>
                     
-                    <div className="border border-[#1e1e24] bg-[#020203] rounded-xl p-4">
+                    <div className="border border-zinc-200 dark:border-[#1e1e24] bg-zinc-50 dark:bg-[#020203] rounded-xl p-4">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="px-3 py-1 bg-neutral-800 rounded text-xs font-bold">VISA</div>
+                                <div className="px-3 py-1 bg-zinc-200 dark:bg-neutral-800 text-zinc-900 dark:text-white rounded text-xs font-bold">VISA</div>
                                 <div>
-                                    <p className="text-white text-sm">•••• {subscription?.last4 || '4242'}</p>
-                                    <p className="text-xs text-neutral-500">Expires {subscription?.expiry || '12/28'}</p>
+                                    <p className="text-zinc-900 dark:text-white text-sm font-medium">•••• {subscription?.last4 || '4242'}</p>
+                                    <p className="text-xs text-zinc-500 dark:text-neutral-500">Expires {subscription?.expiry || '12/28'}</p>
                                 </div>
                             </div>
-                            <button className="text-xs text-neutral-400 hover:text-white underline">Update</button>
+                            <button className="text-xs text-zinc-500 dark:text-neutral-400 hover:text-zinc-900 dark:hover:text-white underline cursor-pointer">Update</button>
                         </div>
                     </div>
 
-                    <div className="mt-4 text-[11px] text-neutral-500 flex gap-2">
+                    <div className="mt-4 text-[11px] text-zinc-500 dark:text-neutral-500 flex gap-2">
                         <AlertCircle className="w-4 h-4 mt-0.5" />
                         <p>Secured by Stripe</p>
                     </div>
@@ -119,15 +119,15 @@ const BillingTab = () => {
             </div>
 
             {/* Invoice History */}
-            <div className="bg-[#09090b] border border-[#1e1e24] rounded-2xl overflow-hidden">
-                <div className="p-5 border-b border-[#1e1e24]">
-                    <h3 className="font-semibold text-white">Invoice History</h3>
+            <div className="bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-[#1e1e24] rounded-2xl overflow-hidden shadow-sm transition-colors duration-200">
+                <div className="p-5 border-b border-zinc-200 dark:border-[#1e1e24]">
+                    <h3 className="font-semibold text-zinc-900 dark:text-white">Invoice History</h3>
                 </div>
 
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
-                        <thead className="bg-[#020203]">
-                            <tr className="text-neutral-500 border-b border-[#1e1e24]">
+                        <thead className="bg-zinc-50 dark:bg-[#020203]">
+                            <tr className="text-zinc-500 dark:text-neutral-500 border-b border-zinc-200 dark:border-[#1e1e24]">
                                 <th className="p-4 text-left">Invoice</th>
                                 <th className="p-4 text-left">Date</th>
                                 <th className="p-4 text-left">Amount</th>
@@ -135,18 +135,18 @@ const BillingTab = () => {
                                 <th className="p-4 text-right">Action</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#1e1e24]">
+                        <tbody className="divide-y divide-zinc-200 dark:divide-[#1e1e24]">
                             {invoices.length > 0 ? (
                                 invoices.map((inv) => (
-                                    <tr key={inv.id} className="hover:bg-[#141417]">
-                                        <td className="p-4 font-mono text-neutral-400">{inv.id}</td>
-                                        <td className="p-4 text-neutral-500">{inv.date}</td>
-                                        <td className="p-4 font-medium">{inv.amount}</td>
+                                    <tr key={inv.id} className="hover:bg-zinc-50 dark:hover:bg-[#141417]">
+                                        <td className="p-4 font-mono text-zinc-600 dark:text-neutral-400">{inv.id}</td>
+                                        <td className="p-4 text-zinc-500 dark:text-neutral-500">{inv.date}</td>
+                                        <td className="p-4 font-medium text-zinc-900 dark:text-white">{inv.amount}</td>
                                         <td className="p-4">
-                                            <span className="px-3 py-1 text-xs bg-emerald-500/10 text-emerald-400 rounded-full">Paid</span>
+                                            <span className="px-3 py-1 text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-full font-medium">Paid</span>
                                         </td>
                                         <td className="p-4 text-right">
-                                            <button className="text-neutral-400 hover:text-white flex items-center gap-1 text-xs">
+                                            <button className="text-zinc-600 dark:text-neutral-400 hover:text-zinc-900 dark:hover:text-white flex items-center justify-end gap-1 text-xs cursor-pointer ml-auto">
                                                 <Download className="w-4 h-4" /> PDF
                                             </button>
                                         </td>
@@ -154,7 +154,7 @@ const BillingTab = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="5" className="p-8 text-center text-neutral-500">No invoices yet</td>
+                                    <td colSpan="5" className="p-8 text-center text-zinc-500 dark:text-neutral-500">No invoices yet</td>
                                 </tr>
                             )}
                         </tbody>

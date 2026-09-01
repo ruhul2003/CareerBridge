@@ -102,28 +102,28 @@ const ApplicationsTab = ({ user }) => {
       {/* Top Search & Controls Strip Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold text-white tracking-tight mb-1">My Applications</h2>
-          <p className="text-xs text-neutral-500">Track your job applications and interview progress in real-time.</p>
+          <h2 className="text-2xl font-semibold text-zinc-900 dark:text-white tracking-tight mb-1">My Applications</h2>
+          <p className="text-xs text-zinc-500 dark:text-neutral-500">Track your job applications and interview progress in real-time.</p>
         </div>
 
         {/* Action Button Controls Layer */}
         <div className="flex items-center gap-3 self-end sm:self-auto">
-          <div className="bg-[#09090b] border border-[#1e1e24] p-1 rounded-xl flex items-center gap-1">
+          <div className="bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-[#1e1e24] p-1 rounded-xl flex items-center gap-1 shadow-sm transition-colors duration-200">
             {['Active', 'Archived'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setSubTab(tab)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                   subTab === tab
-                    ? 'bg-[#18181b] text-white border border-[#27272a]'
-                    : 'text-neutral-500 hover:text-neutral-300'
+                    ? 'bg-zinc-100 dark:bg-[#18181b] text-zinc-900 dark:text-white border border-zinc-200 dark:border-[#27272a]'
+                    : 'text-zinc-500 dark:text-neutral-500 hover:text-zinc-900 dark:hover:text-neutral-300'
                 }`}
               >
                 {tab}
               </button>
             ))}
           </div>
-          <button className="flex items-center gap-1.5 bg-white text-black font-semibold text-xs px-3.5 py-2 rounded-xl hover:bg-neutral-200 transition-colors cursor-pointer">
+          <button className="flex items-center gap-1.5 bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold text-xs px-3.5 py-2 rounded-xl hover:bg-zinc-800 dark:hover:bg-neutral-200 transition-colors cursor-pointer shadow-sm">
             <Download className="w-3.5 h-3.5" /> Export PDF
           </button>
         </div>
@@ -131,20 +131,20 @@ const ApplicationsTab = ({ user }) => {
 
       {/* Analytics Matrix Counters Rows */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[#09090b] border border-[#1e1e24] rounded-xl p-4">
-          <p className="text-[11px] text-neutral-500 font-medium mb-1">Total Applied</p>
-          <h3 className="text-2xl font-semibold text-white">{totalApplied}</h3>
+        <div className="bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-[#1e1e24] rounded-xl p-4 shadow-sm transition-colors duration-200">
+          <p className="text-[11px] text-zinc-500 dark:text-neutral-500 font-medium mb-1">Total Applied</p>
+          <h3 className="text-2xl font-semibold text-zinc-900 dark:text-white">{totalApplied}</h3>
         </div>
-        <div className="bg-[#09090b] border border-[#1e1e24] rounded-xl p-4">
-          <p className="text-[11px] text-neutral-500 font-medium mb-1">Shortlisted</p>
-          <h3 className="text-2xl font-semibold text-white">{shortlistedCount}</h3>
+        <div className="bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-[#1e1e24] rounded-xl p-4 shadow-sm transition-colors duration-200">
+          <p className="text-[11px] text-zinc-500 dark:text-neutral-500 font-medium mb-1">Shortlisted</p>
+          <h3 className="text-2xl font-semibold text-zinc-900 dark:text-white">{shortlistedCount}</h3>
         </div>
-        <div className="bg-[#09090b] border border-[#1e1e24] rounded-xl p-4">
-          <p className="text-[11px] text-neutral-500 font-medium mb-1">Interviews</p>
-          <h3 className="text-2xl font-semibold text-white text-amber-500">{interviewCount}</h3>
+        <div className="bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-[#1e1e24] rounded-xl p-4 shadow-sm transition-colors duration-200">
+          <p className="text-[11px] text-zinc-500 dark:text-neutral-500 font-medium mb-1">Interviews</p>
+          <h3 className="text-2xl font-semibold text-amber-500">{interviewCount}</h3>
         </div>
-        <div className="bg-[#09090b] border border-[#1e1e24] rounded-xl p-4">
-          <p className="text-[11px] text-neutral-500 font-medium mb-1">Success Rate</p>
+        <div className="bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-[#1e1e24] rounded-xl p-4 shadow-sm transition-colors duration-200">
+          <p className="text-[11px] text-zinc-500 dark:text-neutral-500 font-medium mb-1">Success Rate</p>
           <h3 className="text-2xl font-semibold text-[#10b981] flex items-center gap-1.5">
             {successRate}% <TrendingUp className="w-4 h-4" />
           </h3>
@@ -152,17 +152,17 @@ const ApplicationsTab = ({ user }) => {
       </div>
 
       {/* Applications Filtering & Main Dataset Border Area */}
-      <div className="bg-[#09090b] border border-[#1e1e24] rounded-2xl overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-[#1e1e24] rounded-2xl overflow-hidden shadow-sm transition-colors duration-200">
         
         {/* Local Table Context Filter Input Bar */}
-        <div className="p-4 border-b border-[#1e1e24] flex items-center gap-3">
-          <Search className="w-4 h-4 text-neutral-500" />
+        <div className="p-4 border-b border-zinc-200 dark:border-[#1e1e24] flex items-center gap-3">
+          <Search className="w-4 h-4 text-zinc-400 dark:text-neutral-500" />
           <input 
             type="text" 
             placeholder="Search applications..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-transparent text-xs outline-none w-full placeholder-neutral-600 text-neutral-200"
+            className="bg-transparent text-xs outline-none w-full placeholder-zinc-400 dark:placeholder-neutral-600 text-zinc-900 dark:text-neutral-200"
           />
         </div>
 
@@ -170,7 +170,7 @@ const ApplicationsTab = ({ user }) => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="border-b border-[#1e1e24] text-neutral-500 font-medium bg-[#020203]/40">
+              <tr className="border-b border-zinc-200 dark:border-[#1e1e24] text-zinc-500 dark:text-neutral-500 font-medium bg-zinc-50 dark:bg-[#020203]/40">
                 <th className="p-4">Job Title</th>
                 <th className="p-4">Company</th>
                 <th className="p-4">Applied</th>
@@ -178,22 +178,22 @@ const ApplicationsTab = ({ user }) => {
                 <th className="p-4 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1e1e24]">
+            <tbody className="divide-y divide-zinc-200 dark:divide-[#1e1e24]">
               {filteredApplications.length > 0 ? (
                 filteredApplications.map((app) => (
-                  <tr key={app._id} className="hover:bg-[#141417]/20 transition-colors group/row">
+                  <tr key={app._id} className="hover:bg-zinc-50 dark:hover:bg-[#141417]/20 transition-colors group/row">
                     
                     {/* Job Identity Cells */}
                     <td className="p-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-[#141417] border border-[#27272a] rounded-lg flex items-center justify-center font-semibold text-neutral-400">
+                        <div className="w-8 h-8 bg-zinc-100 dark:bg-[#141417] border border-zinc-200 dark:border-[#27272a] rounded-lg flex items-center justify-center font-semibold text-zinc-700 dark:text-neutral-400">
                           {app.companyName ? app.companyName[0].toUpperCase() : '🏢'}
                         </div>
                         <div>
-                          <h4 className="font-medium text-white group-hover/row:text-neutral-200 transition-colors">
+                          <h4 className="font-medium text-zinc-900 dark:text-white group-hover/row:text-indigo-600 dark:group-hover/row:text-neutral-200 transition-colors">
                             {app.jobTitle || 'Untitled Position'}
                           </h4>
-                          <p className="text-[11px] text-neutral-500 mt-0.5">
+                          <p className="text-[11px] text-zinc-500 dark:text-neutral-500 mt-0.5">
                             {app.jobType ? app.jobType.replace('-', ' ') : 'N/A'} {app.isRemote ? '• Remote' : (app.location ? `• ${app.location}` : '')}
                           </p>
                         </div>
@@ -201,12 +201,12 @@ const ApplicationsTab = ({ user }) => {
                     </td>
 
                     {/* Company Name Cell */}
-                    <td className="p-4 text-neutral-300 font-medium">
+                    <td className="p-4 text-zinc-700 dark:text-neutral-300 font-medium">
                       {app.companyName || 'N/A'}
                     </td>
 
                     {/* Time Logging Cell */}
-                    <td className="p-4 text-neutral-500">
+                    <td className="p-4 text-zinc-500 dark:text-neutral-500">
                       {formatTime(app.appliedAt)}
                     </td>
 
@@ -221,7 +221,7 @@ const ApplicationsTab = ({ user }) => {
                     <td className="p-4 text-right">
                       <button 
                         onClick={() => setSelectedApp(app)}
-                        className="text-neutral-400 hover:text-white font-medium text-xs bg-[#141417] border border-[#27272a] px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+                        className="text-zinc-700 dark:text-neutral-400 hover:text-indigo-600 dark:hover:text-white font-medium text-xs bg-zinc-100 dark:bg-[#141417] border border-zinc-200 dark:border-[#27272a] px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
                       >
                         Details
                       </button>
@@ -231,7 +231,7 @@ const ApplicationsTab = ({ user }) => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="p-8 text-center text-neutral-500">
+                  <td colSpan="5" className="p-8 text-center text-zinc-500 dark:text-neutral-500">
                     No applications found in this tab.
                   </td>
                 </tr>
@@ -242,17 +242,17 @@ const ApplicationsTab = ({ user }) => {
 
         {/* Table Bottom Navigation Footer Section */}
         {filteredApplications.length > 0 && (
-          <div className="p-4 border-t border-[#1e1e24] flex items-center justify-between text-[11px] text-neutral-500 bg-[#020203]/20">
+          <div className="p-4 border-t border-zinc-200 dark:border-[#1e1e24] flex items-center justify-between text-[11px] text-zinc-500 dark:text-neutral-500 bg-zinc-50 dark:bg-[#020203]/20">
             <span>Showing 1-{filteredApplications.length} of {filteredApplications.length} applications</span>
             
             <div className="flex items-center gap-1.5">
-              <button className="w-6 h-6 border border-[#1e1e24] bg-[#141417] rounded flex items-center justify-center cursor-not-allowed opacity-50">
+              <button className="w-6 h-6 border border-zinc-200 dark:border-[#1e1e24] bg-zinc-100 dark:bg-[#141417] text-zinc-400 dark:text-neutral-500 rounded flex items-center justify-center cursor-not-allowed opacity-50">
                 ‹
               </button>
-              <button className="w-6 h-6 bg-white text-black font-semibold rounded flex items-center justify-center">
+              <button className="w-6 h-6 bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold rounded flex items-center justify-center">
                 1
               </button>
-              <button className="w-6 h-6 border border-[#1e1e24] bg-[#141417] rounded flex items-center justify-center cursor-not-allowed opacity-50">
+              <button className="w-6 h-6 border border-zinc-200 dark:border-[#1e1e24] bg-zinc-100 dark:bg-[#141417] text-zinc-400 dark:text-neutral-500 rounded flex items-center justify-center cursor-not-allowed opacity-50">
                 ›
               </button>
             </div>
@@ -263,21 +263,21 @@ const ApplicationsTab = ({ user }) => {
 
       {/* Application Detail Modal for Seeker */}
       {selectedApp && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#121214] border border-zinc-800 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl space-y-6 p-6">
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+        <div className="fixed inset-0 bg-black/60 dark:bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-[#121214] border border-zinc-200 dark:border-zinc-800 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl space-y-6 p-6 transition-colors duration-200">
+            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-4">
               <div>
-                <h3 className="text-lg font-bold text-white">{selectedApp.jobTitle}</h3>
-                <p className="text-xs text-zinc-400">{selectedApp.companyName} • Applied on {formatTime(selectedApp.appliedAt)}</p>
+                <h3 className="text-lg font-bold text-zinc-900 dark:text-white">{selectedApp.jobTitle}</h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">{selectedApp.companyName} • Applied on {formatTime(selectedApp.appliedAt)}</p>
               </div>
-              <button onClick={() => setSelectedApp(null)} className="text-zinc-500 hover:text-white text-lg">
+              <button onClick={() => setSelectedApp(null)} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-white text-lg cursor-pointer">
                 ✕
               </button>
             </div>
 
             <div className="space-y-4">
               <div>
-                <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1">Status</h4>
+                <h4 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Status</h4>
                 <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getStatusBadge(selectedApp.status)}`}>
                   {selectedApp.status || 'Applied'}
                 </span>
@@ -285,51 +285,51 @@ const ApplicationsTab = ({ user }) => {
 
               {selectedApp.coverLetter && (
                 <div>
-                  <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1">Cover Letter</h4>
-                  <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-300 whitespace-pre-wrap">
+                  <h4 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Cover Letter</h4>
+                  <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl text-xs text-zinc-800 dark:text-zinc-300 whitespace-pre-wrap">
                     {selectedApp.coverLetter}
                   </div>
                 </div>
               )}
 
               <div>
-                <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">Submitted Documents</h4>
+                <h4 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-2">Submitted Documents</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-xl flex items-center justify-between">
+                  <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-indigo-400" />
-                      <span className="text-xs font-medium text-white">Resume</span>
+                      <FileText className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
+                      <span className="text-xs font-medium text-zinc-900 dark:text-white">Resume</span>
                     </div>
                     {selectedApp.resume ? (
-                      <a href={selectedApp.resume} target="_blank" rel="noreferrer" className="text-xs text-indigo-400 hover:underline flex items-center gap-1">
+                      <a href={selectedApp.resume} target="_blank" rel="noreferrer" className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
                         View <Download className="w-3 h-3" />
                       </a>
                     ) : (
-                      <span className="text-[10px] text-zinc-500">None</span>
+                      <span className="text-[10px] text-zinc-400 dark:text-zinc-500">None</span>
                     )}
                   </div>
 
-                  <div className="bg-[#141417] border border-[#27272a] p-3 rounded-xl flex items-center justify-between">
+                  <div className="bg-zinc-50 dark:bg-[#141417] border border-zinc-200 dark:border-[#27272a] p-3 rounded-xl flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-emerald-400" />
-                      <span className="text-xs font-medium text-white">CV</span>
+                      <FileText className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+                      <span className="text-xs font-medium text-zinc-900 dark:text-white">CV</span>
                     </div>
                     {selectedApp.cv ? (
-                      <a href={selectedApp.cv} target="_blank" rel="noreferrer" className="text-xs text-emerald-400 hover:underline flex items-center gap-1">
+                      <a href={selectedApp.cv} target="_blank" rel="noreferrer" className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1">
                         View <Download className="w-3 h-3" />
                       </a>
                     ) : (
-                      <span className="text-[10px] text-zinc-500">None</span>
+                      <span className="text-[10px] text-zinc-400 dark:text-zinc-500">None</span>
                     )}
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-zinc-800 flex justify-end">
+            <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800 flex justify-end">
               <button
                 onClick={() => setSelectedApp(null)}
-                className="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-semibold rounded-xl transition"
+                className="px-5 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-white text-xs font-semibold rounded-xl transition cursor-pointer"
               >
                 Close
               </button>
