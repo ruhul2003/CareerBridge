@@ -61,6 +61,7 @@ export default function Navbar() {
     { label: "Home", href: "/", icon: Home },
     { label: "Browse Jobs", href: "/jobs", icon: Briefcase },
     { label: "Companies", href: "/companies", icon: Building2 },
+    { label: "AI Studio", href: "/ai-studio", icon: Sparkles, isFeatured: true },
     { label: "Pricing", href: "/plans", icon: Sparkles },
   ];
 
@@ -134,8 +135,15 @@ export default function Navbar() {
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-                <Icon className={`w-4 h-4 ${active ? "text-indigo-600 dark:text-cyan-400" : "text-zinc-400 dark:text-slate-500"}`} />
-                <span>{link.label}</span>
+                <Icon className={`w-4 h-4 ${link.isFeatured ? "text-cyan-500 animate-pulse" : active ? "text-indigo-600 dark:text-cyan-400" : "text-zinc-400 dark:text-slate-500"}`} />
+                <span className={link.isFeatured && !active ? "bg-gradient-to-r from-cyan-500 to-purple-500 bg-clip-text text-transparent font-bold" : ""}>
+                  {link.label}
+                </span>
+                {link.isFeatured && (
+                  <span className="ml-0.5 px-1.5 py-0.5 text-[10px] font-extrabold uppercase rounded-full bg-gradient-to-r from-cyan-500 to-indigo-500 text-white leading-none shadow-sm">
+                    AI
+                  </span>
+                )}
               </Link>
             );
           })}

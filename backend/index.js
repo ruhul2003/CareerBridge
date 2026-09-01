@@ -818,6 +818,208 @@ Return your response strictly as a raw JSON object (without markdown code block 
   }
 });
 
+// AI Resume & Job Matcher Endpoint
+app.post("/api/ai/resume-match", async (req, res) => {
+  try {
+    const { resumeText, jobTitle, jobDescription, targetCompany } = req.body;
+    if (!resumeText || !jobTitle) {
+      return res.status(400).json({ success: false, message: "Resume text and job title are required" });
+    }
+
+    if (!aiClient) {
+      // Graceful Mock Fallback if GEMINI_API_KEY is not set
+      return res.json({
+        success: true,
+        data: {
+          matchScore: 82,
+          summary: `Strong candidate profile for ${jobTitle} position at ${targetCompany || 'the target company'}. Key core competencies align well with job requirements.`,
+          matchingSkills: ["React.js", "Node.js", "REST APIs", "Modern UI Design", "Git Version Control"],
+          missingSkills: ["TypeScript Strict Typing", "Docker Containerization", "Unit Testing (Jest/Playwright)"],
+          recommendations: [
+            "Highlight hands-on project experience with modern state management.",
+            "Include quantifiable achievements (e.g., improved page speed by 40%).",
+            "Mention familiarity with CI/CD deployment pipelines."
+          ],
+          tailoredCoverLetter: `Dear Hiring Manager at ${targetCompany || 'the hiring team'},\n\nI am writing to express my strong enthusiasm for the ${jobTitle} position. With my background in building scalable web applications and intuitive user interfaces, I am confident in my ability to bring immediate value to your team.\n\nMy experience aligns directly with your requirements, particularly in developing robust web solutions, optimizing performance, and collaborating effectively across teams. I would welcome the opportunity to discuss how my technical skills can contribute to your goals.\n\nSincerely,\nCandidate`
+        }
+      });
+    }
+
+    const prompt = `You are an expert ATS (Applicant Tracking System) Specialist and Senior HR Recruiter.
+Analyze the candidate's resume/skills against the target job posting.
+
+Candidate Resume / Profile Skills:
+${resumeText}
+
+Target Job Title: ${jobTitle}
+Company: ${targetCompany || 'Target Company'}
+Job Description & Requirements:
+${jobDescription || 'Standard requirements for ' + jobTitle}
+
+Perform a rigorous evaluation and return strictly a raw JSON object (without markdown code block formatting) with the following exact keys:
+{
+  "matchScore": 85, (An integer from 0 to 100 representing compatibility percentage)
+  "summary": "A concise 2-sentence evaluation summary.",
+  "matchingSkills": ["Skill 1", "Skill 2", "Skill 3", "Skill 4"],
+  "missingSkills": ["Skill A", "Skill B"],
+  "recommendations": ["Specific actionable tip 1", "Specific actionable tip 2", "Specific actionable tip 3"],
+  "tailoredCoverLetter": "A high-converting, professional, 3-paragraph tailored cover letter written specifically for this applicant applying for ${jobTitle} at ${targetCompany || 'the company'}."
+}`;
+
+    const response = await aiClient.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+    });
+
+    let resultText = response.text.trim();
+    if (resultText.startsWith("```")) {
+      resultText = resultText.replace(/^```(json)?\n?/, '').replace(/\n?```$/, '').trim();
+    }
+
+    const parsedData = JSON.parse(resultText);
+    res.json({ success: true, data: parsedData });
+  } catch (error) {
+    console.error("AI Resume Match Error:", error);
+    res.status(500).json({ success: false, message: error.message || "Failed to analyze resume match" });
+  }
+});
+
+// AI Mock Interview Questions Generator Endpoint
+app.post("/api/ai/interview-questions", async (req, res) => {
+  try {
+    const { jobTitle, category, seniorityLevel } = req.body;
+    if (!jobTitle) {
+      return res.status(400).json({ success: false, message: "Job title is required" });
+    }
+
+    if (!aiClient) {
+      return res.json({
+        success: true,
+        questions: [
+          {
+            id: 1,
+            question: `Can you explain a complex project you built using modern technologies relevant to ${jobTitle}?`,
+            category: "Behavioral & Technical",
+            hint: "Structure your answer using the STAR method (Situation, Task, Action, Result)."
+          },
+          {
+            id: 2,
+            question: "How do you handle unexpected production errors or state bugs under tight deadlines?",
+            category: "Problem Solving",
+            hint: "Mention logging, debugging tools, isolation steps, and communication."
+          },
+          {
+            id: 3,
+            question: "What strategies do you use to ensure software performance and code maintainability?",
+            category: "Architecture & Code Quality",
+            hint: "Discuss code reviews, component modularity, optimization techniques, and automated testing."
+          },
+          {
+            id: 4,
+            question: "Describe a situation where you had a design or technical disagreement with a team member.",
+            category: "Collaboration & Leadership",
+            hint: "Focus on active listening, data-driven decisions, and reaching a consensus."
+          },
+          {
+            id: 5,
+            question: `Where do you see technology evolving in the ${jobTitle} field over the next 2-3 years?`,
+            category: "Industry Vision",
+            hint: "Highlight AI integrations, modern frameworks, and continuous personal growth."
+          }
+        ]
+      });
+    }
+
+    const prompt = `You are a Senior Technical Hiring Manager conducting mock interviews.
+Generate 5 targeted, high-quality interview questions for the role:
+Position: ${jobTitle}
+Category: ${category || 'Software & Technology'}
+Seniority: ${seniorityLevel || 'Mid to Senior'}
+
+Return strictly a raw JSON object (without markdown backticks) with key "questions", which is an array of 5 objects containing:
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "Clear, realistic interview question...",
+      "category": "Technical / Problem Solving / Behavioral",
+      "hint": "A short helpful tip on how to answer effectively"
+    }
+  ]
+}`;
+
+    const response = await aiClient.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+    });
+
+    let resultText = response.text.trim();
+    if (resultText.startsWith("```")) {
+      resultText = resultText.replace(/^```(json)?\n?/, '').replace(/\n?```$/, '').trim();
+    }
+
+    const parsedData = JSON.parse(resultText);
+    res.json({ success: true, questions: parsedData.questions || [] });
+  } catch (error) {
+    console.error("AI Interview Questions Error:", error);
+    res.status(500).json({ success: false, message: error.message || "Failed to generate interview questions" });
+  }
+});
+
+// AI Mock Interview Answer Evaluator Endpoint
+app.post("/api/ai/evaluate-answer", async (req, res) => {
+  try {
+    const { question, candidateAnswer, jobTitle } = req.body;
+    if (!question || !candidateAnswer) {
+      return res.status(400).json({ success: false, message: "Question and candidate answer are required" });
+    }
+
+    if (!aiClient) {
+      return res.json({
+        success: true,
+        evaluation: {
+          score: 8,
+          feedback: "Great job! You clearly communicated your approach and demonstrated practical understanding.",
+          strengths: ["Structured explanation", "Relevant technical concepts mentioned"],
+          missingPoints: ["Could add measurable outcomes or specific metric improvements."],
+          idealAnswer: "An exemplary answer would explicitly state the problem context, technical steps taken, performance metrics achieved, and lesson learned."
+        }
+      });
+    }
+
+    const prompt = `You are an expert Interview Coach and HR Assessor for ${jobTitle || 'a professional role'}.
+Evaluate the candidate's interview response objectively.
+
+Interview Question: ${question}
+Candidate's Answer: ${candidateAnswer}
+
+Return strictly a raw JSON object (without markdown code blocks) with the exact structure:
+{
+  "score": 8, (Integer 1 to 10)
+  "feedback": "2-sentence overall review of the answer.",
+  "strengths": ["Strength point 1", "Strength point 2"],
+  "missingPoints": ["Point that could be improved 1"],
+  "idealAnswer": "A concise breakdown of what a 10/10 answer would look like for this question."
+}`;
+
+    const response = await aiClient.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+    });
+
+    let resultText = response.text.trim();
+    if (resultText.startsWith("```")) {
+      resultText = resultText.replace(/^```(json)?\n?/, '').replace(/\n?```$/, '').trim();
+    }
+
+    const parsedData = JSON.parse(resultText);
+    res.json({ success: true, evaluation: parsedData });
+  } catch (error) {
+    console.error("AI Evaluate Answer Error:", error);
+    res.status(500).json({ success: false, message: error.message || "Failed to evaluate answer" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Application listening natively on port ${port}`);
 });

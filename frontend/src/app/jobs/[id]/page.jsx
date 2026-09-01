@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Bookmark, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Bookmark, ExternalLink, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
@@ -361,6 +361,14 @@ export default function JobDetailsPage() {
             >
               <Bookmark size={18} className={isSaved ? 'fill-current' : ''} />
             </button>
+            <Link
+              href={`/ai-studio?jobId=${job._id}`}
+              className="flex-1 sm:flex-initial px-4 py-3 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold rounded-xl transition text-sm flex items-center justify-center gap-1.5 cursor-pointer shadow-lg shadow-cyan-500/20"
+            >
+              <Sparkles size={16} className="text-amber-300 animate-pulse" />
+              <span>AI Match & Cover Letter</span>
+            </Link>
+
             {user?.role !== 'recruiter' && user?.role !== 'admin' && (
               applied ? (
                 <button disabled className="flex-1 sm:flex-initial px-6 py-3 bg-slate-200 dark:bg-zinc-850 text-slate-400 dark:text-zinc-500 font-semibold rounded-xl cursor-not-allowed text-sm tracking-wide border border-slate-300 dark:border-zinc-800">
