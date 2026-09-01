@@ -23,8 +23,6 @@ import {
   UserCheck,
   Bot
 } from 'lucide-react';
-import Navbar from '@/Components/NavBar';
-import Footer from '@/Components/footer';
 import toast from 'react-hot-toast';
 
 import { useSearchParams } from 'next/navigation';
@@ -236,7 +234,6 @@ function AICareerStudioContent() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-cyan-500 selection:text-white flex flex-col">
-      <Navbar />
 
       {/* Hero Header */}
       <section className="relative pt-12 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden border-b border-slate-800/80 bg-gradient-to-b from-indigo-950/40 via-slate-950 to-slate-950">
@@ -833,8 +830,6 @@ function AICareerStudioContent() {
           )}
         </AnimatePresence>
       </main>
-
-      <Footer />
     </div>
   );
 }
