@@ -4,7 +4,6 @@ import { LayoutDashboard, Briefcase, Bookmark, FileText, CreditCard, Settings, L
 const SeekerSidebar = ({ currentTab, setCurrentTab }) => {
   const menuItems = [
     { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard },
-    { id: 'jobs', name: 'Jobs', icon: Briefcase },
     { id: 'saved', name: 'Saved Jobs', icon: Bookmark },
     { id: 'applications', name: 'Applications', icon: FileText },
     { id: 'billing', name: 'Billing', icon: CreditCard },
