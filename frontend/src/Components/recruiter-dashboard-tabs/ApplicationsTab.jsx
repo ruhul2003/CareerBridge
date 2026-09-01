@@ -23,52 +23,54 @@ const ApplicationsTab = ({ user }) => {
     const [applicantProfile, setApplicantProfile] = useState(null);
     const [profileLoading, setProfileLoading] = useState(false);
 
-    const fetchApplicationsData = async () => {
-        if (!user?.id) return;
-        setIsLoading(true);
-        try {
-            // 1. Fetch current recruiter's company
-            const companyRes = await fetch(`${SERVER_URL}/api/companies?recruiterId=${user.id}`);
-            if (companyRes.ok) {
-                const companies = await companyRes.json();
-                if (companies && companies.length > 0) {
-                    const currentCompany = companies[0];
-                    setCompany(currentCompany);
-
-                    // 2. Fetch jobs and applications in parallel
-                    const [jobsRes, appsRes] = await Promise.all([
-                        fetch(`${SERVER_URL}/api/jobs?companyId=${currentCompany._id}`),
-                        fetch(`${SERVER_URL}/api/applications?companyId=${currentCompany._id}`)
-                    ]);
-
-                    if (jobsRes.ok) {
-                        const jobsData = await jobsRes.json();
-                        setJobs(jobsData);
-                    }
-
-                    if (appsRes.ok) {
-                        const appsData = await appsRes.json();
-                        // Sort newest first
-                        const sortedApps = appsData.sort((a, b) => new Date(b.appliedAt) - new Date(a.appliedAt));
-                        setApplications(sortedApps);
-                        setFilteredApplications(sortedApps);
-                    }
-                } else {
-                    setCompany(null);
-                }
-            }
-        } catch (error) {
-            console.error("Error fetching applications workspace:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     useEffect(() => {
-        if (user?.id) {
-            fetchApplicationsData();
+        if (!user?.id) {
+            setIsLoading(false);
+            return;
         }
-    }, [user?.id]);
+
+        const fetchApplicationsData = async () => {
+            setIsLoading(true);
+            try {
+                // 1. Fetch current recruiter's company
+                const companyRes = await fetch(`${SERVER_URL}/api/companies?recruiterId=${user.id}`);
+                if (companyRes.ok) {
+                    const companies = await companyRes.json();
+                    if (companies && companies.length > 0) {
+                        const currentCompany = companies[0];
+                        setCompany(currentCompany);
+
+                        // 2. Fetch jobs and applications in parallel
+                        const [jobsRes, appsRes] = await Promise.all([
+                            fetch(`${SERVER_URL}/api/jobs?companyId=${currentCompany._id}`),
+                            fetch(`${SERVER_URL}/api/applications?companyId=${currentCompany._id}`)
+                        ]);
+
+                        if (jobsRes.ok) {
+                            const jobsData = await jobsRes.json();
+                            setJobs(jobsData);
+                        }
+
+                        if (appsRes.ok) {
+                            const appsData = await appsRes.json();
+                            // Sort newest first
+                            const sortedApps = appsData.sort((a, b) => new Date(b.appliedAt) - new Date(a.appliedAt));
+                            setApplications(sortedApps);
+                            setFilteredApplications(sortedApps);
+                        }
+                    } else {
+                        setCompany(null);
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching applications workspace:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchApplicationsData();
+    }, [user?.id, SERVER_URL]);
 
     useEffect(() => {
         if (selectedJobFilter === 'all') {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Download, FileText, CheckCircle2, Calendar, TrendingUp, MoreVertical } from 'lucide-react';
-import { authClient } from '@/lib/auth-client';
 
 const ApplicationsTab = ({ user }) => {
   const [subTab, setSubTab] = useState('Active');
