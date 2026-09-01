@@ -15,12 +15,12 @@ const SeekerDashboard = () => {
 
   const renderTabContent = () => {
     switch (currentTab) {
-      case 'dashboard': return <OverviewTab />;
+      case 'dashboard': return <OverviewTab onEditProfile={() => setCurrentTab('settings')} />;
       case 'saved': return <SavedJobsTab />;
       case 'applications': return <ApplicationsTab />;
       case 'billing': return <BillingTab />;
       case 'settings': return <SettingsTab />;
-      default: return <OverviewTab />;
+      default: return <OverviewTab onEditProfile={() => setCurrentTab('settings')} />;
     }
   };
 

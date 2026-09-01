@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Bookmark, Send, Calendar, ShieldCheck } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 
-const OverviewTab = () => {
+const OverviewTab = ({ onEditProfile }) => {
   const { data: session, isPending: sessionLoading } = authClient.useSession();
   const user = session?.user;
 
@@ -112,7 +112,10 @@ const OverviewTab = () => {
             <h4 className="text-lg font-medium text-white">{user?.name || "Anonymous User"}</h4>
             <p className="text-xs text-gray-500 mt-0.5">{user?.email || "No email address"}</p>
           </div>
-          <button className="w-full border border-[#27272a] hover:bg-[#18181b] text-xs font-medium py-2 rounded-xl transition-all text-white">
+          <button 
+            onClick={onEditProfile}
+            className="w-full border border-[#27272a] hover:bg-[#18181b] text-xs font-medium py-2 rounded-xl transition-all text-white cursor-pointer"
+          >
             Edit Profile
           </button>
         </div>
