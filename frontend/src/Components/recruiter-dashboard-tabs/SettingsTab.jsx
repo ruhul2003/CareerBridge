@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { User, Mail, Briefcase, Code, Plus, X, Save, Loader2, Sun, Moon } from 'lucide-react';
+import { User, Mail, Briefcase, Code, Plus, X, Save, Loader2, Sun, Moon, Phone, MapPin, Globe, Check } from 'lucide-react';
+import { FaLinkedin } from 'react-icons/fa6';
 import ThemeToggle from '@/Components/ThemeToggle';
 
 const SettingsTab = ({ user }) => {
@@ -10,6 +11,11 @@ const SettingsTab = ({ user }) => {
         fullName: '',
         email: '',
         title: '',
+        phone: '',
+        location: '',
+        bio: '',
+        linkedin: '',
+        website: '',
     });
     const [skills, setSkills] = useState([]);
     const [skillInput, setSkillInput] = useState('');
@@ -22,13 +28,18 @@ const SettingsTab = ({ user }) => {
             if (!user?.id) return;
             setIsLoading(true);
             try {
-                const res = await fetch(`${SERVER_URL}/api/users/${user.id}`);
+                const res = await fetch(`/api/users/${user.id}`);
                 if (res.ok) {
                     const data = await res.json();
                     setProfile({
                         fullName: data.fullName || data.name || '',
                         email: data.email || '',
                         title: data.title || '',
+                        phone: data.phone || '',
+                        location: data.location || '',
+                        bio: data.bio || '',
+                        linkedin: data.linkedin || '',
+                        website: data.website || data.portfolio || '',
                     });
                     setSkills(Array.isArray(data.skills) ? data.skills : []);
                 }
@@ -62,24 +73,25 @@ const SettingsTab = ({ user }) => {
         setFeedback({ type: '', text: '' });
 
         try {
-            const res = await fetch(`${SERVER_URL}/api/users/${user.id}`, {
+            const res = await fetch(`/api/users/${user.id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     fullName: profile.fullName,
                     email: profile.email,
                     title: profile.title,
+                    phone: profile.phone,
+                    location: profile.location,
+                    bio: profile.bio,
+                    linkedin: profile.linkedin,
+                    website: profile.website,
                     skills: skills
                 })
             });
 
             if (res.ok) {
-                setFeedback({ type: 'success', text: 'Profile settings updated successfully!' });
-                if (typeof window !== 'undefined') {
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1200);
-                }
+                setFeedback({ type: 'success', text: 'Recruiter profile updated successfully!' });
+                setTimeout(() => setFeedback({ type: '', text: '' }), 4000);
             } else {
                 setFeedback({ type: 'error', text: 'Failed to update profile settings.' });
             }
@@ -94,153 +106,235 @@ const SettingsTab = ({ user }) => {
     if (isLoading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[50vh]">
-                <div className="w-8 h-8 border-2 border-t-white border-zinc-800 rounded-full animate-spin" />
+                <div className="w-8 h-8 border-2 border-t-indigo-500 border-zinc-800 rounded-full animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="max-w-3xl mx-auto p-4 space-y-8 animate-fadeIn">
-            {/* Header */}
-            <div className="border-b border-slate-200 dark:border-zinc-800 pb-6">
-                <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Profile Settings</h1>
-                <p className="text-slate-500 dark:text-zinc-400 text-sm mt-1">Manage your account credentials and personal profile.</p>
-            </div>
-
+        <div className="max-w-4xl mx-auto space-y-6 font-sans">
+            
+            {/* Feedback Banner */}
             {feedback.text && (
-                <div className={`p-4 rounded-xl border text-xs font-semibold ${
+                <div className={`p-4 rounded-xl text-sm flex items-center justify-between shadow-md border ${
                     feedback.type === 'success' 
-                        ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400' 
-                        : 'bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400'
+                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400'
+                        : 'bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-400'
                 }`}>
-                    {feedback.text}
+                    <div className="flex items-center gap-2">
+                        <Check className="w-5 h-5" />
+                        <span>{feedback.text}</span>
+                    </div>
                 </div>
             )}
 
-            {/* Appearance & Theme Settings Card */}
-            <div className="bg-white dark:bg-[#141416] p-6 rounded-2xl border border-slate-200 dark:border-zinc-850 transition-colors duration-300 shadow-sm flex items-center justify-between">
+            {/* Title Header */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#1e1e24] p-6 rounded-2xl shadow-sm">
                 <div>
-                    <h3 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                        <Sun className="w-4 h-4 text-amber-500 dark:hidden" />
-                        <Moon className="w-4 h-4 text-indigo-400 hidden dark:block" />
-                        Appearance & Theme Preference
-                    </h3>
-                    <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
-                        Switch between Light Mode and Dark Mode across your workspace.
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">Recruiter Profile & Settings</h2>
+                    <p className="text-xs text-slate-500 dark:text-neutral-400 mt-1">
+                        Update your recruiter contact info, title, and hiring preferences.
                     </p>
                 </div>
-                <ThemeToggle />
+                <button
+                    onClick={handleSubmit}
+                    disabled={isSaving}
+                    className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-lg flex items-center gap-2 cursor-pointer disabled:opacity-50 transition-all"
+                >
+                    {isSaving ? (
+                        <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <span>Saving...</span>
+                        </>
+                    ) : (
+                        <>
+                            <Save className="w-4 h-4" />
+                            <span>Save Profile</span>
+                        </>
+                    )}
+                </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-[#141416] p-6 rounded-2xl border border-slate-200 dark:border-zinc-850 shadow-sm transition-colors duration-300">
-                {/* Full Name */}
-                <div className="space-y-2">
-                    <label className="block text-xs font-medium text-slate-700 dark:text-zinc-300">Full Name</label>
-                    <div className="flex bg-slate-50 dark:bg-[#1f1f21] border border-slate-300 dark:border-zinc-800 focus-within:border-indigo-500 dark:focus-within:border-zinc-700 rounded-xl overflow-hidden items-center px-4">
-                        <User className="w-4 h-4 text-slate-400 dark:text-zinc-500 mr-3" />
-                        <input 
-                            type="text" required
-                            value={profile.fullName} 
-                            onChange={(e) => setProfile({...profile, fullName: e.target.value})}
-                            className="w-full bg-transparent py-3 text-sm text-slate-900 dark:text-zinc-200 placeholder-slate-400 dark:placeholder-zinc-600 outline-none" 
-                            placeholder="e.g. Alex Sterling" 
-                        />
+            {/* Appearance & Theme Settings */}
+            <div className="bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#1e1e24] rounded-2xl p-6 shadow-sm">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h3 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                            <Sun className="w-4 h-4 text-amber-500 dark:hidden" />
+                            <Moon className="w-4 h-4 text-indigo-400 hidden dark:block" />
+                            Appearance Preference
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-neutral-400 mt-1">
+                            Switch between Light Mode and Dark Mode.
+                        </p>
+                    </div>
+                    <ThemeToggle />
+                </div>
+            </div>
+
+            {/* Personal & Recruiter Details */}
+            <div className="bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#1e1e24] rounded-2xl p-6 shadow-sm space-y-4">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-[#1e1e24] pb-3">
+                    Personal Information
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-neutral-400 mb-1.5">
+                            Full Name *
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="text"
+                                value={profile.fullName}
+                                onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
+                                placeholder="Your Name"
+                                className="w-full bg-slate-50 dark:bg-[#141417] border border-slate-200 dark:border-[#27272a] rounded-xl pl-10 pr-3 py-2.5 text-sm text-slate-900 dark:text-white"
+                            />
+                            <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-neutral-400 mb-1.5">
+                            Designation / Job Title *
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="text"
+                                value={profile.title}
+                                onChange={(e) => setProfile({ ...profile, title: e.target.value })}
+                                placeholder="e.g. Lead Talent Acquisition Specialist"
+                                className="w-full bg-slate-50 dark:bg-[#141417] border border-slate-200 dark:border-[#27272a] rounded-xl pl-10 pr-3 py-2.5 text-sm text-slate-900 dark:text-white"
+                            />
+                            <Briefcase className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-neutral-400 mb-1.5">
+                            Email Address
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="email"
+                                value={profile.email}
+                                disabled
+                                className="w-full bg-slate-100 dark:bg-[#18181b] border border-slate-200 dark:border-[#27272a] rounded-xl pl-10 pr-3 py-2.5 text-sm text-slate-500 dark:text-neutral-400 cursor-not-allowed"
+                            />
+                            <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-neutral-400 mb-1.5">
+                            Phone Number
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="text"
+                                value={profile.phone}
+                                onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                                placeholder="e.g. +880 1800-000000"
+                                className="w-full bg-slate-50 dark:bg-[#141417] border border-slate-200 dark:border-[#27272a] rounded-xl pl-10 pr-3 py-2.5 text-sm text-slate-900 dark:text-white"
+                            />
+                            <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-neutral-400 mb-1.5">
+                            Office Location
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="text"
+                                value={profile.location}
+                                onChange={(e) => setProfile({ ...profile, location: e.target.value })}
+                                placeholder="e.g. Dhaka, Bangladesh"
+                                className="w-full bg-slate-50 dark:bg-[#141417] border border-slate-200 dark:border-[#27272a] rounded-xl pl-10 pr-3 py-2.5 text-sm text-slate-900 dark:text-white"
+                            />
+                            <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-neutral-400 mb-1.5">
+                            LinkedIn URL
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="url"
+                                value={profile.linkedin}
+                                onChange={(e) => setProfile({ ...profile, linkedin: e.target.value })}
+                                placeholder="https://linkedin.com/in/yourprofile"
+                                className="w-full bg-slate-50 dark:bg-[#141417] border border-slate-200 dark:border-[#27272a] rounded-xl pl-10 pr-3 py-2.5 text-sm text-slate-900 dark:text-white"
+                            />
+                            <FaLinkedin className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                        </div>
                     </div>
                 </div>
 
-                {/* Email Address */}
-                <div className="space-y-2">
-                    <label className="block text-xs font-medium text-slate-700 dark:text-zinc-300">Email Address</label>
-                    <div className="flex bg-slate-100 dark:bg-[#1f1f21] border border-slate-200 dark:border-zinc-800/80 rounded-xl overflow-hidden items-center px-4 opacity-75">
-                        <Mail className="w-4 h-4 text-slate-400 dark:text-zinc-500 mr-3" />
-                        <input 
-                            type="email" disabled
-                            value={profile.email} 
-                            className="w-full bg-transparent py-3 text-sm text-slate-500 dark:text-zinc-400 outline-none cursor-not-allowed" 
-                        />
-                    </div>
-                    <p className="text-[10px] text-slate-500 dark:text-zinc-500">Contact admin to modify registered account email.</p>
+                <div>
+                    <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-neutral-400 mb-1.5">
+                        Bio / Overview
+                    </label>
+                    <textarea
+                        rows={3}
+                        value={profile.bio}
+                        onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+                        placeholder="Brief summary of your recruiting expertise..."
+                        className="w-full bg-slate-50 dark:bg-[#141417] border border-slate-200 dark:border-[#27272a] rounded-xl p-3 text-sm text-slate-900 dark:text-white resize-none"
+                    />
                 </div>
+            </div>
 
-                {/* Recruiter Title */}
-                <div className="space-y-2">
-                    <label className="block text-xs font-medium text-slate-700 dark:text-zinc-300">Hiring Title / Role</label>
-                    <div className="flex bg-slate-50 dark:bg-[#1f1f21] border border-slate-300 dark:border-zinc-800 focus-within:border-indigo-500 dark:focus-within:border-zinc-700 rounded-xl overflow-hidden items-center px-4">
-                        <Briefcase className="w-4 h-4 text-slate-400 dark:text-zinc-500 mr-3" />
-                        <input 
-                            type="text" 
-                            value={profile.title} 
-                            onChange={(e) => setProfile({...profile, title: e.target.value})}
-                            className="w-full bg-transparent py-3 text-sm text-slate-900 dark:text-zinc-200 placeholder-slate-400 dark:placeholder-zinc-600 outline-none" 
-                            placeholder="e.g. Head of Talent Acquisition" 
-                        />
-                    </div>
-                </div>
+            {/* Hiring Tags / Specializations */}
+            <div className="bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#1e1e24] rounded-2xl p-6 shadow-sm space-y-4">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-[#1e1e24] pb-3">
+                    Hiring Specializations & Tags
+                </h3>
 
-                {/* Hiring Interests / Tags */}
-                <div className="space-y-3">
-                    <label className="block text-xs font-medium text-slate-700 dark:text-zinc-300">Hiring Sectors & Interests</label>
-                    <div className="flex gap-2">
-                        <input 
+                <form onSubmit={handleAddSkill} className="flex gap-2">
+                    <div className="relative flex-1">
+                        <input
                             type="text"
                             value={skillInput}
                             onChange={(e) => setSkillInput(e.target.value)}
-                            className="w-full bg-slate-50 dark:bg-[#1f1f21] border border-slate-300 dark:border-zinc-800 focus:border-indigo-500 dark:focus:border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-zinc-200 placeholder-slate-400 dark:placeholder-zinc-650 outline-none transition-colors"
-                            placeholder="Add hiring tag (e.g. Engineering, Sales, Devops)"
+                            placeholder="Add hiring tag (e.g., Tech Hiring, Executive Search)..."
+                            className="w-full bg-slate-50 dark:bg-[#141417] border border-slate-200 dark:border-[#27272a] rounded-xl pl-10 pr-3 py-2 text-sm text-slate-900 dark:text-white"
                         />
-                        <button 
-                            type="button"
-                            onClick={handleAddSkill}
-                            className="px-4 py-2.5 bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-800 dark:text-zinc-300 rounded-xl text-xs font-semibold border border-slate-300 dark:border-zinc-700/60 transition flex items-center gap-1.5 cursor-pointer"
-                        >
-                            <Plus className="w-4 h-4" /> Add
-                        </button>
+                        <Code className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                     </div>
-
-                    <div className="flex flex-wrap gap-2 pt-2">
-                        {skills.length === 0 ? (
-                            <span className="text-xs text-slate-400 dark:text-zinc-500 italic">No tags added yet. Add tags to classify your focus areas.</span>
-                        ) : (
-                            skills.map((skill, index) => (
-                                <div 
-                                    key={index}
-                                    className="bg-slate-100 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-800 text-slate-800 dark:text-zinc-300 rounded-lg px-3 py-1.5 text-xs font-medium flex items-center gap-2"
-                                >
-                                    <span>{skill}</span>
-                                    <button 
-                                        type="button" 
-                                        onClick={() => handleRemoveSkill(skill)}
-                                        className="text-slate-400 dark:text-zinc-500 hover:text-red-500"
-                                    >
-                                        <X className="w-3.5 h-3.5" />
-                                    </button>
-                                </div>
-                            ))
-                        )}
-                    </div>
-                </div>
-
-                {/* Save Button */}
-                <div className="pt-4 border-t border-slate-200 dark:border-zinc-800/40 flex justify-end">
-                    <button 
-                        type="submit" disabled={isSaving}
-                        className="px-6 py-3 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black font-semibold text-xs rounded-xl transition shadow flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+                    <button
+                        type="submit"
+                        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-colors"
                     >
-                        {isSaving ? (
-                            <>
-                                <Loader2 className="w-4 h-4 animate-spin" /> Saving Changes...
-                            </>
-                        ) : (
-                            <>
-                                <Save className="w-4 h-4" /> Save Settings
-                            </>
-                        )}
+                        <Plus className="w-4 h-4" />
+                        <span>Add Tag</span>
                     </button>
+                </form>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                    {skills.map((skill, index) => (
+                        <span
+                            key={index}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-semibold"
+                        >
+                            {skill}
+                            <button
+                                type="button"
+                                onClick={() => handleRemoveSkill(skill)}
+                                className="hover:text-rose-500 transition-colors"
+                            >
+                                <X className="w-3.5 h-3.5" />
+                            </button>
+                        </span>
+                    ))}
                 </div>
-            </form>
+            </div>
         </div>
     );
 };
 
 export default SettingsTab;
-

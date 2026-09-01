@@ -45,10 +45,24 @@ export async function PATCH(request, { params }) {
       fullName: body.fullName,
       email: body.email,
       title: body.title,
+      phone: body.phone || "",
+      location: body.location || "",
+      bio: body.bio || "",
+      github: body.github || "",
+      linkedin: body.linkedin || "",
+      portfolio: body.portfolio || "",
+      website: body.website || "",
+      dateOfBirth: body.dateOfBirth || "",
+      languages: body.languages || "",
       skills: body.skills || [],
+      education: Array.isArray(body.education) ? body.education : [],
+      experience: Array.isArray(body.experience) ? body.experience : [],
       updatedAt: new Date()
     };
 
+    if (body.avatar !== undefined) {
+      updateFields.avatar = body.avatar;
+    }
     if (body.resume !== undefined || body.resumeUrl !== undefined) {
       const r = body.resume || body.resumeUrl || "";
       updateFields.resume = r;
