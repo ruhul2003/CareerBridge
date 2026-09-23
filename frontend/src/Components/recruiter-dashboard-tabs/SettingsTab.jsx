@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { User, Mail, Briefcase, Code, Plus, X, Save, Loader2, Sun, Moon, Phone, MapPin, Globe, Check } from 'lucide-react';
+import { User, Mail, Briefcase, Code, Plus, X, Save, Loader2, Sun, Moon, Phone, MapPin, Globe, Check, ShieldAlert, CheckCircle2 } from 'lucide-react';
 import { FaLinkedin } from 'react-icons/fa6';
 import ThemeToggle from '@/Components/ThemeToggle';
+import toast from 'react-hot-toast';
 
 const SettingsTab = ({ user }) => {
     const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
@@ -22,6 +23,43 @@ const SettingsTab = ({ user }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [feedback, setFeedback] = useState({ type: '', text: '' });
+
+    // Email verification state
+    const [isResendingVerification, setIsResendingVerification] = useState(false);
+    const [verificationCooldown, setVerificationCooldown] = useState(0);
+
+    useEffect(() => {
+        if (verificationCooldown <= 0) return;
+        const timer = setInterval(() => {
+            setVerificationCooldown((prev) => (prev > 0 ? prev - 1 : 0));
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [verificationCooldown]);
+
+    const handleResendVerification = async () => {
+        const targetEmail = profile.email || user?.email;
+        if (!targetEmail) return;
+
+        setIsResendingVerification(true);
+        try {
+            const res = await fetch('/api/auth/resend-verification', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: targetEmail }),
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                toast.success(data.message || 'Verification email dispatched!');
+                setVerificationCooldown(60);
+            } else {
+                toast.error(data.message || 'Failed to send verification email.');
+            }
+        } catch (e) {
+            toast.error(e.message || 'Network error sending verification email.');
+        } finally {
+            setIsResendingVerification(false);
+        }
+    };
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -195,9 +233,30 @@ const SettingsTab = ({ user }) => {
                     </div>
 
                     <div>
-                        <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-neutral-400 mb-1.5">
-                            Email Address
-                        </label>
+                        <div className="flex items-center justify-between mb-1.5 flex-wrap gap-2">
+                            <label className="block text-xs font-semibold uppercase text-slate-500 dark:text-neutral-400">
+                                Email Address
+                            </label>
+                            {user?.emailVerified ? (
+                                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800/40">
+                                    <Check className="w-3 h-3" /> Email Verified
+                                </span>
+                            ) : (
+                                <div className="flex items-center gap-2">
+                                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-md border border-amber-200 dark:border-amber-800/40">
+                                        <ShieldAlert className="w-3 h-3" /> Unverified
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={handleResendVerification}
+                                        disabled={isResendingVerification || verificationCooldown > 0}
+                                        className="text-[11px] font-semibold text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 hover:underline disabled:opacity-50 cursor-pointer"
+                                    >
+                                        {isResendingVerification ? "Sending..." : verificationCooldown > 0 ? `Resend (${verificationCooldown}s)` : "Verify Now"}
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                         <div className="relative">
                             <input
                                 type="email"

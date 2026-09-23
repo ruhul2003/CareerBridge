@@ -122,8 +122,20 @@ const DashboardTab = ({ user }) => {
                     <h1 className="text-3xl font-semibold text-white">Welcome back, {user?.name || user?.fullName || 'Recruiter'}</h1>
                     <p className="text-neutral-400 mt-1">Here is what is happening with your hiring today.</p>
                 </div>
-                <div className="text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-full font-medium border border-emerald-500/20 uppercase tracking-wider">
-                    {user?.plan === 'recruiter_enterprise' ? 'Enterprise Access' : user?.plan === 'recruiter_growth' ? 'Growth Access' : 'Free Tier'}
+                <div className="flex items-center gap-2 flex-wrap">
+                    <div className="text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-full font-medium border border-emerald-500/20 uppercase tracking-wider">
+                        {user?.plan === 'recruiter_enterprise' ? 'Enterprise Access' : user?.plan === 'recruiter_growth' ? 'Growth Access' : 'Free Tier'}
+                    </div>
+                    {user?.emailVerified ? (
+                        <div className="text-xs bg-cyan-500/10 text-cyan-400 px-3 py-1.5 rounded-full font-medium border border-cyan-500/20 flex items-center gap-1">
+                            <CheckCircle className="w-3.5 h-3.5" />
+                            Email Verified
+                        </div>
+                    ) : (
+                        <div className="text-xs bg-amber-500/10 text-amber-400 px-3 py-1.5 rounded-full font-medium border border-amber-500/20 flex items-center gap-1">
+                            Email Unverified
+                        </div>
+                    )}
                 </div>
             </div>
 
