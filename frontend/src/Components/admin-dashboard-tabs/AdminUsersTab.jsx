@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Trash2, ShieldAlert } from 'lucide-react';
+import { Search, Trash2, ShieldAlert, CheckCircle2, AlertCircle, Send, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const AdminUsersTab = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all'); // 'all' | 'verified' | 'unverified'
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [sendingEmailId, setSendingEmailId] = useState(null);
 
   const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000';
 
@@ -49,6 +51,28 @@ const AdminUsersTab = () => {
     }
   };
 
+  const handleSendVerificationEmail = async (userId, userEmail) => {
+    if (!userEmail) return;
+    setSendingEmailId(userId);
+    try {
+      const res = await fetch('/api/auth/resend-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: userEmail }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success(data.message || `Verification email sent to ${userEmail}!`);
+      } else {
+        toast.error(data.message || 'Failed to send verification email.');
+      }
+    } catch (err) {
+      toast.error(err.message || 'Network error sending email.');
+    } finally {
+      setSendingEmailId(null);
+    }
+  };
+
   const handleDeleteUser = async (userId) => {
     if (!window.confirm("Are you sure you want to delete this user? This action cannot be undone.")) return;
 
@@ -68,11 +92,18 @@ const AdminUsersTab = () => {
     }
   };
 
-  const filteredUsers = users.filter(user => 
-    user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.role?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = users.filter(user => {
+    const matchesSearch = 
+      user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.role?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    if (!matchesSearch) return false;
+
+    if (statusFilter === 'verified') return Boolean(user.emailVerified);
+    if (statusFilter === 'unverified') return !user.emailVerified;
+    return true;
+  });
 
   if (loading) {
     return (
@@ -93,21 +124,53 @@ const AdminUsersTab = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header and Search */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      {/* Header, Search & Filter */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold text-white">Manage Users</h2>
-          <p className="text-xs text-zinc-500 mt-1">Review registrations, toggle admin authorization, or purge accounts.</p>
+          <p className="text-xs text-zinc-500 mt-1">Review registrations, email verification statuses, and role privileges.</p>
         </div>
-        <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Search users..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-[#121214] border border-zinc-800 focus:border-zinc-700 text-white rounded-xl pl-10 pr-4 py-2.5 text-xs outline-none transition"
-          />
+
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+          {/* Status Filter Tabs */}
+          <div className="flex items-center bg-[#121214] p-1 rounded-xl border border-zinc-800 text-xs">
+            <button
+              onClick={() => setStatusFilter('all')}
+              className={`px-3 py-1.5 rounded-lg font-medium transition cursor-pointer ${
+                statusFilter === 'all' ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              All ({users.length})
+            </button>
+            <button
+              onClick={() => setStatusFilter('verified')}
+              className={`px-3 py-1.5 rounded-lg font-medium transition cursor-pointer ${
+                statusFilter === 'verified' ? 'bg-emerald-950 text-emerald-400' : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              Verified ({users.filter(u => u.emailVerified).length})
+            </button>
+            <button
+              onClick={() => setStatusFilter('unverified')}
+              className={`px-3 py-1.5 rounded-lg font-medium transition cursor-pointer ${
+                statusFilter === 'unverified' ? 'bg-amber-950 text-amber-400' : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              Unverified ({users.filter(u => !u.emailVerified).length})
+            </button>
+          </div>
+
+          {/* Search Box */}
+          <div className="relative w-full sm:w-64">
+            <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search users..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-[#121214] border border-zinc-800 focus:border-zinc-700 text-white rounded-xl pl-10 pr-4 py-2.5 text-xs outline-none transition"
+            />
+          </div>
         </div>
       </div>
 
@@ -119,6 +182,7 @@ const AdminUsersTab = () => {
               <tr className="border-b border-zinc-800 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-zinc-900/30">
                 <th className="px-6 py-4">Name</th>
                 <th className="px-6 py-4">Email</th>
+                <th className="px-6 py-4">Email Status</th>
                 <th className="px-6 py-4">Role</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
@@ -129,6 +193,35 @@ const AdminUsersTab = () => {
                   <tr key={user._id} className="hover:bg-zinc-900/20 transition-colors">
                     <td className="px-6 py-4.5 font-semibold text-white">{user.name || 'No Name'}</td>
                     <td className="px-6 py-4.5 text-zinc-400">{user.email}</td>
+                    <td className="px-6 py-4.5">
+                      {user.emailVerified ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          Verified
+                        </span>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                            <AlertCircle className="w-3.5 h-3.5" />
+                            Unverified
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => handleSendVerificationEmail(user._id, user.email)}
+                            disabled={sendingEmailId === user._id}
+                            className="inline-flex items-center gap-1 text-[11px] text-sky-400 hover:text-sky-300 hover:underline disabled:opacity-50 cursor-pointer"
+                            title="Send verification email to user"
+                          >
+                            {sendingEmailId === user._id ? (
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                            ) : (
+                              <Send className="w-3 h-3" />
+                            )}
+                            Send Email
+                          </button>
+                        </div>
+                      )}
+                    </td>
                     <td className="px-6 py-4.5">
                       <select
                         value={user.role}
@@ -155,7 +248,7 @@ const AdminUsersTab = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="px-6 py-10 text-center text-zinc-500 italic">No users found.</td>
+                  <td colSpan="5" className="px-6 py-10 text-center text-zinc-500 italic">No users found matching your criteria.</td>
                 </tr>
               )}
             </tbody>
