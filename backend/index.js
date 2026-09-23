@@ -657,20 +657,43 @@ app.patch("/api/jobs/:id", async (req, res) => {
 app.patch("/api/applications/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const { status } = req.body;
+    const { status, note, message } = req.body;
 
     if (!status) {
       return res.status(400).json({ success: false, message: "Status is required" });
     }
 
-    const result = await applicationColection.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: { status, updatedAt: new Date() } }
-    );
-
-    if (result.matchedCount === 0) {
+    const application = await applicationColection.findOne({ _id: new ObjectId(id) });
+    if (!application) {
       return res.status(404).json({ success: false, message: "Application not found" });
     }
+
+    const result = await applicationColection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { status, statusNote: note || message || "", updatedAt: new Date() } }
+    );
+
+    // Send Real-time Notification Email to Applicant (asynchronous, non-blocking)
+    (async () => {
+      try {
+        const applicantEmail = application.applicantEmail;
+        if (applicantEmail) {
+          await sendEmail({
+            to: applicantEmail,
+            subject: `Application Update: ${application.jobTitle || "Your application"} is now ${status}`,
+            html: applicationStatusUpdateTemplate({
+              applicantName: application.applicantName || "Applicant",
+              jobTitle: application.jobTitle || "Role",
+              companyName: application.companyName || "CareerBridge Employer",
+              newStatus: status,
+              message: note || message || "",
+            }),
+          });
+        }
+      } catch (emailErr) {
+        console.error("[Email] Error dispatching status update email:", emailErr.message);
+      }
+    })();
 
     res.json({ success: true, modifiedCount: result.modifiedCount });
   } catch (error) {
