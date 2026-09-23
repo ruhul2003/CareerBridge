@@ -19,6 +19,9 @@ import {
   ArrowRight,
   ShieldCheck,
   User,
+  CheckCircle,
+  AlertCircle,
+  Mail,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -200,9 +203,26 @@ export default function Navbar() {
                         <p className="text-[10px] text-zinc-400 font-medium tracking-wider uppercase">Signed in as</p>
                         <p className="text-xs font-bold text-zinc-800 dark:text-slate-100 truncate">{user?.name || "User"}</p>
                         <p className="text-[11px] text-zinc-500 dark:text-slate-400 truncate">{user?.email}</p>
-                        <div className="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-cyan-400 border border-indigo-200 dark:border-cyan-800/50 capitalize">
-                          <ShieldCheck className="w-3 h-3" />
-                          {user?.role || "Seeker"}
+                        <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+                          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-cyan-400 border border-indigo-200 dark:border-cyan-800/50 capitalize">
+                            <ShieldCheck className="w-3 h-3" />
+                            {user?.role || "Seeker"}
+                          </div>
+                          {user?.emailVerified ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50">
+                              <CheckCircle className="w-3 h-3" />
+                              Verified
+                            </span>
+                          ) : (
+                            <Link
+                              href={`/verify-email?email=${encodeURIComponent(user?.email || "")}`}
+                              onClick={() => setIsUserMenuOpen(false)}
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50 hover:underline"
+                            >
+                              <AlertCircle className="w-3 h-3" />
+                              Unverified
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -216,6 +236,17 @@ export default function Navbar() {
                         <LayoutDashboard className="w-4 h-4 text-indigo-500 dark:text-cyan-400" />
                         Dashboard
                       </Link>
+
+                      {!user?.emailVerified && (
+                        <Link
+                          href={`/verify-email?email=${encodeURIComponent(user?.email || "")}`}
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 rounded-xl transition-colors"
+                        >
+                          <Mail className="w-4 h-4 text-amber-500" />
+                          Verify Email
+                        </Link>
+                      )}
                     </div>
 
                     <div className="my-1 border-t border-zinc-100 dark:border-slate-800" />
@@ -317,10 +348,27 @@ export default function Navbar() {
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-bold text-zinc-800 dark:text-slate-100 truncate">{user?.name || "User"}</p>
                       <p className="text-[11px] text-zinc-500 dark:text-slate-400 truncate">{user?.email}</p>
+                      <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-cyan-400 capitalize whitespace-nowrap">
+                          {user?.role || "Seeker"}
+                        </span>
+                        {user?.emailVerified ? (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 inline-flex items-center gap-1">
+                            <CheckCircle className="w-3 h-3" />
+                            Verified
+                          </span>
+                        ) : (
+                          <Link
+                            href={`/verify-email?email=${encodeURIComponent(user?.email || "")}`}
+                            onClick={() => setIsMenuOpen(false)}
+                            className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 inline-flex items-center gap-1"
+                          >
+                            <AlertCircle className="w-3 h-3" />
+                            Verify Email
+                          </Link>
+                        )}
+                      </div>
                     </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-cyan-400 capitalize whitespace-nowrap">
-                      {user?.role || "Seeker"}
-                    </span>
                   </div>
                   <button
                     onClick={() => {
