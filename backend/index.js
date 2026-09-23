@@ -188,6 +188,27 @@ app.post("/api/subscription", async (req, res) => {
       },
     };
     const updateResult = await userscollection.updateOne(filter, updateDocument);
+
+    // Send Real-time Plan Confirmation Email (asynchronous, non-blocking)
+    (async () => {
+      try {
+        if (data.email) {
+          await sendEmail({
+            to: data.email,
+            subject: `Subscription Confirmed: Your ${data.planName || data.planId || "CareerBridge"} Plan is Active`,
+            html: subscriptionConfirmationTemplate({
+              userName: data.name || data.userName || "Valued Member",
+              planName: data.planName || data.planId || "CareerBridge Pro",
+              amount: data.amount || "Active",
+              billingCycle: data.billingCycle || "month",
+              invoiceId: result.insertedId ? result.insertedId.toString() : "",
+            }),
+          });
+        }
+      } catch (err) {
+        console.error("[Email] Subscription email dispatch error:", err.message);
+      }
+    })();
     
     res.json({
       success: true,
@@ -613,6 +634,29 @@ app.post('/api/activate-subscription', async (req, res) => {
         );
 
         console.log(`✅ Subscription activated for ${email} - Plan: ${planId}`);
+
+        // Send Real-time Plan Confirmation Email (asynchronous, non-blocking)
+        (async () => {
+          try {
+            if (email) {
+              const friendlyPlanName = planId.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+              const amountFormatted = session.amount_total ? (session.amount_total / 100).toFixed(2) : "Paid";
+              await sendEmail({
+                to: email,
+                subject: `Subscription Confirmed: Your ${friendlyPlanName} is Active`,
+                html: subscriptionConfirmationTemplate({
+                  userName: session.customer_details?.name || "Valued Member",
+                  planName: friendlyPlanName,
+                  amount: amountFormatted,
+                  billingCycle: "month",
+                  invoiceId: session.id,
+                }),
+              });
+            }
+          } catch (err) {
+            console.error("[Email] Stripe subscription activation email error:", err.message);
+          }
+        })();
 
         res.json({ 
             success: true, 
