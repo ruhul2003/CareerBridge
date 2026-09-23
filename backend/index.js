@@ -4,7 +4,7 @@ const port = process.env.PORT || 5000;
 const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
-const { sendEmail } = require("./emailService");
+const { sendEmail, verifyEmailConfig } = require("./emailService");
 const {
   emailVerificationTemplate,
   welcomeEmailTemplate,
@@ -1146,6 +1146,112 @@ Return strictly a raw JSON object (without markdown code blocks) with the exact 
   } catch (error) {
     console.error("AI Evaluate Answer Error:", error);
     res.status(500).json({ success: false, message: error.message || "Failed to evaluate answer" });
+  }
+});
+
+// ====================== REAL-TIME EMAIL SYSTEM ENDPOINTS ======================
+
+// GET email service connectivity & configuration status
+app.get("/api/emails/status", async (req, res) => {
+  try {
+    const status = await verifyEmailConfig();
+    const isMock = !process.env.SMTP_HOST || !process.env.SMTP_USER;
+    res.json({
+      success: true,
+      service: "CareerBridge Email Engine",
+      mode: isMock ? "simulation" : "smtp",
+      smtpConfigured: !isMock,
+      host: process.env.SMTP_HOST || "none (mock)",
+      from: process.env.SMTP_FROM || "CareerBridge <noreply@careerbridge.com>",
+      connection: status,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST test email delivery
+app.post("/api/emails/test", async (req, res) => {
+  try {
+    const { to } = req.body;
+    const recipient = to || "test@careerbridge.com";
+
+    const result = await sendEmail({
+      to: recipient,
+      subject: "CareerBridge Real-Time Email System Test",
+      html: welcomeEmailTemplate({
+        name: "Test User",
+        role: "seeker",
+        appUrl: "https://career-bridge-client-xi.vercel.app",
+      }),
+    });
+
+    res.json({
+      success: result.success,
+      recipient,
+      details: result,
+      message: result.success
+        ? `Test email processed successfully for ${recipient}`
+        : `Email delivery issue: ${result.error}`,
+    });
+  } catch (error) {
+    console.error("[Email API] Test delivery error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST send transactional email
+app.post("/api/emails/send", async (req, res) => {
+  try {
+    const { to, subject, type, payload } = req.body;
+
+    if (!to) {
+      return res.status(400).json({ success: false, message: "Recipient 'to' email is required" });
+    }
+
+    let htmlContent = "";
+    let emailSubject = subject || "CareerBridge Notification";
+
+    switch (type) {
+      case "verification":
+        htmlContent = emailVerificationTemplate(payload || {});
+        emailSubject = subject || "Verify your CareerBridge email";
+        break;
+      case "welcome":
+        htmlContent = welcomeEmailTemplate(payload || {});
+        emailSubject = subject || "Welcome to CareerBridge!";
+        break;
+      case "application_submitted":
+        htmlContent = applicationSubmittedTemplate(payload || {});
+        emailSubject = subject || `Application Submitted: ${payload?.jobTitle || "Job"}`;
+        break;
+      case "recruiter_alert":
+        htmlContent = newApplicantRecruiterTemplate(payload || {});
+        emailSubject = subject || `New Applicant for ${payload?.jobTitle || "Job"}`;
+        break;
+      case "status_update":
+        htmlContent = applicationStatusUpdateTemplate(payload || {});
+        emailSubject = subject || `Application Update: ${payload?.newStatus || "Status Changed"}`;
+        break;
+      case "subscription":
+        htmlContent = subscriptionConfirmationTemplate(payload || {});
+        emailSubject = subject || "Subscription Confirmed - CareerBridge";
+        break;
+      default:
+        htmlContent = payload?.html || `<p>${payload?.message || "Notification from CareerBridge"}</p>`;
+    }
+
+    const result = await sendEmail({
+      to,
+      subject: emailSubject,
+      html: htmlContent,
+      text: payload?.text,
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error("[Email API] Send dispatch error:", error);
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 
