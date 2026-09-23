@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bookmark, Send, Calendar, ShieldCheck } from 'lucide-react';
+import { Bookmark, Send, Calendar, ShieldCheck, CheckCircle2, ShieldAlert } from 'lucide-react';
 
 const OverviewTab = ({ user, onEditProfile }) => {
   const [applications, setApplications] = useState([]);
@@ -106,6 +106,17 @@ const OverviewTab = ({ user, onEditProfile }) => {
             </div>
             <h4 className="text-lg font-medium text-zinc-900 dark:text-white">{user?.name || "Anonymous User"}</h4>
             <p className="text-xs text-zinc-500 dark:text-gray-500 mt-0.5">{user?.email || "No email address"}</p>
+            <div className="mt-2.5 flex justify-center">
+              {user?.emailVerified ? (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40">
+                  <CheckCircle2 className="w-3 h-3" /> Email Verified
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40">
+                  <ShieldAlert className="w-3 h-3" /> Email Unverified
+                </span>
+              )}
+            </div>
           </div>
           <button 
             onClick={onEditProfile}
