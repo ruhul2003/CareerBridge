@@ -4,6 +4,15 @@ const port = process.env.PORT || 5000;
 const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
+const { sendEmail } = require("./emailService");
+const {
+  emailVerificationTemplate,
+  welcomeEmailTemplate,
+  applicationSubmittedTemplate,
+  newApplicantRecruiterTemplate,
+  applicationStatusUpdateTemplate,
+  subscriptionConfirmationTemplate,
+} = require("./emailTemplates");
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder_key_for_build';
 const stripe = require('stripe')(stripeSecretKey);
@@ -282,6 +291,59 @@ app.post('/api/applications', async (req, res) => {
     };
 
     const result = await applicationColection.insertOne(newApplication);
+
+    // Send Real-time Notification Emails (asynchronous, non-blocking)
+    (async () => {
+      try {
+        // 1. Send confirmation email to applicant
+        if (applicantEmail) {
+          await sendEmail({
+            to: applicantEmail,
+            subject: `Application Confirmation: ${newApplication.jobTitle || "Job Application"} at ${newApplication.companyName || "CareerBridge"}`,
+            html: applicationSubmittedTemplate({
+              applicantName: applicantName || "Candidate",
+              jobTitle: newApplication.jobTitle || "Open Role",
+              companyName: newApplication.companyName || "the hiring team",
+              jobId,
+            }),
+          });
+        }
+
+        // 2. Locate recruiter/company email to send applicant alert
+        let recruiterEmail = jobDetails.recruiterEmail || (jobDetails.companyId ? null : null);
+        if (newApplication.companyId) {
+          try {
+            const companyQuery = ObjectId.isValid(newApplication.companyId)
+              ? { _id: new ObjectId(newApplication.companyId) }
+              : { companyId: newApplication.companyId };
+            const comp = await companyCollection.findOne(companyQuery);
+            if (comp && (comp.email || comp.contactEmail)) {
+              recruiterEmail = comp.email || comp.contactEmail;
+            }
+          } catch (e) {
+            console.error("[Email] Company lookup error:", e.message);
+          }
+        }
+
+        if (recruiterEmail) {
+          await sendEmail({
+            to: recruiterEmail,
+            subject: `New Candidate: ${applicantName || "An applicant"} applied for ${newApplication.jobTitle || "Job"}`,
+            html: newApplicantRecruiterTemplate({
+              recruiterName: "Hiring Team",
+              applicantName: applicantName || "Candidate",
+              applicantEmail: applicantEmail || "Confidential",
+              jobTitle: newApplication.jobTitle || "Open Position",
+              resumeUrl: resume || cv || "",
+              coverLetter: coverLetter || "",
+            }),
+          });
+        }
+      } catch (emailErr) {
+        console.error("[Email] Error dispatching application notification emails:", emailErr.message);
+      }
+    })();
+
     res.json({
       success: true,
       insertedId: result.insertedId
