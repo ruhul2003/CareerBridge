@@ -27,6 +27,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 import CustomCursor from "@/Components/CustomCursor";
 import AIChatAssistant from "@/Components/AIChatAssistant";
+import EmailVerificationBanner from "@/Components/EmailVerificationBanner";
 
 export default function RootLayout({ children }) {
   return (
@@ -43,6 +44,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider>
           <CustomCursor />
           <NavBar />
+          <EmailVerificationBanner />
           <main className="flex-1">
             {children}
             <Toaster position="top-right" reverseOrder={false} />
