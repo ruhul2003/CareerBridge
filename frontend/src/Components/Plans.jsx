@@ -263,15 +263,15 @@ const PricingPage = () => {
                                 key={plan.id}
                                 variants={fadeInUp}
                                 whileHover={{ y: -8, transition: { duration: 0.2, ease: "easeOut" } }}
-                                className={`relative bg-white dark:bg-zinc-900 border rounded-2xl p-6 shadow-xl shadow-slate-200/80 dark:shadow-2xl dark:shadow-black/80 flex flex-col justify-between min-h-[480px] transition-all duration-300 hover:shadow-blue-500/15 ${
+                                className={`relative bg-white dark:bg-zinc-900 border rounded-2xl p-6 shadow-xl shadow-slate-200/80 dark:shadow-2xl dark:shadow-black/80 flex flex-col justify-between min-h-[480px] transition-all duration-300 hover:shadow-primary/15 ${
                                     plan.popular
-                                        ? 'border-blue-500 ring-2 ring-blue-500/20'
-                                        : 'border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700'
+                                        ? 'border-primary ring-2 ring-primary/20 dark:border-primary-500'
+                                        : 'border-zinc-200 dark:border-zinc-800 hover:border-primary-300 dark:hover:border-zinc-700'
                                 }`}
                             >
                                 {/* Popular Highlight Pill */}
                                 {plan.popular && (
-                                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-[10px] font-bold text-white bg-blue-600 rounded-full uppercase tracking-wider shadow-md">
+                                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-1 text-[10px] font-bold text-white bg-gradient-to-r from-primary to-secondary rounded-full uppercase tracking-wider shadow-md shadow-primary/25">
                                         Most Popular
                                     </span>
                                 )}
@@ -280,7 +280,7 @@ const PricingPage = () => {
                                 <div>
                                     <div className="flex items-center justify-between gap-2 mb-3">
                                         <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">{plan.name}</h3>
-                                        <div className="p-2 bg-zinc-100 dark:bg-zinc-950/60 rounded-lg border border-zinc-200 dark:border-zinc-800/80">
+                                        <div className="p-2 bg-primary-50 dark:bg-zinc-950/60 rounded-lg border border-primary-200/50 dark:border-zinc-800/80">
                                             {plan.icon}
                                         </div>
                                     </div>
@@ -300,7 +300,7 @@ const PricingPage = () => {
                                     <ul className="space-y-3">
                                         {plan.features.map((feature, fIdx) => (
                                             <li key={fIdx} className="flex items-start gap-2.5 text-xs text-zinc-700 dark:text-zinc-300">
-                                                <div className="w-4 h-4 rounded-full bg-emerald-500/15 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                                                <div className="w-4 h-4 rounded-full bg-secondary-500/15 dark:bg-secondary-500/20 text-secondary-600 dark:text-secondary-400 flex items-center justify-center shrink-0 mt-0.5">
                                                     <Check className="w-3 h-3" />
                                                 </div>
                                                 <span className="leading-normal font-medium">{feature}</span>
