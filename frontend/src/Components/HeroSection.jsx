@@ -233,7 +233,7 @@ export default function HeroSection() {
           <button
             onClick={prevSlide}
             aria-label="Previous Slide"
-            className="p-3 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-slate-200/90 dark:border-zinc-800/90 text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer shadow-lg shadow-slate-200/80 dark:shadow-xl dark:shadow-black/70 hover:shadow-xl hover:shadow-indigo-500/15 backdrop-blur-md active:scale-95"
+            className="p-3 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-slate-200/90 dark:border-zinc-800/90 text-slate-700 dark:text-zinc-300 hover:text-primary dark:hover:text-secondary-300 hover:bg-slate-100 dark:hover:bg-zinc-800 hover:border-primary-400/60 dark:hover:border-secondary-500/50 transition-all cursor-pointer shadow-lg shadow-slate-200/80 dark:shadow-xl dark:shadow-black/70 hover:shadow-xl hover:shadow-primary-500/15 backdrop-blur-md active:scale-95"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -246,7 +246,7 @@ export default function HeroSection() {
                 onClick={() => setCurrentSlide(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
                 className={`relative h-2 rounded-full transition-all duration-500 cursor-pointer overflow-hidden ${
-                  currentSlide === idx ? "w-8 bg-slate-900 dark:bg-white" : "w-2 bg-slate-300 dark:bg-zinc-600 hover:bg-slate-400 dark:hover:bg-zinc-400"
+                  currentSlide === idx ? "w-8 bg-primary dark:bg-primary-400" : "w-2 bg-slate-300 dark:bg-zinc-600 hover:bg-slate-400 dark:hover:bg-zinc-400"
                 }`}
               >
                 {currentSlide === idx && !isPaused && (
@@ -264,7 +264,7 @@ export default function HeroSection() {
           <button
             onClick={nextSlide}
             aria-label="Next Slide"
-            className="p-3 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-slate-200/90 dark:border-zinc-800/90 text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer shadow-lg shadow-slate-200/80 dark:shadow-xl dark:shadow-black/70 hover:shadow-xl hover:shadow-indigo-500/15 backdrop-blur-md active:scale-95"
+            className="p-3 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-slate-200/90 dark:border-zinc-800/90 text-slate-700 dark:text-zinc-300 hover:text-primary dark:hover:text-secondary-300 hover:bg-slate-100 dark:hover:bg-zinc-800 hover:border-primary-400/60 dark:hover:border-secondary-500/50 transition-all cursor-pointer shadow-lg shadow-slate-200/80 dark:shadow-xl dark:shadow-black/70 hover:shadow-xl hover:shadow-primary-500/15 backdrop-blur-md active:scale-95"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
