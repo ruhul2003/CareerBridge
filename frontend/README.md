@@ -40,6 +40,23 @@ CareerBridge is a sleek, full-featured job marketplace connecting talented job s
 
 ---
 
+## 🎨 Theme & Design System
+
+CareerBridge features an authoritative, modern color palette built with Tailwind CSS theme tokens:
+
+- **Primary Color (Royal Indigo - `#4f46e5` / `--color-primary`)**:
+  - Highlights dominant brand assets, active navigation states, primary call-to-action buttons, search triggers, and key statistics.
+  - Full tonal scale configured from `--color-primary-50` through `--color-primary-950`.
+- **Secondary Color (Electric Cyan - `#06b6d4` / `--color-secondary`)**:
+  - Delivers vibrant complementary accents across badges, AI assistant indicators, interactive icon cards, and popular pricing pills.
+  - Full tonal scale configured from `--color-secondary-50` through `--color-secondary-950`.
+- **Zero Raster Background Overhead on Home Page**:
+  - Replaced legacy static bitmap image sliders (`banner-*.png`) and heavy globe images (`globe.png`) with clean, performant pure-CSS ambient mesh gradients and subtle radial glows.
+  - Ensures lightning-fast rendering, flawless responsive scaling, and seamless contrast in both dark and light modes.
+
+
+---
+
 ## 📧 Email Configuration (SMTP)
 
 The real-time email engine supports any standard SMTP provider (Gmail, Resend, SendGrid, Outlook, Amazon SES) as well as custom SMTP relays:
