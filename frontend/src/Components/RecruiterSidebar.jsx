@@ -111,8 +111,8 @@ const RecruiterSidebar = ({ currentTab, setCurrentTab, user }) => {
                                 onClick={() => setCurrentTab(item.id)}
                                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer
                                     ${currentTab === item.id
-                                        ? 'bg-zinc-100 dark:bg-neutral-800 text-zinc-900 dark:text-white border-l-4 border-indigo-600 dark:border-white font-medium'
-                                        : 'text-zinc-600 dark:text-gray-400 hover:bg-zinc-100 dark:hover:bg-neutral-900 hover:text-zinc-900 dark:hover:text-white'
+                                        ? 'bg-primary-50 dark:bg-primary-950/30 text-primary dark:text-secondary-400 border-l-4 border-primary dark:border-secondary font-semibold'
+                                        : 'text-zinc-600 dark:text-gray-400 hover:bg-zinc-100 dark:hover:bg-neutral-900 hover:text-primary dark:hover:text-secondary-300'
                                     }
                                 `}
                             >
