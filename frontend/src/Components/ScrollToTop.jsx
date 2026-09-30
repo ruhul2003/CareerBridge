@@ -51,7 +51,7 @@ export default function ScrollToTop() {
             onClick={scrollToTop}
             aria-label="Scroll to top"
             title="Scroll to top"
-            className="group relative flex items-center justify-center w-12 h-12 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-zinc-200/80 dark:border-slate-800/80 shadow-xl hover:shadow-indigo-500/20 dark:hover:shadow-cyan-500/20 transition-all duration-300 cursor-pointer"
+            className="group relative flex items-center justify-center w-12 h-12 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-zinc-200/80 dark:border-slate-800/80 shadow-xl hover:shadow-primary/25 dark:hover:shadow-secondary/25 hover:border-primary-400/60 dark:hover:border-secondary-500/50 transition-all duration-300 cursor-pointer"
           >
             {/* SVG Circular Progress Ring */}
             <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 48 48">
@@ -69,7 +69,7 @@ export default function ScrollToTop() {
                 cx="24"
                 cy="24"
                 r={radius}
-                className="stroke-indigo-600 dark:stroke-cyan-400"
+                className="stroke-primary dark:stroke-secondary"
                 strokeWidth="3"
                 fill="none"
                 strokeLinecap="round"
@@ -82,7 +82,7 @@ export default function ScrollToTop() {
             </svg>
 
             {/* Up Arrow Icon */}
-            <ArrowUp className="w-4 h-4 text-zinc-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-cyan-400 group-hover:-translate-y-0.5 transition-all duration-200 z-10" />
+            <ArrowUp className="w-4 h-4 text-zinc-700 dark:text-slate-200 group-hover:text-primary dark:group-hover:text-secondary-400 group-hover:-translate-y-0.5 transition-all duration-200 z-10" />
           </motion.button>
         </motion.div>
       )}
