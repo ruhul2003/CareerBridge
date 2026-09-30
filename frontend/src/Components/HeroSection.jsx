@@ -86,25 +86,28 @@ export default function HeroSection() {
       onMouseLeave={() => setIsPaused(false)}
       className="relative w-full min-h-[92vh] sm:min-h-screen bg-white dark:bg-black text-slate-900 dark:text-white pt-24 pb-20 px-4 overflow-hidden flex flex-col items-center justify-center select-none transition-colors duration-300"
     >
-      {/* Clean Gradient Backdrop without raster background images */}
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+      {/* Modern Ambient Mesh Backdrop with Primary & Secondary Accents */}
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+        {/* Primary Ambient Gradient Orb (Top Left) */}
+        <div className="absolute -top-32 -left-32 w-[550px] h-[550px] bg-primary-500/15 dark:bg-primary-600/20 blur-[130px] rounded-full" />
 
-        {/* Ambient Grid Pattern for Professional Light Mode Backdrop */}
-        <div className="absolute inset-0 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:24px_24px] opacity-30 dark:opacity-40 pointer-events-none z-10" />
+        {/* Secondary Ambient Gradient Orb (Bottom Right) */}
+        <div className="absolute -bottom-32 -right-32 w-[550px] h-[550px] bg-secondary-500/15 dark:bg-secondary-600/20 blur-[130px] rounded-full" />
 
-        {/* Multi-layered Vignette & Adaptive Light/Dark Gradients */}
-        <div className="absolute inset-0 bg-white/20 dark:bg-black/60 z-10 transition-colors duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/35 to-white/10 dark:from-black dark:via-black/75 dark:to-black/40 z-10 transition-colors duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-white/40 dark:from-black/80 dark:via-transparent dark:to-black/80 z-10 transition-colors duration-500" />
-
-        {/* Ambient Color Glow tied to current slide accent */}
+        {/* Center Dynamic Accent Orb responsive to slide */}
         <motion.div
-          key={`glow-${slide.id}`}
-          initial={{ opacity: 0, scale: 0.8 }}
+          key={`ambient-glow-${slide.id}`}
+          initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5 }}
-          className={`absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] ${slide.glowColor} blur-[140px] rounded-full pointer-events-none z-10`}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[500px] ${slide.glowColor} blur-[150px] rounded-full`}
         />
+
+        {/* Precision Geometric Dot Mesh */}
+        <div className="absolute inset-0 bg-[radial-gradient(rgba(79,70,229,0.12)_1px,transparent_1px)] dark:bg-[radial-gradient(rgba(6,182,212,0.10)_1px,transparent_1px)] [background-size:28px_28px] opacity-70" />
+
+        {/* Top/Bottom Seamless Fades */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white dark:from-black/80 dark:via-transparent dark:to-black" />
       </div>
 
       {/* Main Hero Content */}
