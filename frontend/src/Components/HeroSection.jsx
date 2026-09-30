@@ -120,10 +120,11 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 15 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2.5 bg-white/95 dark:bg-zinc-950/80 backdrop-blur-xl border border-slate-300/80 dark:border-zinc-800/80 rounded-full px-4.5 py-2 mb-8 shadow-md shadow-slate-300/60 dark:shadow-2xl dark:shadow-black/60 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300"
+            className="inline-flex items-center gap-2.5 bg-white/95 dark:bg-zinc-950/85 backdrop-blur-xl border border-primary-200/80 dark:border-primary-900/60 rounded-full px-4.5 py-2 mb-8 shadow-md shadow-primary-500/10 dark:shadow-2xl dark:shadow-black/60 hover:shadow-lg hover:shadow-secondary-500/15 hover:border-secondary-400/60 dark:hover:border-secondary-500/50 transition-all duration-300"
           >
             {slide.badgeIcon}
-            <p className="text-xs font-bold tracking-[0.12em] text-slate-800 dark:text-zinc-300 uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+            <p className="text-xs font-bold tracking-[0.12em] text-slate-800 dark:text-zinc-200 uppercase">
               {slide.badgeText}
             </p>
           </motion.div>
