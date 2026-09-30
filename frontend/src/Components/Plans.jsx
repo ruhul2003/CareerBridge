@@ -355,7 +355,7 @@ const PricingPage = () => {
                     className="max-w-3xl mx-auto border-t border-zinc-200 dark:border-zinc-800 pt-16"
                 >
                     <div className="text-center mb-10">
-                        <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 mb-3 shadow-sm">
+                        <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary-50 dark:bg-primary-950/40 border border-primary-200/60 dark:border-primary-900/50 text-primary dark:text-secondary-400 mb-3 shadow-sm">
                             <CircleQuestion className="w-5 h-5" />
                         </div>
                         <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">Frequently Asked Questions</h2>
@@ -368,15 +368,19 @@ const PricingPage = () => {
                             return (
                                 <div
                                     key={idx}
-                                    className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden transition-colors duration-200 shadow-sm"
+                                    className={`bg-white dark:bg-zinc-900 border rounded-xl overflow-hidden transition-all duration-200 shadow-sm ${
+                                        isOpen
+                                            ? 'border-primary-300 dark:border-secondary-500/50 shadow-md shadow-primary-500/5'
+                                            : 'border-zinc-200 dark:border-zinc-800 hover:border-primary-200 dark:hover:border-zinc-700'
+                                    }`}
                                 >
                                     <button
                                         onClick={() => toggleFaq(idx)}
-                                        className="w-full flex items-center justify-between text-left p-4 gap-4 text-zinc-800 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white transition cursor-pointer"
+                                        className="w-full flex items-center justify-between text-left p-4 gap-4 text-zinc-800 dark:text-zinc-200 hover:text-primary dark:hover:text-secondary-300 transition cursor-pointer"
                                     >
                                         <span className="text-sm font-semibold">{faq.question}</span>
                                         <ChevronDown
-                                            className={`w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-blue-600 dark:text-blue-400' : ''
+                                            className={`w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-primary dark:text-secondary-400' : ''
                                                 }`}
                                         />
                                     </button>
@@ -389,7 +393,7 @@ const PricingPage = () => {
                                                 animate={{ height: "auto", opacity: 1 }}
                                                 exit={{ height: 0, opacity: 0 }}
                                                 transition={{ duration: 0.25, ease: "easeInOut" }}
-                                                className="overflow-hidden border-t border-zinc-200 dark:border-zinc-800/60"
+                                                className="overflow-hidden border-t border-zinc-100 dark:border-zinc-800/60"
                                             >
                                                 <div className="p-4 text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed bg-zinc-50 dark:bg-zinc-900/50">
                                                     {faq.answer}
