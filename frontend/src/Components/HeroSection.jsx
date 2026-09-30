@@ -164,10 +164,10 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-3xl bg-white dark:bg-zinc-950/90 backdrop-blur-2xl border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-2.5 sm:p-3 flex flex-col sm:flex-row items-center gap-2 shadow-2xl shadow-slate-300/70 dark:shadow-2xl dark:shadow-black/90 hover:shadow-indigo-500/10 hover:border-slate-300/90 dark:hover:border-zinc-700 transition-all duration-300 group focus-within:border-indigo-500/60 focus-within:ring-4 focus-within:ring-indigo-500/15"
+          className="w-full max-w-3xl bg-white dark:bg-zinc-950/90 backdrop-blur-2xl border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-2.5 sm:p-3 flex flex-col sm:flex-row items-center gap-2 shadow-2xl shadow-slate-300/70 dark:shadow-2xl dark:shadow-black/90 hover:shadow-primary/10 hover:border-primary-300/60 dark:hover:border-zinc-700 transition-all duration-300 group focus-within:border-primary/70 focus-within:ring-4 focus-within:ring-primary/20"
         >
           <div className="flex items-center gap-3 px-3 w-full py-2.5 sm:py-0">
-            <Search className="w-5 h-5 text-slate-400 dark:text-zinc-400 group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 shrink-0 transition-colors" />
+            <Search className="w-5 h-5 text-slate-400 dark:text-zinc-400 group-focus-within:text-primary dark:group-focus-within:text-secondary-400 shrink-0 transition-colors" />
             <input
               type="text"
               value={searchQuery}
@@ -180,7 +180,7 @@ export default function HeroSection() {
           <div className="hidden sm:block h-6 w-[1px] bg-slate-200 dark:bg-zinc-800" />
 
           <div className="flex items-center gap-3 px-3 w-full py-2.5 sm:py-0">
-            <MapPin className="w-5 h-5 text-slate-400 dark:text-zinc-400 group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 shrink-0 transition-colors" />
+            <MapPin className="w-5 h-5 text-slate-400 dark:text-zinc-400 group-focus-within:text-primary dark:group-focus-within:text-secondary-400 shrink-0 transition-colors" />
             <input
               type="text"
               value={locationQuery}
@@ -194,7 +194,7 @@ export default function HeroSection() {
             type="submit"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            className={`${slide.buttonBg} text-white p-3.5 sm:p-4 rounded-xl transition-all shrink-0 w-full sm:w-auto flex items-center justify-center cursor-pointer shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40`}
+            className={`${slide.buttonBg} text-white p-3.5 sm:p-4 rounded-xl transition-all shrink-0 w-full sm:w-auto flex items-center justify-center cursor-pointer shadow-lg`}
           >
             <Search className="w-5 h-5" />
           </motion.button>
