@@ -92,31 +92,8 @@ export default function HeroSection() {
       onMouseLeave={() => setIsPaused(false)}
       className="relative w-full min-h-[92vh] sm:min-h-screen bg-white dark:bg-black text-slate-900 dark:text-white pt-24 pb-20 px-4 overflow-hidden flex flex-col items-center justify-center select-none transition-colors duration-300"
     >
-      {/* Background Image Slider with Motion Crossfade & Theme Reactivity */}
+      {/* Clean Gradient Backdrop without raster background images */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
-        <AnimatePresence mode="wait">
-          {/* Dark Mode Background Image */}
-          <motion.div
-            key={`dark-${slide.id}`}
-            initial={{ opacity: 0, scale: 1.08 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden dark:block absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-100 transition-opacity duration-500"
-            style={{ backgroundImage: `url(${slide.image})` }}
-          />
-
-          {/* Light Mode Specific Background Image */}
-          <motion.div
-            key={`light-${slide.id}`}
-            initial={{ opacity: 0, scale: 1.08 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="block dark:hidden absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat opacity-95 transition-opacity duration-500"
-            style={{ backgroundImage: `url(${slide.lightImage})` }}
-          />
-        </AnimatePresence>
 
         {/* Ambient Grid Pattern for Professional Light Mode Backdrop */}
         <div className="absolute inset-0 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:24px_24px] opacity-30 dark:opacity-40 pointer-events-none z-10" />
