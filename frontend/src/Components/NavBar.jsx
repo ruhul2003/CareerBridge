@@ -269,13 +269,13 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="text-xs font-semibold text-zinc-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-cyan-400 px-3.5 py-2 rounded-full transition-colors"
+                className="text-xs font-semibold text-zinc-700 dark:text-slate-300 hover:text-primary dark:hover:text-secondary-400 px-3.5 py-2 rounded-full transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/signup"
-                className="group relative flex items-center gap-2 bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/35 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+                className="group relative flex items-center gap-2 bg-gradient-to-r from-secondary via-primary to-primary-700 text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-md shadow-primary/25 hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
               >
                 <span>Get Started</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -386,14 +386,14 @@ export default function Navbar() {
                   <Link
                     href="/login"
                     onClick={() => setIsMenuOpen(false)}
-                    className="w-full text-center py-2.5 text-xs font-semibold text-zinc-700 dark:text-slate-200 hover:bg-zinc-100 dark:hover:bg-slate-800 rounded-2xl transition-colors"
+                    className="w-full text-center py-2.5 text-xs font-semibold text-zinc-700 dark:text-slate-200 hover:text-primary dark:hover:text-secondary-400 hover:bg-zinc-100 dark:hover:bg-slate-800 rounded-2xl transition-colors"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/signup"
                     onClick={() => setIsMenuOpen(false)}
-                    className="w-full flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 rounded-2xl shadow-md shadow-indigo-500/20"
+                    className="w-full flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-secondary via-primary to-primary-700 rounded-2xl shadow-md shadow-primary/25"
                   >
                     <span>Get Started</span>
                     <ArrowRight className="w-3.5 h-3.5" />
