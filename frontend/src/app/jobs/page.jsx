@@ -139,15 +139,15 @@ function JobsContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f1f5f9] dark:bg-[#09090b] text-slate-900 dark:text-zinc-100 pb-20 selection:bg-indigo-500/30 selection:text-white antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-[#f1f5f9] dark:bg-[#09090b] text-slate-900 dark:text-zinc-100 pb-20 selection:bg-primary/20 selection:text-primary antialiased transition-colors duration-300">
       {/* Structural Ambient Background Glows */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute top-40 right-1/4 w-96 h-96 bg-emerald-500/10 dark:bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/10 dark:bg-primary-500/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-40 right-1/4 w-96 h-96 bg-secondary-500/10 dark:bg-secondary-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Dynamic Quantitative Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12">
         <div className="flex items-center gap-3">
-          <div className="h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
+          <div className="h-2 w-2 rounded-full bg-secondary animate-pulse" />
           <h2 className="text-sm font-medium tracking-widest text-slate-500 dark:text-zinc-400 uppercase">
             Available Opportunities ({filteredJobs.length})
           </h2>
@@ -159,7 +159,7 @@ function JobsContent() {
         {/* Division Quick Filter Bar */}
         <div className="mt-5 flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mr-1 flex items-center gap-1">
-            <MapPin size={14} className="text-indigo-500" /> Division:
+            <MapPin size={14} className="text-primary" /> Division:
           </span>
           {BANGLADESH_DIVISIONS.map((div) => {
             const isSelected = selectedDivision === div;
@@ -169,8 +169,8 @@ function JobsContent() {
                 type="button"
                 onClick={() => setSelectedDivision(div)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-medium tracking-wide transition-all cursor-pointer border ${isSelected
-                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-500/20'
-                    : 'bg-white dark:bg-zinc-900/60 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-300 hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-white'
+                    ? 'bg-primary text-white border-primary shadow-md shadow-primary/25'
+                    : 'bg-white dark:bg-zinc-900/60 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-300 hover:border-primary-400/50 hover:text-primary dark:hover:text-white'
                   }`}
               >
                 {div}
@@ -186,13 +186,13 @@ function JobsContent() {
 
             {/* Search Input */}
             <div className="flex-1 relative">
-              <Search className="absolute left-4 top-3.5 text-slate-400 dark:text-zinc-500 transition-colors group-focus-within:text-indigo-500" size={18} />
+              <Search className="absolute left-4 top-3.5 text-slate-400 dark:text-zinc-500 transition-colors group-focus-within:text-primary" size={18} />
               <input
                 type="text"
                 placeholder="Search by position, company, skills or location..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800/80 pl-11 pr-4 py-3.5 rounded-xl text-sm transition-all focus:outline-none focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/30 placeholder-slate-400 dark:placeholder-zinc-500 text-slate-900 dark:text-white shadow-sm"
+                className="w-full bg-white dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800/80 pl-11 pr-4 py-3.5 rounded-xl text-sm transition-all focus:outline-none focus:border-primary/80 focus:ring-1 focus:ring-primary/30 placeholder-slate-400 dark:placeholder-zinc-500 text-slate-900 dark:text-white shadow-sm"
               />
             </div>
 
@@ -201,11 +201,11 @@ function JobsContent() {
 
               {/* Division Dropdown Selector */}
               <div className="relative flex items-center w-full sm:w-auto">
-                <MapPin size={14} className="absolute left-3 text-indigo-500 pointer-events-none" />
+                <MapPin size={14} className="absolute left-3 text-primary pointer-events-none" />
                 <select
                   value={selectedDivision}
                   onChange={(e) => setSelectedDivision(e.target.value)}
-                  className="w-full sm:w-auto bg-slate-50 dark:bg-zinc-950/50 border border-slate-200 dark:border-zinc-800/60 rounded-lg pl-9 pr-8 py-1.5 text-xs font-semibold text-slate-700 dark:text-zinc-300 focus:outline-none focus:border-indigo-500/80 appearance-none cursor-pointer hover:text-slate-900 dark:hover:text-zinc-100 transition-colors shadow-sm"
+                  className="w-full sm:w-auto bg-slate-50 dark:bg-zinc-950/50 border border-slate-200 dark:border-zinc-800/60 rounded-lg pl-9 pr-8 py-1.5 text-xs font-semibold text-slate-700 dark:text-zinc-300 focus:outline-none focus:border-primary appearance-none cursor-pointer hover:text-slate-900 dark:hover:text-zinc-100 transition-colors shadow-sm"
                 >
                   {BANGLADESH_DIVISIONS.map((div) => (
                     <option key={div} value={div} className="bg-white text-slate-900 dark:bg-zinc-900 dark:text-white">
