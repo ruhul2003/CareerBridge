@@ -79,11 +79,11 @@ export default function AIChatAssistant() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-full shadow-2xl shadow-indigo-500/30 transition-all transform hover:scale-105 cursor-pointer group border border-white/10"
+          className="flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-primary via-primary-600 to-secondary hover:from-primary-700 hover:to-secondary-600 text-white font-semibold rounded-full shadow-2xl shadow-primary/30 transition-all transform hover:scale-105 cursor-pointer group border border-white/10"
         >
           <div className="relative">
             <Bot size={20} className="text-white group-hover:rotate-12 transition-transform" />
-            <Sparkles size={10} className="absolute -top-1 -right-1 text-amber-300 animate-pulse" />
+            <Sparkles size={10} className="absolute -top-1 -right-1 text-secondary-300 animate-pulse" />
           </div>
           <span className="text-xs font-bold tracking-wide">Ask AI Assistant</span>
         </button>
@@ -92,30 +92,30 @@ export default function AIChatAssistant() {
       {isOpen && (
         <div className="w-[360px] sm:w-[400px] h-[520px] bg-slate-900/95 backdrop-blur-xl border border-slate-700/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300">
           {/* Header */}
-          <div className="p-4 bg-gradient-to-r from-indigo-600/90 to-violet-600/90 flex items-center justify-between border-b border-indigo-500/30 text-white">
+          <div className="p-4 bg-gradient-to-r from-primary via-primary-600 to-secondary flex items-center justify-between border-b border-primary-500/30 text-white">
             <div className="flex items-center gap-2.5">
               <div className="p-2 bg-white/10 rounded-xl border border-white/20">
-                <Bot size={20} className="text-indigo-200" />
+                <Bot size={20} className="text-secondary-300" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
                   <h3 className="font-bold text-sm leading-none">CareerBridge AI</h3>
-                  <span className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase">Gemini 2.0</span>
+                  <span className="bg-white/20 border border-white/30 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase">Gemini 2.0</span>
                 </div>
-                <p className="text-[11px] text-indigo-100/80 mt-0.5">Your personal career coach</p>
+                <p className="text-[11px] text-white/80 mt-0.5">Your personal career coach</p>
               </div>
             </div>
             <div className="flex items-center gap-1">
               <button
                 onClick={scrollToTop}
-                className="p-1.5 hover:bg-white/15 rounded-lg text-indigo-100 transition cursor-pointer"
+                className="p-1.5 hover:bg-white/15 rounded-lg text-white transition cursor-pointer"
                 title="Scroll to top of chat"
               >
                 <ArrowUp size={16} />
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 hover:bg-white/15 rounded-lg text-indigo-100 transition cursor-pointer"
+                className="p-1.5 hover:bg-white/15 rounded-lg text-white transition cursor-pointer"
                 title="Minimize"
               >
                 <Minimize2 size={16} />
@@ -131,22 +131,22 @@ export default function AIChatAssistant() {
                 className={`flex gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {msg.role === 'assistant' && (
-                  <div className="w-7 h-7 rounded-full bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center shrink-0 mt-0.5">
-                    <Bot size={14} className="text-indigo-400" />
+                  <div className="w-7 h-7 rounded-full bg-primary-600/30 border border-primary-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <Bot size={14} className="text-secondary-400" />
                   </div>
                 )}
                 <div
                   className={`max-w-[80%] p-3 rounded-2xl text-xs leading-relaxed ${
                     msg.role === 'user'
-                      ? 'bg-indigo-600 text-white rounded-br-none shadow-md'
+                      ? 'bg-primary text-white rounded-br-none shadow-md shadow-primary/25'
                       : 'bg-slate-800/80 border border-slate-700/60 text-slate-200 rounded-bl-none'
                   }`}
                 >
                   <p className="whitespace-pre-wrap">{msg.content}</p>
                 </div>
                 {msg.role === 'user' && (
-                  <div className="w-7 h-7 rounded-full bg-violet-600/30 border border-violet-500/30 flex items-center justify-center shrink-0 mt-0.5">
-                    <User size={14} className="text-violet-400" />
+                  <div className="w-7 h-7 rounded-full bg-secondary-600/30 border border-secondary-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <User size={14} className="text-secondary-400" />
                   </div>
                 )}
               </div>
@@ -154,11 +154,11 @@ export default function AIChatAssistant() {
 
             {loading && (
               <div className="flex gap-2.5 items-center">
-                <div className="w-7 h-7 rounded-full bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center">
-                  <Bot size={14} className="text-indigo-400 animate-spin" />
+                <div className="w-7 h-7 rounded-full bg-primary-600/30 border border-primary-500/30 flex items-center justify-center">
+                  <Bot size={14} className="text-secondary-400 animate-spin" />
                 </div>
-                <div className="bg-slate-800/80 border border-slate-700/60 p-3 rounded-2xl rounded-bl-none text-xs text-indigo-300 flex items-center gap-2">
-                  <RefreshCw size={12} className="animate-spin text-indigo-400" />
+                <div className="bg-slate-800/80 border border-slate-700/60 p-3 rounded-2xl rounded-bl-none text-xs text-secondary-300 flex items-center gap-2">
+                  <RefreshCw size={12} className="animate-spin text-secondary-400" />
                   Thinking with Gemini AI...
                 </div>
               </div>
@@ -175,7 +175,7 @@ export default function AIChatAssistant() {
                   <button
                     key={i}
                     onClick={() => handleSend(prompt)}
-                    className="text-left text-[11px] text-slate-300 hover:text-indigo-300 bg-slate-800/60 hover:bg-slate-800 border border-slate-700/40 px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+                    className="text-left text-[11px] text-slate-300 hover:text-secondary-300 bg-slate-800/60 hover:bg-slate-800 border border-slate-700/40 px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
                   >
                     {prompt}
                   </button>
@@ -198,12 +198,12 @@ export default function AIChatAssistant() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={loading}
-              className="flex-1 bg-slate-900 border border-slate-700/80 px-3 py-2 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+              className="flex-1 bg-slate-900 border border-slate-700/80 px-3 py-2 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-primary transition-colors"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="p-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl transition cursor-pointer shadow-md shadow-indigo-600/20"
+              className="p-2 bg-primary hover:bg-primary-600 disabled:opacity-50 text-white rounded-xl transition cursor-pointer shadow-md shadow-primary/25"
             >
               <Send size={14} />
             </button>
