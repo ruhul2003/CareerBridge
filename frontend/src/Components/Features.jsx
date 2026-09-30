@@ -80,11 +80,10 @@ export default function FeaturesSection() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-medium tracking-widest mb-3"
+                        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-50 dark:bg-primary-950/50 border border-primary-200/60 dark:border-primary-900/50 text-primary dark:text-secondary-400 text-xs font-bold tracking-widest uppercase mb-4 shadow-sm"
                     >
-                        <div className="w-2 h-px bg-blue-500"></div>
-                        FEATURES JOB
-                        <div className="w-2 h-px bg-blue-500"></div>
+                        <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+                        POWERFUL PLATFORM CAPABILITIES
                     </motion.div>
 
                     <motion.h2 
@@ -94,7 +93,7 @@ export default function FeaturesSection() {
                         viewport={{ once: true }}
                         className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white"
                     >
-                        Everything you need <br /> to succeed
+                        Everything you need <br /> to <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">succeed</span>
                     </motion.h2>
                 </div>
 
