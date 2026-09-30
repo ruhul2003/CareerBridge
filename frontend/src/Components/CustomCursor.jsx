@@ -79,7 +79,7 @@ export default function CustomCursor() {
     <>
       {/* Outer Spring Following Circle */}
       <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-[9999] rounded-full border border-cyan-400/50 bg-cyan-500/10 backdrop-blur-[1px] shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+        className="pointer-events-none fixed top-0 left-0 z-[9999] rounded-full border border-secondary/50 bg-secondary/10 backdrop-blur-[1px] shadow-[0_0_15px_rgba(79,70,229,0.25)]"
         style={{
           x: cursorX,
           y: cursorY,
@@ -89,8 +89,8 @@ export default function CustomCursor() {
         animate={{
           width: isHovered ? 52 : isClicked ? 24 : 36,
           height: isHovered ? 52 : isClicked ? 24 : 36,
-          borderColor: isHovered ? 'rgba(56, 189, 248, 0.8)' : 'rgba(6, 182, 212, 0.5)',
-          backgroundColor: isHovered ? 'rgba(56, 189, 248, 0.15)' : 'rgba(6, 182, 212, 0.08)',
+          borderColor: isHovered ? 'rgba(79, 70, 229, 0.8)' : 'rgba(6, 182, 212, 0.5)',
+          backgroundColor: isHovered ? 'rgba(79, 70, 229, 0.12)' : 'rgba(6, 182, 212, 0.08)',
           scale: isClicked ? 0.85 : 1,
         }}
         transition={{ type: 'spring', damping: 22, stiffness: 350, mass: 0.5 }}
@@ -98,7 +98,7 @@ export default function CustomCursor() {
 
       {/* Inner Precision Dot */}
       <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-[9999] w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.9)]"
+        className="pointer-events-none fixed top-0 left-0 z-[9999] w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(6,182,212,0.9)]"
         style={{
           x: dotX,
           y: dotY,
@@ -107,7 +107,7 @@ export default function CustomCursor() {
         }}
         animate={{
           scale: isHovered ? 0.5 : isClicked ? 1.5 : 1,
-          backgroundColor: isHovered ? '#38bdf8' : '#22d3ee',
+          backgroundColor: isHovered ? '#4f46e5' : '#06b6d4',
         }}
         transition={{ type: 'spring', damping: 30, stiffness: 500 }}
       />
