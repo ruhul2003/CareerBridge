@@ -69,9 +69,20 @@ export default function StatsSection() {
 
   return (
     <section className="relative w-full bg-zinc-100 dark:bg-black text-zinc-900 dark:text-white py-28 px-6 overflow-hidden min-h-[700px] flex flex-col justify-end transition-colors duration-300">
-      {/* Background layer without raster images */}
-      <div className="absolute inset-0 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-100/50 dark:via-black/20 to-zinc-100 dark:to-black pointer-events-none" />
+      {/* Modern Ambient Mesh & Radial Accents */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Subtle Primary Radial Accent */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-primary-500/10 dark:bg-primary-600/15 blur-[120px] rounded-full" />
+        
+        {/* Secondary Radial Glow */}
+        <div className="absolute -bottom-20 left-1/4 w-[500px] h-[300px] bg-secondary-500/10 dark:bg-secondary-600/15 blur-[120px] rounded-full" />
+
+        {/* Ambient Grid Pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(rgba(79,70,229,0.08)_1px,transparent_1px)] dark:bg-[radial-gradient(rgba(6,182,212,0.08)_1px,transparent_1px)] [background-size:32px_32px] opacity-60" />
+
+        {/* Smooth Blend Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-100/60 via-transparent to-zinc-100 dark:from-black/60 dark:via-transparent dark:to-black" />
+      </div>
 
       <div className="relative max-w-6xl mx-auto w-full z-10 flex flex-col items-center">
         
