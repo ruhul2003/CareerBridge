@@ -7,40 +7,48 @@ export default function StatsSection() {
   const stats = [
     {
       id: 1,
-      number: "50K",
+      number: "50K+",
       label: "Active Jobs",
+      accent: "text-primary dark:text-primary-400",
+      bgAccent: "bg-primary-50 dark:bg-primary-950/40 border-primary-200/60 dark:border-primary-900/40",
       icon: (
-        <svg className="w-7 h-7 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 .596-.237 1.168-.659 1.591a2.25 2.25 0 01-1.591.659H6a2.25 2.25 0 01-1.591-.659A2.25 2.25 0 013.75 18.4v-4.25m16.5 0a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25m16.5 0V9.45c0-.596-.237-1.168-.659-1.591A2.25 2.25 0 0016.5 7.2h-1.2v-.3a2.25 2.25 0 00-2.25-2.25h-2.1a2.25 2.25 0 00-2.25 2.25v.3H7.5c-.596 0-1.168.237-1.591.659a2.25 2.25 0 00-.659 1.591v4.7m10.5-6.9v.3m0 0h-2.1m2.1 0h1.2M9 7.2h.3" />
         </svg>
       ),
     },
     {
       id: 2,
-      number: "12K",
-      label: "Companies",
+      number: "12K+",
+      label: "Vetted Companies",
+      accent: "text-secondary dark:text-secondary-400",
+      bgAccent: "bg-secondary-50 dark:bg-secondary-950/40 border-secondary-200/60 dark:border-secondary-900/40",
       icon: (
-        <svg className="w-7 h-7 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
         </svg>
       ),
     },
     {
       id: 3,
-      number: "2M",
-      label: "Job Seekers",
+      number: "2M+",
+      label: "Active Candidates",
+      accent: "text-primary dark:text-primary-400",
+      bgAccent: "bg-primary-50 dark:bg-primary-950/40 border-primary-200/60 dark:border-primary-900/40",
       icon: (
-        <svg className="w-7 h-7 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
     },
     {
       id: 4,
-      number: "97%",
+      number: "98%",
       label: "Satisfaction Rate",
+      accent: "text-secondary dark:text-secondary-400",
+      bgAccent: "bg-secondary-50 dark:bg-secondary-950/40 border-secondary-200/60 dark:border-secondary-900/40",
       icon: (
-        <svg className="w-7 h-7 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499c.151-.39 1.137-.39 1.287 0l2.18 4.417 4.872.708c.423.061.593.58.285.88l-3.522 3.434.83 4.846a.75.75 0 01-1.088.791L12 16.347l-4.352 2.288a.75.75 0 01-1.088-.79l.83-4.847-3.522-3.434a.75.75 0 01.285-.88l4.872-.708 2.18-4.417z" />
         </svg>
       ),
@@ -93,8 +101,8 @@ export default function StatsSection() {
           transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
           className="text-center lg:text-5xl md:text-4xl text-3xl font-light tracking-tight max-w-3xl leading-[1.3] text-zinc-700 dark:text-zinc-300 mb-20 select-none"
         >
-          Assisting over <span className="font-semibold text-zinc-900 dark:text-white">15,000 job seekers</span> <br />
-          find their dream positions.
+          Empowering over <span className="font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">15,000 candidates</span> <br />
+          to accelerate their career trajectory.
         </motion.h2>
 
         <motion.div 
@@ -111,14 +119,14 @@ export default function StatsSection() {
               whileHover={{ 
                 y: -6, 
               }}
-              className="bg-white dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-indigo-500/10 hover:border-slate-300 dark:hover:border-zinc-700 transition-all duration-300"
+              className="bg-white dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-primary-500/10 hover:border-primary-300 dark:hover:border-secondary-500/40 transition-all duration-300 group"
             >
-              <div className="flex items-center text-slate-500 dark:text-zinc-400">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-300 ${stat.bgAccent} ${stat.accent} group-hover:scale-105`}>
                 {stat.icon}
               </div>
               
               <div className="mt-8">
-                <div className="text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-2.5">
+                <div className="text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-2.5 group-hover:text-primary dark:group-hover:text-secondary-300 transition-colors">
                   {stat.number}
                 </div>
                 <div className="text-sm text-slate-600 dark:text-zinc-400 font-medium tracking-wide">
