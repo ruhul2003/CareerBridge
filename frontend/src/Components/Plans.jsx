@@ -314,14 +314,14 @@ const PricingPage = () => {
                                     {plan.name === 'Free' ? (
                                         <Link
                                             href="/dashboard/seeker"
-                                            className="block w-full text-center text-sm font-semibold px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 transition text-white shadow-md shadow-emerald-600/20"
+                                            className="block w-full text-center text-sm font-semibold px-6 py-3.5 rounded-2xl bg-secondary hover:bg-secondary-600 transition text-white shadow-md shadow-secondary/25"
                                         >
                                             Get Started Free
                                         </Link>
                                     ) : plan.name === 'Enterprise' ? (
                                         <a
-                                            href="mailto:sales@yourcompany.com?subject=Enterprise%20Plan%20Inquiry"
-                                            className="block w-full text-center text-sm font-semibold px-6 py-3.5 rounded-2xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white transition"
+                                            href="mailto:sales@careerbridge.com?subject=Enterprise%20Plan%20Inquiry"
+                                            className="block w-full text-center text-sm font-semibold px-6 py-3.5 rounded-2xl bg-zinc-100 dark:bg-zinc-800 hover:bg-primary-50 dark:hover:bg-primary-950/40 hover:border-primary-400 dark:hover:border-primary-800 hover:text-primary dark:hover:text-primary-300 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white transition"
                                         >
                                             Contact Sales
                                         </a>
@@ -332,8 +332,8 @@ const PricingPage = () => {
                                                 type="submit"
                                                 className={`block w-full text-center text-sm font-semibold px-6 py-3.5 rounded-2xl transition-all cursor-pointer ${
                                                     plan.popular
-                                                        ? 'bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/30 text-white'
-                                                        : 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white'
+                                                        ? 'bg-gradient-to-r from-primary to-primary-700 hover:from-primary-700 hover:to-primary shadow-lg shadow-primary/30 text-white'
+                                                        : 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:border-primary-300 dark:hover:border-zinc-700 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white'
                                                 }`}
                                             >
                                                 {plan.cta}
