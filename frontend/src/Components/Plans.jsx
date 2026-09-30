@@ -182,13 +182,14 @@ const PricingPage = () => {
                 >
                     <motion.span 
                         variants={fadeInUp}
-                        className="text-xs font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-500"
+                        className="text-xs font-bold uppercase tracking-widest text-primary dark:text-secondary-400 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 dark:bg-primary-950/40 border border-primary-200/60 dark:border-primary-900/40"
                     >
-                        Transparent Pricing
+                        <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+                        TRANSPARENT PRICING
                     </motion.span>
                     <motion.h1 
                         variants={fadeInUp}
-                        className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-100 mt-2 tracking-tight"
+                        className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-100 mt-3 tracking-tight"
                     >
                         Flexible plans tailored to your goals
                     </motion.h1>
@@ -210,16 +211,16 @@ const PricingPage = () => {
                     <div className="relative p-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center gap-1 shadow-md">
                         <button
                             onClick={() => setBillingTarget('seeker')}
-                            className={`relative z-10 flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer ${
+                            className={`relative z-10 flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 cursor-pointer ${
                                 billingTarget === 'seeker'
                                     ? 'text-white'
-                                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                                    : 'text-zinc-600 dark:text-zinc-400 hover:text-primary dark:hover:text-secondary-300'
                             }`}
                         >
                             {billingTarget === 'seeker' && (
                                 <motion.div
                                     layoutId="activePlanTab"
-                                    className="absolute inset-0 bg-zinc-900 dark:bg-zinc-800 rounded-lg border border-zinc-800 dark:border-zinc-700/50 -z-10 shadow-md"
+                                    className="absolute inset-0 bg-primary dark:bg-primary-600 rounded-lg border border-primary-500/50 -z-10 shadow-md shadow-primary/25"
                                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                                 />
                             )}
@@ -228,16 +229,16 @@ const PricingPage = () => {
                         </button>
                         <button
                             onClick={() => setBillingTarget('recruiter')}
-                            className={`relative z-10 flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer ${
+                            className={`relative z-10 flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 cursor-pointer ${
                                 billingTarget === 'recruiter'
                                     ? 'text-white'
-                                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                                    : 'text-zinc-600 dark:text-zinc-400 hover:text-primary dark:hover:text-secondary-300'
                             }`}
                         >
                             {billingTarget === 'recruiter' && (
                                 <motion.div
                                     layoutId="activePlanTab"
-                                    className="absolute inset-0 bg-zinc-900 dark:bg-zinc-800 rounded-lg border border-zinc-800 dark:border-zinc-700/50 -z-10 shadow-md"
+                                    className="absolute inset-0 bg-primary dark:bg-primary-600 rounded-lg border border-primary-500/50 -z-10 shadow-md shadow-primary/25"
                                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                                 />
                             )}
