@@ -69,10 +69,8 @@ export default function StatsSection() {
 
   return (
     <section className="relative w-full bg-zinc-100 dark:bg-black text-zinc-900 dark:text-white py-28 px-6 overflow-hidden min-h-[700px] flex flex-col justify-end transition-colors duration-300">
-      <div 
-        className="absolute inset-0 bg-center bg-no-repeat bg-cover opacity-30 dark:opacity-80 pointer-events-none"
-        style={{ backgroundImage: "url('/globe.png')" }}
-      />
+      {/* Background layer without raster images */}
+      <div className="absolute inset-0 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-100/50 dark:via-black/20 to-zinc-100 dark:to-black pointer-events-none" />
 
       <div className="relative max-w-6xl mx-auto w-full z-10 flex flex-col items-center">
