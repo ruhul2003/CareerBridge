@@ -113,20 +113,30 @@ export default function FeaturesSection() {
                                 scale: 1.03,
                                 transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
                             }}
-                            className="group bg-white dark:bg-zinc-900 border border-slate-200/90 dark:border-zinc-800 hover:border-blue-400/60 dark:hover:border-blue-600/60 rounded-3xl p-8 transition-all duration-300 shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-blue-500/15"
+                            className={`group bg-white dark:bg-zinc-900 border border-slate-200/90 dark:border-zinc-800 rounded-3xl p-8 transition-all duration-300 shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl ${
+                                index % 2 === 0
+                                    ? "hover:border-primary-400/60 dark:hover:border-primary-500/50 hover:shadow-primary-500/10"
+                                    : "hover:border-secondary-400/60 dark:hover:border-secondary-500/50 hover:shadow-secondary-500/10"
+                            }`}
                         >
                             <motion.div 
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 whileInView={{ scale: 1, opacity: 1 }}
                                 transition={{ delay: 0.2 + index * 0.05 }}
-                                className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-6 group-hover:bg-blue-600/10 transition-colors"
+                                className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-colors ${
+                                    index % 2 === 0
+                                        ? "bg-primary-50 dark:bg-primary-950/40 text-primary dark:text-primary-400 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50"
+                                        : "bg-secondary-50 dark:bg-secondary-950/40 text-secondary dark:text-secondary-400 group-hover:bg-secondary-100 dark:group-hover:bg-secondary-900/50"
+                                }`}
                             >
-                                <div className="text-blue-600 dark:text-blue-400 group-hover:text-blue-500 transition-colors">
+                                <div className="transition-transform group-hover:scale-110 duration-200">
                                     {feature.icon}
                                 </div>
                             </motion.div>
                             
-                            <h3 className="text-xl font-semibold mb-3 text-zinc-900 dark:text-white">
+                            <h3 className={`text-xl font-semibold mb-3 text-zinc-900 dark:text-white transition-colors ${
+                                index % 2 === 0 ? "group-hover:text-primary dark:group-hover:text-primary-300" : "group-hover:text-secondary-600 dark:group-hover:text-secondary-300"
+                            }`}>
                                 {feature.title}
                             </h3>
                             
