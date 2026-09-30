@@ -100,7 +100,7 @@ export default function Navbar() {
         
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group select-none">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 p-[1.5px] shadow-sm group-hover:shadow-indigo-500/25 transition-all duration-300 group-hover:scale-105 overflow-hidden">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-secondary via-primary to-primary-700 p-[1.5px] shadow-sm group-hover:shadow-primary/25 transition-all duration-300 group-hover:scale-105 overflow-hidden">
             <img
               src="/logo.png"
               alt="CareerBridge Logo"
@@ -109,8 +109,8 @@ export default function Navbar() {
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-0.5 text-2xl font-black tracking-tight leading-none">
-              <span className="text-cyan-500 dark:text-cyan-400">Career</span>
-              <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+              <span className="text-secondary dark:text-secondary-400">Career</span>
+              <span className="bg-gradient-to-r from-primary via-primary-600 to-secondary dark:from-primary-400 dark:via-primary-300 dark:to-secondary-400 bg-clip-text text-transparent">
                 Bridge
               </span>
             </div>
@@ -128,8 +128,8 @@ export default function Navbar() {
                 href={link.href}
                 className={`relative flex items-center gap-2 px-4.5 py-2 text-sm font-semibold rounded-full transition-colors duration-200 ${
                   active
-                    ? "text-indigo-600 dark:text-cyan-400"
-                    : "text-zinc-600 dark:text-slate-400 hover:text-zinc-900 dark:hover:text-slate-200"
+                    ? "text-primary dark:text-secondary-400"
+                    : "text-zinc-600 dark:text-slate-400 hover:text-primary dark:hover:text-secondary-300"
                 }`}
               >
                 {active && (
@@ -139,12 +139,12 @@ export default function Navbar() {
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-                <Icon className={`w-4 h-4 ${link.isFeatured ? "text-cyan-500 animate-pulse" : active ? "text-indigo-600 dark:text-cyan-400" : "text-zinc-400 dark:text-slate-500"}`} />
-                <span className={link.isFeatured && !active ? "bg-gradient-to-r from-cyan-500 to-purple-500 bg-clip-text text-transparent font-bold" : ""}>
+                <Icon className={`w-4 h-4 ${link.isFeatured ? "text-secondary animate-pulse" : active ? "text-primary dark:text-secondary-400" : "text-zinc-400 dark:text-slate-500"}`} />
+                <span className={link.isFeatured && !active ? "bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent font-bold" : ""}>
                   {link.label}
                 </span>
                 {link.isFeatured && (
-                  <span className="ml-0.5 px-1.5 py-0.5 text-[10px] font-extrabold uppercase rounded-full bg-gradient-to-r from-cyan-500 to-indigo-500 text-white leading-none shadow-sm">
+                  <span className="ml-0.5 px-1.5 py-0.5 text-[10px] font-extrabold uppercase rounded-full bg-gradient-to-r from-secondary to-primary text-white leading-none shadow-sm">
                     AI
                   </span>
                 )}
