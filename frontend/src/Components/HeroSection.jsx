@@ -220,7 +220,7 @@ export default function HeroSection() {
                 whileHover={{
                   y: -2,
                 }}
-                className="bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800 hover:text-slate-900 dark:hover:text-white px-4 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-md shadow-slate-200/60 dark:shadow-lg dark:shadow-black/50 hover:shadow-lg hover:shadow-indigo-500/10"
+                className="bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 text-slate-700 dark:text-zinc-300 hover:bg-primary-50 dark:hover:bg-primary-950/40 hover:border-primary-400/60 dark:hover:border-secondary-500/50 hover:text-primary dark:hover:text-secondary-300 px-4 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer shadow-md shadow-slate-200/60 dark:shadow-lg dark:shadow-black/50 hover:shadow-lg hover:shadow-primary-500/15"
               >
                 {position}
               </motion.button>
