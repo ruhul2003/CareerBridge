@@ -162,6 +162,23 @@ export default function StatsSection() {
 
       <div className="relative max-w-6xl mx-auto w-full z-10 flex flex-col items-center">
         
+        {/* Live Ecosystem Status Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-slate-200/80 dark:border-zinc-800 text-xs font-semibold text-slate-700 dark:text-zinc-300 shadow-sm mb-6 select-none"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary" />
+          </span>
+          <span className="tracking-wide uppercase text-[11px] font-bold text-slate-600 dark:text-zinc-400">Global Career Ecosystem</span>
+          <span className="text-slate-300 dark:text-zinc-700">•</span>
+          <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-bold">140+ Countries Connected</span>
+        </motion.div>
+
         <motion.h2 
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
