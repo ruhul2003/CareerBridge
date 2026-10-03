@@ -48,6 +48,7 @@ export default function StatsSection() {
       rawNumber: 50,
       suffix: "K+",
       label: "Active Jobs",
+      growth: "+34% YoY",
       accent: "text-primary dark:text-primary-400",
       bgAccent: "bg-primary-50 dark:bg-primary-950/40 border-primary-200/60 dark:border-primary-900/40",
       icon: (
@@ -62,6 +63,7 @@ export default function StatsSection() {
       rawNumber: 12,
       suffix: "K+",
       label: "Vetted Companies",
+      growth: "+18% MoM",
       accent: "text-secondary dark:text-secondary-400",
       bgAccent: "bg-secondary-50 dark:bg-secondary-950/40 border-secondary-200/60 dark:border-secondary-900/40",
       icon: (
@@ -76,6 +78,7 @@ export default function StatsSection() {
       rawNumber: 2,
       suffix: "M+",
       label: "Active Candidates",
+      growth: "+45% YoY",
       accent: "text-primary dark:text-primary-400",
       bgAccent: "bg-primary-50 dark:bg-primary-950/40 border-primary-200/60 dark:border-primary-900/40",
       icon: (
@@ -90,6 +93,7 @@ export default function StatsSection() {
       rawNumber: 98,
       suffix: "%",
       label: "Satisfaction Rate",
+      growth: "4.9★ Rating",
       accent: "text-secondary dark:text-secondary-400",
       bgAccent: "bg-secondary-50 dark:bg-secondary-950/40 border-secondary-200/60 dark:border-secondary-900/40",
       icon: (
@@ -251,8 +255,16 @@ export default function StatsSection() {
               }}
               className="bg-white dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-primary-500/10 hover:border-primary-300 dark:hover:border-secondary-500/40 transition-all duration-300 group"
             >
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-300 ${stat.bgAccent} ${stat.accent} group-hover:scale-105`}>
-                {stat.icon}
+              <div className="flex items-center justify-between w-full">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-300 ${stat.bgAccent} ${stat.accent} group-hover:scale-105`}>
+                  {stat.icon}
+                </div>
+                <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-sm">
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                  </svg>
+                  <span>{stat.growth}</span>
+                </div>
               </div>
               
               <div className="mt-8">
