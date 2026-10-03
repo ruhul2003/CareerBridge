@@ -55,6 +55,15 @@ export default function StatsSection() {
     },
   ];
 
+  const globalHubs = [
+    { id: "na", name: "San Francisco", region: "North America", x: "18%", y: "38%", candidates: "420K+", delay: 0 },
+    { id: "eu", name: "London", region: "Europe", x: "47%", y: "30%", candidates: "580K+", delay: 0.3 },
+    { id: "sa", name: "São Paulo", region: "Latin America", x: "32%", y: "68%", candidates: "190K+", delay: 0.6 },
+    { id: "bd", name: "Dhaka", region: "South Asia", x: "71%", y: "46%", candidates: "310K+", delay: 0.2 },
+    { id: "ap", name: "Tokyo", region: "East Asia", x: "84%", y: "36%", candidates: "380K+", delay: 0.5 },
+    { id: "au", name: "Sydney", region: "Oceania", x: "88%", y: "74%", candidates: "160K+", delay: 0.8 },
+  ];
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -84,6 +93,22 @@ export default function StatsSection() {
           className="absolute inset-0 bg-center bg-no-repeat bg-cover opacity-25 dark:opacity-75 pointer-events-none transition-opacity duration-500"
           style={{ backgroundImage: "url('/globe.png')" }}
         />
+
+        {/* Global Talent Hub Radar Pins */}
+        <div className="absolute inset-0 max-w-7xl mx-auto pointer-events-none hidden sm:block">
+          {globalHubs.map((hub) => (
+            <div
+              key={hub.id}
+              className="absolute -translate-x-1/2 -translate-y-1/2"
+              style={{ left: hub.x, top: hub.y }}
+            >
+              <div className="relative flex items-center justify-center">
+                <span className="absolute w-6 h-6 rounded-full bg-secondary-400/30 dark:bg-secondary-400/40 animate-ping" />
+                <span className="relative w-2.5 h-2.5 rounded-full bg-secondary shadow-[0_0_12px_rgba(6,182,212,0.9)] border border-white/80 dark:border-cyan-200" />
+              </div>
+            </div>
+          ))}
+        </div>
 
         {/* Central Atmospheric Globe Backlight */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] md:w-[900px] h-[450px] bg-gradient-to-tr from-primary-600/15 via-secondary-500/20 to-primary-400/15 dark:from-primary-600/25 dark:via-secondary-500/25 dark:to-primary-400/20 blur-[130px] rounded-full pointer-events-none" />
