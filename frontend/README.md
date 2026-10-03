@@ -50,9 +50,13 @@ CareerBridge features an authoritative, modern color palette built with Tailwind
 - **Secondary Color (Electric Cyan - `#06b6d4` / `--color-secondary`)**:
   - Delivers vibrant complementary accents across badges, AI assistant indicators, interactive icon cards, and popular pricing pills.
   - Full tonal scale configured from `--color-secondary-50` through `--color-secondary-950`.
-- **Zero Raster Background Overhead on Home Page**:
-  - Replaced legacy static bitmap image sliders (`banner-*.png`) and heavy globe images (`globe.png`) with clean, performant pure-CSS ambient mesh gradients and subtle radial glows.
-  - Ensures lightning-fast rendering, flawless responsive scaling, and seamless contrast in both dark and light modes.
+- **Interactive Global Stats Architecture & Ambient Globe Layer**:
+  - Restored high-definition globe backdrop seamlessly blended with top vignette gradients, bottom feathering masks, and central atmospheric radial backlight.
+  - Interactive global talent hub nodes across North America, Europe, East Asia, South Asia, Latin America, and Oceania with pulsing radar rings and live candidate count cards.
+  - Glowing SVG flight trajectories interconnecting international employment centers.
+  - High-performance animated numerical counters counting up smoothly with ease-out cubic curves on viewport entry.
+  - Dynamic category segment tabs allowing visitors to filter impact metrics by talent, enterprise scale, or general benchmarks.
+  - Cursor-following radial spotlight illumination and gradient border shimmers on metric cards.
 
 
 ---
