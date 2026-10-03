@@ -49,6 +49,7 @@ export default function StatsSection() {
       suffix: "K+",
       label: "Active Jobs",
       growth: "+34% YoY",
+      description: "Verified roles across tech, product & design",
       accent: "text-primary dark:text-primary-400",
       bgAccent: "bg-primary-50 dark:bg-primary-950/40 border-primary-200/60 dark:border-primary-900/40",
       icon: (
@@ -64,6 +65,7 @@ export default function StatsSection() {
       suffix: "K+",
       label: "Vetted Companies",
       growth: "+18% MoM",
+      description: "Vetted startups & Fortune 500 organizations",
       accent: "text-secondary dark:text-secondary-400",
       bgAccent: "bg-secondary-50 dark:bg-secondary-950/40 border-secondary-200/60 dark:border-secondary-900/40",
       icon: (
@@ -79,6 +81,7 @@ export default function StatsSection() {
       suffix: "M+",
       label: "Active Candidates",
       growth: "+45% YoY",
+      description: "Pre-screened professionals actively looking",
       accent: "text-primary dark:text-primary-400",
       bgAccent: "bg-primary-50 dark:bg-primary-950/40 border-primary-200/60 dark:border-primary-900/40",
       icon: (
@@ -94,6 +97,7 @@ export default function StatsSection() {
       suffix: "%",
       label: "Satisfaction Rate",
       growth: "4.9★ Rating",
+      description: "Rated highly by recruiters and candidates",
       accent: "text-secondary dark:text-secondary-400",
       bgAccent: "bg-secondary-50 dark:bg-secondary-950/40 border-secondary-200/60 dark:border-secondary-900/40",
       icon: (
@@ -271,8 +275,11 @@ export default function StatsSection() {
                 <div className="text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-2.5 group-hover:text-primary dark:group-hover:text-secondary-300 transition-colors">
                   <AnimatedCounter value={stat.rawNumber} suffix={stat.suffix} />
                 </div>
-                <div className="text-sm text-slate-600 dark:text-zinc-400 font-medium tracking-wide">
+                <div className="text-sm text-slate-700 dark:text-zinc-300 font-semibold tracking-wide">
                   {stat.label}
+                </div>
+                <div className="text-xs text-slate-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
+                  {stat.description}
                 </div>
               </div>
             </motion.div>
