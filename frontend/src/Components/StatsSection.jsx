@@ -94,8 +94,14 @@ export default function StatsSection() {
         {/* Ambient Grid Pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(rgba(79,70,229,0.08)_1px,transparent_1px)] dark:bg-[radial-gradient(rgba(6,182,212,0.08)_1px,transparent_1px)] [background-size:32px_32px] opacity-60" />
 
+        {/* Top Vignette Fade */}
+        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-zinc-100 dark:from-black to-transparent pointer-events-none" />
+
+        {/* Bottom Horizon Feathering Mask */}
+        <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-zinc-100 dark:from-black via-zinc-100/70 dark:via-black/70 to-transparent pointer-events-none" />
+
         {/* Smooth Blend Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-zinc-100/60 via-transparent to-zinc-100 dark:from-black/60 dark:via-transparent dark:to-black" />
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-100/40 via-transparent to-zinc-100 dark:from-black/40 dark:via-transparent dark:to-black" />
       </div>
 
       <div className="relative max-w-6xl mx-auto w-full z-10 flex flex-col items-center">
