@@ -99,12 +99,22 @@ export default function StatsSection() {
           {globalHubs.map((hub) => (
             <div
               key={hub.id}
-              className="absolute -translate-x-1/2 -translate-y-1/2"
+              className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto group/hub cursor-pointer"
               style={{ left: hub.x, top: hub.y }}
             >
               <div className="relative flex items-center justify-center">
-                <span className="absolute w-6 h-6 rounded-full bg-secondary-400/30 dark:bg-secondary-400/40 animate-ping" />
-                <span className="relative w-2.5 h-2.5 rounded-full bg-secondary shadow-[0_0_12px_rgba(6,182,212,0.9)] border border-white/80 dark:border-cyan-200" />
+                <span className="absolute w-7 h-7 rounded-full bg-secondary-400/30 dark:bg-secondary-400/40 animate-ping" />
+                <span className="relative w-2.5 h-2.5 rounded-full bg-secondary shadow-[0_0_12px_rgba(6,182,212,0.9)] border border-white/80 dark:border-cyan-200 group-hover/hub:scale-125 transition-transform" />
+                
+                {/* Floating Hub Hover Card */}
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 opacity-0 group-hover/hub:opacity-100 group-hover/hub:-translate-y-1 pointer-events-none transition-all duration-200 z-30 whitespace-nowrap">
+                  <div className="bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-secondary-200 dark:border-zinc-700 shadow-xl shadow-secondary-500/10 flex items-center gap-2 text-xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
+                    <span className="font-semibold text-slate-800 dark:text-zinc-100">{hub.name}</span>
+                    <span className="text-[10px] text-slate-400 dark:text-zinc-400">•</span>
+                    <span className="text-secondary font-bold">{hub.candidates}</span>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
