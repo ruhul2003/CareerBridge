@@ -79,6 +79,12 @@ export default function StatsSection() {
     <section className="relative w-full bg-zinc-100 dark:bg-black text-zinc-900 dark:text-white py-28 px-6 overflow-hidden min-h-[700px] flex flex-col justify-end transition-colors duration-300">
       {/* Modern Ambient Mesh & Radial Accents */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Globe Map Background Layer */}
+        <div 
+          className="absolute inset-0 bg-center bg-no-repeat bg-cover opacity-25 dark:opacity-75 pointer-events-none transition-opacity duration-500"
+          style={{ backgroundImage: "url('/globe.png')" }}
+        />
+
         {/* Subtle Primary Radial Accent */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-primary-500/10 dark:bg-primary-600/15 blur-[120px] rounded-full" />
         
