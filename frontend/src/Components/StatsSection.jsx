@@ -289,21 +289,29 @@ export default function StatsSection() {
         </motion.div>
 
         <motion.div 
+          layout
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full"
         >
-          {stats.map((stat) => (
-            <motion.div
-              key={stat.id}
-              variants={itemVariants}
-              whileHover={{ 
-                y: -6, 
-              }}
-              className="bg-white dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-primary-500/10 hover:border-primary-300 dark:hover:border-secondary-500/40 transition-all duration-300 group"
-            >
+          {stats.map((stat) => {
+            const isDimmed = activeTab !== "all" && stat.category !== activeTab;
+            return (
+              <motion.div
+                layout
+                key={stat.id}
+                variants={itemVariants}
+                animate={{
+                  opacity: isDimmed ? 0.35 : 1,
+                  scale: isDimmed ? 0.96 : 1,
+                }}
+                whileHover={{ 
+                  y: -6, 
+                }}
+                className="bg-white dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-primary-500/10 hover:border-primary-300 dark:hover:border-secondary-500/40 transition-all duration-300 group"
+              >
               <div className="flex items-center justify-between w-full">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-300 ${stat.bgAccent} ${stat.accent} group-hover:scale-105`}>
                   {stat.icon}
@@ -328,7 +336,8 @@ export default function StatsSection() {
                 </div>
               </div>
             </motion.div>
-          ))}
+          );
+        })}
         </motion.div>
 
       </div>
