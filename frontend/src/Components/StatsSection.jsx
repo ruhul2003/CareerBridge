@@ -120,6 +120,21 @@ export default function StatsSection() {
           ))}
         </div>
 
+        {/* Connected Flight Arcs */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none hidden md:block opacity-35 dark:opacity-60" viewBox="0 0 1000 600" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="arcGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#4f46e5" stopOpacity="0.1" />
+              <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.1" />
+            </linearGradient>
+          </defs>
+          <path d="M 180 228 Q 325 120 470 180" fill="none" stroke="url(#arcGlow)" strokeWidth="1.5" strokeDasharray="4 4" />
+          <path d="M 470 180 Q 590 200 710 276" fill="none" stroke="url(#arcGlow)" strokeWidth="1.5" strokeDasharray="4 4" />
+          <path d="M 710 276 Q 775 240 840 216" fill="none" stroke="url(#arcGlow)" strokeWidth="1.5" strokeDasharray="4 4" />
+          <path d="M 470 180 Q 395 300 320 408" fill="none" stroke="url(#arcGlow)" strokeWidth="1.5" strokeDasharray="4 4" />
+        </svg>
+
         {/* Central Atmospheric Globe Backlight */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] md:w-[900px] h-[450px] bg-gradient-to-tr from-primary-600/15 via-secondary-500/20 to-primary-400/15 dark:from-primary-600/25 dark:via-secondary-500/25 dark:to-primary-400/20 blur-[130px] rounded-full pointer-events-none" />
 
