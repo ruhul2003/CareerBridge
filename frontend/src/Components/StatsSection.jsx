@@ -329,7 +329,7 @@ export default function StatsSection() {
                 <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-primary-500/0 group-hover:via-primary-500/70 dark:group-hover:via-secondary-400/70 to-transparent transition-all duration-500 pointer-events-none" />
 
                 <div className="flex items-center justify-between w-full relative z-10">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-300 ${stat.bgAccent} ${stat.accent} group-hover:scale-105`}>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center border shadow-sm transition-all duration-300 ${stat.bgAccent} ${stat.accent} group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md`}>
                   {stat.icon}
                 </div>
                 <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-sm">
