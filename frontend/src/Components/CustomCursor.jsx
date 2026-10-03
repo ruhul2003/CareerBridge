@@ -49,6 +49,9 @@ export default function CustomCursor() {
         target.tagName === 'SELECT' ||
         target.closest('a') ||
         target.closest('button') ||
+        target.closest('[role="button"]') ||
+        target.closest('.group\\/hub') ||
+        target.closest('[data-cursor-interactive]') ||
         target.getAttribute('role') === 'button' ||
         target.classList.contains('cursor-pointer') ||
         window.getComputedStyle(target).cursor === 'pointer';
