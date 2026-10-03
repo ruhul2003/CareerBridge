@@ -263,12 +263,17 @@ const PricingPage = () => {
                                 key={plan.id}
                                 variants={fadeInUp}
                                 whileHover={{ y: -8, transition: { duration: 0.2, ease: "easeOut" } }}
-                                className={`relative bg-white dark:bg-zinc-900 border rounded-2xl p-6 shadow-xl shadow-slate-200/80 dark:shadow-2xl dark:shadow-black/80 flex flex-col justify-between min-h-[480px] transition-all duration-300 hover:shadow-primary/15 ${
+                                className={`relative bg-white dark:bg-zinc-900 border rounded-2xl p-6 shadow-xl shadow-slate-200/80 dark:shadow-2xl dark:shadow-black/80 flex flex-col justify-between min-h-[480px] transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 ${
                                     plan.popular
-                                        ? 'border-primary ring-2 ring-primary/20 dark:border-primary-500'
-                                        : 'border-zinc-200 dark:border-zinc-800 hover:border-primary-300 dark:hover:border-zinc-700'
+                                        ? 'border-primary ring-2 ring-primary/40 dark:border-primary-500 shadow-primary/10'
+                                        : 'border-zinc-200 dark:border-zinc-800 hover:border-primary-400/80 dark:hover:border-secondary-500/60'
                                 }`}
                             >
+                                {/* Top Highlight Accent for Popular Plan */}
+                                {plan.popular && (
+                                    <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary rounded-t-2xl" />
+                                )}
+
                                 {/* Popular Highlight Pill */}
                                 {plan.popular && (
                                     <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-1 text-[10px] font-bold text-white bg-gradient-to-r from-primary to-secondary rounded-full uppercase tracking-wider shadow-md shadow-primary/25">
