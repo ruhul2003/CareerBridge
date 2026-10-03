@@ -310,9 +310,22 @@ export default function StatsSection() {
                 whileHover={{ 
                   y: -6, 
                 }}
-                className="bg-white dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-primary-500/10 hover:border-primary-300 dark:hover:border-secondary-500/40 transition-all duration-300 group"
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  e.currentTarget.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+                  e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+                }}
+                className="relative bg-white dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-primary-500/10 hover:border-primary-300 dark:hover:border-secondary-500/40 transition-all duration-300 group overflow-hidden"
               >
-              <div className="flex items-center justify-between w-full">
+                {/* Dynamic Cursor Spotlight */}
+                <div
+                  className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  style={{
+                    background: "radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(6, 182, 212, 0.08), transparent 80%)",
+                  }}
+                />
+
+                <div className="flex items-center justify-between w-full relative z-10">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-300 ${stat.bgAccent} ${stat.accent} group-hover:scale-105`}>
                   {stat.icon}
                 </div>
@@ -324,7 +337,7 @@ export default function StatsSection() {
                 </div>
               </div>
               
-              <div className="mt-8">
+              <div className="mt-8 relative z-10">
                 <div className="text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-2.5 group-hover:text-primary dark:group-hover:text-secondary-300 transition-colors">
                   <AnimatedCounter value={stat.rawNumber} suffix={stat.suffix} />
                 </div>
