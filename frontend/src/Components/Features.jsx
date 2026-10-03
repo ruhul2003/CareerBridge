@@ -1,5 +1,6 @@
 'use client';
-import React from 'react';
+
+import React, { useState } from 'react';
 import { motion } from "motion/react"; 
 import {
     Magnifier,
@@ -16,42 +17,50 @@ const features = [
     {
         icon: <Magnifier className="w-6 h-6" />,
         title: "Smart Search",
-        desc: "Find your ideal job with advanced filters."
+        desc: "Find your ideal job with advanced filters.",
+        category: "seeker"
     },
     {
         icon: <ChartLine className="w-6 h-6" />,
         title: "Salary Insights",
-        desc: "Get real salary data to negotiate confidently."
+        desc: "Get real salary data to negotiate confidently.",
+        category: "seeker"
     },
     {
         icon: <ChartColumn className="w-6 h-6" />,
         title: "Top Companies",
-        desc: "Apply to vetted companies that are hiring."
+        desc: "Apply to vetted companies that are hiring.",
+        category: "recruiter"
     },
     {
         icon: <Bookmark className="w-6 h-6" />,
         title: "Saved Jobs",
-        desc: "Manage apps & favorites on your dashboard."
+        desc: "Manage apps & favorites on your dashboard.",
+        category: "seeker"
     },
     {
         icon: <LayoutHeaderCursor className="w-6 h-6" />,
         title: "One-Click Apply",
-        desc: "Simplify your job applications for an easier process."
+        desc: "Simplify your job applications for an easier process.",
+        category: "seeker"
     },
     {
         icon: <FileText className="w-6 h-6" />,
         title: "Resume Builder",
-        desc: "Create professional resumes with modern templates."
+        desc: "Create professional resumes with modern templates.",
+        category: "seeker"
     },
     {
         icon: <Target className="w-6 h-6" />,
         title: "Skill-Based Matching",
-        desc: "Discover jobs that match your skills and experience."
+        desc: "Discover jobs that match your skills and experience.",
+        category: "recruiter"
     },
     {
         icon: <ArrowUpRight className="w-6 h-6" />,
         title: "Career Growth Resources",
-        desc: "Boost your career with quick interview tips."
+        desc: "Boost your career with quick interview tips.",
+        category: "recruiter"
     }
 ];
 
@@ -69,6 +78,13 @@ const fadeInUp = (delay = 0) => ({
 });
 
 export default function FeaturesSection() {
+    const [selectedCategory, setSelectedCategory] = useState("all");
+    const filterOptions = [
+        { id: "all", label: "All Capabilities" },
+        { id: "seeker", label: "For Job Seekers" },
+        { id: "recruiter", label: "For Recruiters" }
+    ];
+
     return (
         <section className="bg-transparent py-24 px-6 text-zinc-900 dark:text-white overflow-hidden transition-colors duration-300">
             <div className="max-w-7xl mx-auto">
@@ -95,6 +111,23 @@ export default function FeaturesSection() {
                     >
                         Everything you need <br /> to <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">succeed</span>
                     </motion.h2>
+
+                    {/* Category Filter Pills */}
+                    <div className="mt-8 flex items-center justify-center gap-2 select-none">
+                        {filterOptions.map((opt) => (
+                            <button
+                                key={opt.id}
+                                onClick={() => setSelectedCategory(opt.id)}
+                                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                                    selectedCategory === opt.id
+                                        ? "bg-primary text-white shadow-md shadow-primary/20"
+                                        : "bg-slate-200/60 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white"
+                                }`}
+                            >
+                                {opt.label}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Features Grid with Premium Animation */}
@@ -104,10 +137,16 @@ export default function FeaturesSection() {
                     viewport={{ once: true, margin: "-80px" }}
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
                 >
-                    {features.map((feature, index) => (
+                    {features.map((feature, index) => {
+                        const isDimmed = selectedCategory !== "all" && feature.category !== selectedCategory;
+                        return (
                         <motion.div
                             key={index}
                             variants={fadeInUp(0.1 + index * 0.05)}
+                            animate={{
+                                opacity: isDimmed ? 0.35 : 1,
+                                scale: isDimmed ? 0.96 : 1,
+                            }}
                             whileHover={{ 
                                 y: -12, 
                                 scale: 1.03,
@@ -146,7 +185,8 @@ export default function FeaturesSection() {
                                 {feature.desc}
                             </p>
                         </motion.div>
-                    ))}
+                        );
+                    })}
                 </motion.div>
             </div>
         </section>
