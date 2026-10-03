@@ -150,7 +150,7 @@ export default function StatsSection() {
   };
 
   return (
-    <section className="relative w-full bg-zinc-100 dark:bg-black text-zinc-900 dark:text-white py-28 px-6 overflow-hidden min-h-[700px] flex flex-col justify-end transition-colors duration-300">
+    <section aria-label="Platform Impact and Global Statistics" className="relative w-full bg-zinc-100 dark:bg-black text-zinc-900 dark:text-white py-28 px-6 overflow-hidden min-h-[700px] flex flex-col justify-end transition-colors duration-300">
       {/* Modern Ambient Mesh & Radial Accents */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Globe Map Background Layer */}
@@ -164,6 +164,8 @@ export default function StatsSection() {
           {globalHubs.map((hub) => (
             <div
               key={hub.id}
+              role="region"
+              aria-label={`Global talent hub in ${hub.name}, ${hub.region} with ${hub.candidates} candidates`}
               className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto group/hub cursor-pointer"
               style={{ left: hub.x, top: hub.y }}
             >
@@ -257,6 +259,8 @@ export default function StatsSection() {
 
         {/* Metric Category Tabs */}
         <motion.div
+          role="tablist"
+          aria-label="Metric Categories"
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -268,6 +272,8 @@ export default function StatsSection() {
             return (
               <button
                 key={tab.id}
+                role="tab"
+                aria-selected={isActive}
                 onClick={() => setActiveTab(tab.id)}
                 className={`relative px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 cursor-pointer ${
                   isActive
@@ -302,6 +308,8 @@ export default function StatsSection() {
               <motion.div
                 layout
                 key={stat.id}
+                role="article"
+                aria-label={`${stat.label}: ${stat.number}, ${stat.growth}`}
                 variants={itemVariants}
                 animate={{
                   opacity: isDimmed ? 0.35 : 1,
