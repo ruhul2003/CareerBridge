@@ -150,7 +150,7 @@ export default function StatsSection() {
   };
 
   return (
-    <section aria-label="Platform Impact and Global Statistics" className="relative w-full bg-zinc-100 dark:bg-black text-zinc-900 dark:text-white py-28 px-6 overflow-hidden min-h-[700px] flex flex-col justify-end transition-colors duration-300">
+    <section aria-label="Platform Impact and Global Statistics" className="relative w-full bg-zinc-100 dark:bg-black text-zinc-900 dark:text-white py-20 md:py-28 px-4 sm:px-6 overflow-hidden min-h-[680px] flex flex-col justify-end transition-colors duration-300">
       {/* Modern Ambient Mesh & Radial Accents */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Globe Map Background Layer */}
@@ -251,7 +251,7 @@ export default function StatsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
-          className="text-center lg:text-5xl md:text-4xl text-3xl font-light tracking-tight max-w-3xl leading-[1.3] text-zinc-700 dark:text-zinc-300 mb-20 select-none"
+          className="text-center lg:text-5xl md:text-4xl text-3xl font-light tracking-tight max-w-3xl leading-[1.3] text-slate-800 dark:text-zinc-200 mb-12 md:mb-16 select-none"
         >
           Empowering over <span className="font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">15,000 candidates</span> <br />
           to accelerate their career trajectory.
@@ -323,7 +323,7 @@ export default function StatsSection() {
                   e.currentTarget.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
                   e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
                 }}
-                className="relative bg-white dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-8 flex flex-col justify-between min-h-[210px] shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-primary-500/10 hover:border-primary-300 dark:hover:border-secondary-500/40 transition-all duration-300 group overflow-hidden"
+                className="relative bg-white dark:bg-[#0c0c0e]/90 backdrop-blur-md border border-slate-200/90 dark:border-zinc-800/90 rounded-2xl p-6 sm:p-8 flex flex-col justify-between min-h-[220px] shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl hover:shadow-primary-500/10 hover:border-primary-300 dark:hover:border-secondary-500/40 transition-all duration-300 group overflow-hidden"
               >
                 {/* Dynamic Cursor Spotlight */}
                 <div
@@ -370,7 +370,7 @@ export default function StatsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mt-14 flex flex-wrap items-center justify-center gap-4 text-sm select-none"
+          className="mt-12 md:mt-16 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 text-sm select-none"
         >
           <a
             href="/jobs"
