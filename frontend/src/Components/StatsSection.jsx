@@ -325,6 +325,9 @@ export default function StatsSection() {
                   }}
                 />
 
+                {/* Border Shimmer Accent */}
+                <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-primary-500/0 group-hover:via-primary-500/70 dark:group-hover:via-secondary-400/70 to-transparent transition-all duration-500 pointer-events-none" />
+
                 <div className="flex items-center justify-between w-full relative z-10">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-300 ${stat.bgAccent} ${stat.accent} group-hover:scale-105`}>
                   {stat.icon}
