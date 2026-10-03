@@ -45,6 +45,8 @@ export default function StatsSection() {
     {
       id: 1,
       number: "50K+",
+      rawNumber: 50,
+      suffix: "K+",
       label: "Active Jobs",
       accent: "text-primary dark:text-primary-400",
       bgAccent: "bg-primary-50 dark:bg-primary-950/40 border-primary-200/60 dark:border-primary-900/40",
@@ -57,6 +59,8 @@ export default function StatsSection() {
     {
       id: 2,
       number: "12K+",
+      rawNumber: 12,
+      suffix: "K+",
       label: "Vetted Companies",
       accent: "text-secondary dark:text-secondary-400",
       bgAccent: "bg-secondary-50 dark:bg-secondary-950/40 border-secondary-200/60 dark:border-secondary-900/40",
@@ -69,6 +73,8 @@ export default function StatsSection() {
     {
       id: 3,
       number: "2M+",
+      rawNumber: 2,
+      suffix: "M+",
       label: "Active Candidates",
       accent: "text-primary dark:text-primary-400",
       bgAccent: "bg-primary-50 dark:bg-primary-950/40 border-primary-200/60 dark:border-primary-900/40",
@@ -81,6 +87,8 @@ export default function StatsSection() {
     {
       id: 4,
       number: "98%",
+      rawNumber: 98,
+      suffix: "%",
       label: "Satisfaction Rate",
       accent: "text-secondary dark:text-secondary-400",
       bgAccent: "bg-secondary-50 dark:bg-secondary-950/40 border-secondary-200/60 dark:border-secondary-900/40",
@@ -249,7 +257,7 @@ export default function StatsSection() {
               
               <div className="mt-8">
                 <div className="text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-2.5 group-hover:text-primary dark:group-hover:text-secondary-300 transition-colors">
-                  {stat.number}
+                  <AnimatedCounter value={stat.rawNumber} suffix={stat.suffix} />
                 </div>
                 <div className="text-sm text-slate-600 dark:text-zinc-400 font-medium tracking-wide">
                   {stat.label}
