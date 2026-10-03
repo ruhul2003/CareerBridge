@@ -85,11 +85,17 @@ export default function StatsSection() {
           style={{ backgroundImage: "url('/globe.png')" }}
         />
 
+        {/* Central Atmospheric Globe Backlight */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] md:w-[900px] h-[450px] bg-gradient-to-tr from-primary-600/15 via-secondary-500/20 to-primary-400/15 dark:from-primary-600/25 dark:via-secondary-500/25 dark:to-primary-400/20 blur-[130px] rounded-full pointer-events-none" />
+
         {/* Subtle Primary Radial Accent */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-primary-500/10 dark:bg-primary-600/15 blur-[120px] rounded-full" />
         
         {/* Secondary Radial Glow */}
         <div className="absolute -bottom-20 left-1/4 w-[500px] h-[300px] bg-secondary-500/10 dark:bg-secondary-600/15 blur-[120px] rounded-full" />
+
+        {/* Global Horizon Rim Light */}
+        <div className="absolute top-1/3 right-1/4 w-[400px] h-[250px] bg-secondary-400/15 dark:bg-secondary-500/20 blur-[100px] rounded-full pointer-events-none" />
 
         {/* Ambient Grid Pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(rgba(79,70,229,0.08)_1px,transparent_1px)] dark:bg-[radial-gradient(rgba(6,182,212,0.08)_1px,transparent_1px)] [background-size:32px_32px] opacity-60" />
