@@ -50,6 +50,7 @@ export default function StatsSection() {
       label: "Active Jobs",
       growth: "+34% YoY",
       description: "Verified roles across tech, product & design",
+      category: "talent",
       accent: "text-primary dark:text-primary-400",
       bgAccent: "bg-primary-50 dark:bg-primary-950/40 border-primary-200/60 dark:border-primary-900/40",
       icon: (
@@ -66,6 +67,7 @@ export default function StatsSection() {
       label: "Vetted Companies",
       growth: "+18% MoM",
       description: "Vetted startups & Fortune 500 organizations",
+      category: "enterprise",
       accent: "text-secondary dark:text-secondary-400",
       bgAccent: "bg-secondary-50 dark:bg-secondary-950/40 border-secondary-200/60 dark:border-secondary-900/40",
       icon: (
@@ -82,6 +84,7 @@ export default function StatsSection() {
       label: "Active Candidates",
       growth: "+45% YoY",
       description: "Pre-screened professionals actively looking",
+      category: "talent",
       accent: "text-primary dark:text-primary-400",
       bgAccent: "bg-primary-50 dark:bg-primary-950/40 border-primary-200/60 dark:border-primary-900/40",
       icon: (
@@ -98,6 +101,7 @@ export default function StatsSection() {
       label: "Satisfaction Rate",
       growth: "4.9★ Rating",
       description: "Rated highly by recruiters and candidates",
+      category: "enterprise",
       accent: "text-secondary dark:text-secondary-400",
       bgAccent: "bg-secondary-50 dark:bg-secondary-950/40 border-secondary-200/60 dark:border-secondary-900/40",
       icon: (
@@ -106,6 +110,14 @@ export default function StatsSection() {
         </svg>
       ),
     },
+  ];
+
+  const [activeTab, setActiveTab] = useState("all");
+
+  const categories = [
+    { id: "all", label: "All Benchmarks" },
+    { id: "talent", label: "Talent & Roles" },
+    { id: "enterprise", label: "Enterprise Scale" },
   ];
 
   const globalHubs = [
@@ -242,6 +254,39 @@ export default function StatsSection() {
           Empowering over <span className="font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">15,000 candidates</span> <br />
           to accelerate their career trajectory.
         </motion.h2>
+
+        {/* Metric Category Tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-200/60 dark:bg-zinc-900/90 border border-slate-300/60 dark:border-zinc-800 backdrop-blur-md mb-12 select-none"
+        >
+          {categories.map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`relative px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                  isActive
+                    ? "text-white shadow-md shadow-primary/20"
+                    : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeStatsTab"
+                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary to-secondary"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{tab.label}</span>
+              </button>
+            );
+          })}
+        </motion.div>
 
         <motion.div 
           variants={containerVariants}
