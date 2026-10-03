@@ -113,12 +113,14 @@ export default function FeaturesSection() {
                                 scale: 1.03,
                                 transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
                             }}
-                            className={`group bg-white dark:bg-zinc-900 border border-slate-200/90 dark:border-zinc-800 rounded-3xl p-8 transition-all duration-300 shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl ${
+                            className={`relative overflow-hidden group bg-white dark:bg-zinc-900 border border-slate-200/90 dark:border-zinc-800 rounded-3xl p-8 transition-all duration-300 shadow-xl shadow-slate-200/70 dark:shadow-2xl dark:shadow-black/80 hover:shadow-2xl ${
                                 index % 2 === 0
                                     ? "hover:border-primary-400/60 dark:hover:border-primary-500/50 hover:shadow-primary-500/10"
                                     : "hover:border-secondary-400/60 dark:hover:border-secondary-500/50 hover:shadow-secondary-500/10"
                             }`}
                         >
+                            {/* Top Highlight Shimmer */}
+                            <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-secondary-400/0 group-hover:via-secondary-400/70 to-transparent transition-all duration-500 pointer-events-none" />
                             <motion.div 
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 whileInView={{ scale: 1, opacity: 1 }}
