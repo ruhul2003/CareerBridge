@@ -1,9 +1,10 @@
 import React from 'react';
-import { LayoutDashboard, Briefcase, Bookmark, FileText, CreditCard, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Briefcase, Bookmark, FileText, CreditCard, Settings, LogOut, FileSearch } from 'lucide-react';
 
 const SeekerSidebar = ({ currentTab, setCurrentTab }) => {
   const menuItems = [
     { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard },
+    { id: 'resume-analyzer', name: 'Resume Analyzer', icon: FileSearch },
     { id: 'saved', name: 'Saved Jobs', icon: Bookmark },
     { id: 'applications', name: 'Applications', icon: FileText },
     { id: 'billing', name: 'Billing', icon: CreditCard },
@@ -49,8 +50,12 @@ const SeekerSidebar = ({ currentTab, setCurrentTab }) => {
 
       {/* Sidebar Footer Operations */}
       <div className="pt-4 border-t border-zinc-200 dark:border-[#1e1e24] space-y-3">
-        <button className="w-full bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold text-xs py-2.5 rounded-xl cursor-pointer hover:bg-zinc-800 dark:hover:bg-gray-200 active:scale-[0.98] transition-all duration-250 shadow-sm">
-          Post Resume
+        <button 
+          onClick={() => setCurrentTab('resume-analyzer')}
+          className="w-full bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold text-xs py-2.5 rounded-xl cursor-pointer hover:bg-zinc-800 dark:hover:bg-gray-200 active:scale-[0.98] transition-all duration-250 shadow-sm flex items-center justify-center gap-2"
+        >
+          <FileSearch className="w-3.5 h-3.5" />
+          <span>Analyze Resume</span>
         </button>
         <button className="w-full flex items-center gap-3 px-4 py-2 text-xs cursor-pointer text-zinc-500 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 active:translate-x-0.5 transition-all duration-200">
           <LogOut className="w-4 h-4" /> Logout

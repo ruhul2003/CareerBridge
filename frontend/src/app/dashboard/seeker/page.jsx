@@ -6,9 +6,7 @@ import SavedJobsTab from '../../../Components/seeker-dashboard-tabs/SavedJobsTab
 import ApplicationsTab from '../../../Components/seeker-dashboard-tabs/ApplicationsTab';
 import BillingTab from '../../../Components/seeker-dashboard-tabs/BillingTab';
 import SettingsTab from '../../../Components/seeker-dashboard-tabs/SettingsTab';
-
-
-
+import ResumeAnalyzerTab from '../../../Components/seeker-dashboard-tabs/ResumeAnalyzerTab';
 
 import { authClient } from '@/lib/auth-client';
 
@@ -28,6 +26,7 @@ const SeekerDashboard = () => {
   const renderTabContent = () => {
     switch (currentTab) {
       case 'dashboard': return <OverviewTab user={user} onEditProfile={() => setCurrentTab('settings')} />;
+      case 'resume-analyzer': return <ResumeAnalyzerTab user={user} onNavigateToSettings={() => setCurrentTab('settings')} />;
       case 'saved': return <SavedJobsTab user={user} />;
       case 'applications': return <ApplicationsTab user={user} />;
       case 'billing': return <BillingTab user={user} />;
