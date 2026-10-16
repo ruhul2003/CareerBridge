@@ -1183,6 +1183,29 @@ Return strictly a raw JSON object (without markdown code blocks) with the exact 
   }
 });
 
+// AI Resume Analyzer Endpoint (Supports PDF, Image, and TXT parsing)
+const { analyzeResume } = require("./resumeAiService");
+app.post("/api/ai/analyze-resume", async (req, res) => {
+  try {
+    const { fileBase64, mimeType, fileName, textContent } = req.body;
+    if (!fileBase64 && !textContent) {
+      return res.status(400).json({
+        success: false,
+        message: "No resume file payload or text content provided"
+      });
+    }
+
+    const result = await analyzeResume({ fileBase64, mimeType, fileName, textContent });
+    res.json(result);
+  } catch (error) {
+    console.error("AI Resume Analyze Route Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to analyze resume document"
+    });
+  }
+});
+
 // ====================== REAL-TIME EMAIL SYSTEM ENDPOINTS ======================
 
 // GET email service connectivity & configuration status
