@@ -24,12 +24,15 @@ import {
   Globe,
   Trash2,
   Edit3,
-  Check
+  Check,
+  Sparkles,
+  Wand2
 } from 'lucide-react';
 import { FaGithub, FaLinkedin } from 'react-icons/fa6';
 import { authClient } from '@/lib/auth-client';
 import ThemeToggle from '@/Components/ThemeToggle';
 import toast from 'react-hot-toast';
+import ResumeAutoFillDrawer from './ResumeAutoFillDrawer';
 
 const SettingsTab = ({ user }) => {
   const [profile, setProfile] = useState({
@@ -52,6 +55,36 @@ const SettingsTab = ({ user }) => {
 
   const [skills, setSkills] = useState([]);
   const [skillInput, setSkillInput] = useState('');
+  const [showResumeAutoFill, setShowResumeAutoFill] = useState(false);
+
+  const handleApplyExtractedToForm = (extracted) => {
+    if (!extracted) return;
+    setProfile((prev) => ({
+      ...prev,
+      fullName: extracted.fullName || prev.fullName,
+      title: extracted.title || prev.title,
+      phone: extracted.phone || prev.phone,
+      location: extracted.location || prev.location,
+      bio: extracted.bio || prev.bio,
+      github: extracted.github || prev.github,
+      linkedin: extracted.linkedin || prev.linkedin,
+      portfolio: extracted.portfolio || prev.portfolio,
+      website: extracted.website || prev.website,
+      languages: extracted.languages || prev.languages,
+    }));
+
+    if (Array.isArray(extracted.skills) && extracted.skills.length > 0) {
+      setSkills((prev) => Array.from(new Set([...prev, ...extracted.skills])));
+    }
+
+    if (Array.isArray(extracted.education) && extracted.education.length > 0) {
+      setEducationList((prev) => [...prev, ...extracted.education]);
+    }
+
+    if (Array.isArray(extracted.experience) && extracted.experience.length > 0) {
+      setExperienceList((prev) => [...prev, ...extracted.experience]);
+    }
+  };
 
   // Email verification state
   const [isResendingVerification, setIsResendingVerification] = useState(false);
@@ -446,23 +479,34 @@ const SettingsTab = ({ user }) => {
           </p>
         </div>
 
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold text-sm shadow-lg flex items-center gap-2 cursor-pointer disabled:opacity-50 transition-all transform hover:scale-[1.02]"
-        >
-          {saving ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              <span>Saving...</span>
-            </>
-          ) : (
-            <>
-              <Save className="w-4 h-4" />
-              <span>Save All Changes</span>
-            </>
-          )}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setShowResumeAutoFill(true)}
+            className="px-4 py-2.5 rounded-xl border border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary font-semibold text-xs flex items-center gap-2 cursor-pointer transition-all shadow-sm"
+          >
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span>AI Auto-Fill from Resume</span>
+          </button>
+
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold text-sm shadow-lg flex items-center gap-2 cursor-pointer disabled:opacity-50 transition-all transform hover:scale-[1.02]"
+          >
+            {saving ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Saving...</span>
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4" />
+                <span>Save All Changes</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Profile Picture & General Details */}
@@ -1313,6 +1357,13 @@ const SettingsTab = ({ user }) => {
           )}
         </button>
       </div>
+
+      {/* Resume Auto-Fill Drawer */}
+      <ResumeAutoFillDrawer
+        isOpen={showResumeAutoFill}
+        onClose={() => setShowResumeAutoFill(false)}
+        onApplyToForm={handleApplyExtractedToForm}
+      />
     </div>
   );
 };
