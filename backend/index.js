@@ -395,18 +395,52 @@ app.get("/api/users/:id", async (req, res) => {
 app.patch("/api/users/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const { fullName, email, title, skills, resume, cv, resumeUrl, cvUrl } = req.body;
+    const { 
+      fullName, 
+      email, 
+      title, 
+      skills, 
+      phone,
+      location,
+      bio,
+      github,
+      linkedin,
+      portfolio,
+      website,
+      dateOfBirth,
+      languages,
+      education,
+      experience,
+      avatar,
+      resume, 
+      cv, 
+      resumeUrl, 
+      cvUrl 
+    } = req.body;
 
     const finalResume = resume !== undefined ? resume : (resumeUrl !== undefined ? resumeUrl : undefined);
     const finalCv = cv !== undefined ? cv : (cvUrl !== undefined ? cvUrl : undefined);
 
     const updateFields = {
-      fullName,
-      email,
-      title,
-      skills: skills || [],
       updatedAt: new Date()
     };
+
+    if (fullName !== undefined) updateFields.fullName = fullName;
+    if (email !== undefined) updateFields.email = email;
+    if (title !== undefined) updateFields.title = title;
+    if (phone !== undefined) updateFields.phone = phone;
+    if (location !== undefined) updateFields.location = location;
+    if (bio !== undefined) updateFields.bio = bio;
+    if (github !== undefined) updateFields.github = github;
+    if (linkedin !== undefined) updateFields.linkedin = linkedin;
+    if (portfolio !== undefined) updateFields.portfolio = portfolio;
+    if (website !== undefined) updateFields.website = website;
+    if (dateOfBirth !== undefined) updateFields.dateOfBirth = dateOfBirth;
+    if (languages !== undefined) updateFields.languages = languages;
+    if (avatar !== undefined) updateFields.avatar = avatar;
+    if (skills !== undefined) updateFields.skills = Array.isArray(skills) ? skills : [];
+    if (education !== undefined) updateFields.education = Array.isArray(education) ? education : [];
+    if (experience !== undefined) updateFields.experience = Array.isArray(experience) ? experience : [];
 
     if (finalResume !== undefined) {
       updateFields.resume = finalResume;
